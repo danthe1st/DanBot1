@@ -1,0 +1,49 @@
+package commands.moderation;
+
+import java.util.List;
+
+import commands.Command;
+import core.PermsCore;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
+import util.STATIC;
+
+public class CmdVoiceKick implements Command{
+
+	@Override
+	public void action(String[] args, MessageReceivedEvent event) {
+		if( !(PermsCore.check(event, "vkick")) ) {
+			return;
+		}
+		List<Member> toKick=STATIC.getMembersFromMsg(event.getMessage());
+		try {
+			for (Member member : toKick) {
+				if (member.getVoiceState().inVoiceChannel()) {
+					event.getGuild().getController().moveVoiceMember(member, event.getGuild().getAfkChannel()).queue();;
+				}
+				else {
+					STATIC.errmsg(event.getTextChannel(), member.getEffectiveName()+" is not in a Voice Channel.");
+				}
+			}
+		} catch (InsufficientPermissionException e) {
+			STATIC.errmsg(event.getTextChannel(), "DanBot1 is missing Permissions.");
+		} catch (NullPointerException e) {
+			STATIC.errmsg(event.getTextChannel(), "No AFK Channel found.");
+		}
+		
+	}
+
+	@Override
+	public String help(String prefix) {
+		return "kicks a user out of a voice Channel\n"
+				+ "(see Permission *vkick* in Command perm get)\n"
+				+"*Syntax*: "+prefix+"vkick <user>";
+	}
+
+	@Override
+	public String getCommandType() {
+		return CMD_TYPE_GUILD_MODERATION;
+	}
+
+}

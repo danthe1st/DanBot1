@@ -1,0 +1,266 @@
+package commands.music;
+
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+
+import commands.Command;
+import core.PermsCore;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import util.STATIC;
+
+public class CmdMusic implements Command{
+
+	private static Guild guild;
+	private static final AudioPlayerManager MANAGER=new DefaultAudioPlayerManager();
+	private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS=new HashMap<>();
+	private int numTracksToLoad=0;
+	private static final int MAX_NUM_TRACKS=100;
+	
+	public CmdMusic() {
+		AudioSourceManagers.registerRemoteSources(MANAGER);
+	}
+	private AudioPlayer createPlayer(final Guild g) {
+		final AudioPlayer p=MANAGER.createPlayer();
+		final TrackManager m=new TrackManager(p);
+		p.addListener(m);
+		guild.getAudioManager().setSendingHandler(new PlayerSendHandler(p));
+		PLAYERS.put(g, new AbstractMap.SimpleEntry<AudioPlayer, TrackManager>(p, m));
+		return p;
+	}
+	private boolean hasPlayer(final Guild g) {
+		return PLAYERS.containsKey(g);
+	}
+	private AudioPlayer getPlayer(final Guild g) {
+		if (hasPlayer(g)) {
+			return PLAYERS.get(g).getKey();
+		}
+		else {
+			return createPlayer(g);
+		}
+	}
+	private TrackManager getManager(final Guild g) {
+		return PLAYERS.get(g).getValue();
+	}
+	/**
+	 * �berpr�ft ob Musik gespielt wird
+	 * @param g Die Guild(der Discord-Server)
+	 * @return wird Musik gespielt?
+	 */
+	private boolean isIdle(final Guild g) {
+		return !hasPlayer(g)|| getPlayer(g).getPlayingTrack()==null;
+	}
+	/**
+	 * L�dt einen Track in die queue
+	 * @param identifier 
+	 * @param author Auftraggeber des Tracks
+	 * @param msg Die Nachrichricht mit dem Befehl den Track zu laden
+	 */
+	private void loadTrack(final String identifier, final Member author, final Message msg,TextChannel channel) {
+		final Guild guild=author.getGuild();
+		getPlayer(guild);
+		MANAGER.setFrameBufferDuration(1000);
+		MANAGER.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
+			
+			@Override
+			public void trackLoaded(final AudioTrack track) {
+				getManager(guild).queue(track, author,channel);
+			}
+			
+			@Override
+			public void playlistLoaded(final AudioPlaylist playlist) {
+				//getManager(guild).queue(playlist.getTracks().get(0), author);
+				for (int i = 0; i < numTracksToLoad&&i<MAX_NUM_TRACKS; i++) {
+					if (playlist.getTracks().size()<i) {
+						return;
+					}
+					getManager(guild).queue(playlist.getTracks().get(i), author,channel);
+				}
+			}
+			
+			@Override
+			public void noMatches() {
+				
+			}
+			
+			@Override
+			public void loadFailed(final FriendlyException exception) {
+				
+			}
+		});
+		
+	}
+	/**
+	 * �berspringt den aktuellen Track
+	 * @param g
+	 */
+	private void skip(final Guild g) {
+		getPlayer(g).stopTrack();
+		if (getManager(g).getQueue().isEmpty()) {
+			guild.getAudioManager().closeAudioConnection();
+		}
+	}
+	/**
+	 * gibt Zeit als String
+	 * @param millis Die Zeit in ms
+	 * @return Die Zeit als String
+	 */
+	private String getTimeStamp(final long millis) {
+		long seconds = millis / 1000;
+        final long hours = Math.floorDiv(seconds, 3600);
+        seconds = seconds - (hours * 3600);
+        final long mins = Math.floorDiv(seconds, 60);
+        seconds = seconds - (mins * 60);
+        return (hours == 0 ? "" : hours + ":") + String.format("%02d", mins) + ":" + String.format("%02d", seconds);
+	}
+	/**
+	 * gibt die einen Track f�r die queue-info als String zur�ck
+	 * @param info Der Track als Audio
+	 * @return Der Track als String
+	 */
+	private String buildQueueMessage(final AudioInfo info) {
+		final AudioTrackInfo trackInfo=info.getTrack().getInfo();
+		final String title=trackInfo.title;
+		final long length=trackInfo.length;
+		return "\'["+getTimeStamp(length)+"]\'"+title+"\n";
+	}
+	/**
+	 * Der Befehl selbst(siehe help)
+	 */
+	@Override
+	public void action(final String[] args, final MessageReceivedEvent event) {
+		if(!PermsCore.check(event, "playMusic")) {
+			return;
+		}
+		guild=event.getGuild();
+		if (args.length<1) {
+			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(guild)));
+			return;
+		}
+		switch (args[0].toLowerCase()) {
+		case "play":
+		case "p":
+			
+			if (args.length<2) {
+				STATIC.errmsg(event.getTextChannel(), "please Enter a valid source");
+				return;
+			}
+			numTracksToLoad=1;
+			if (args.length>2) {
+				try {
+					numTracksToLoad=Integer.parseInt(args[1]);
+				} catch (NumberFormatException e) {}
+			}
+			String input=Arrays.stream(args).skip(1).map(s->" "+s).collect(Collectors.joining()).substring(1);
+			
+			if (!(input.startsWith("http://")||input.startsWith("https://"))) {
+				input="ytsearch: "+input;
+			}
+			loadTrack(input, event.getMember(), event.getMessage(),event.getTextChannel());
+			break;
+		case "skip":
+		case "s":
+			if(isIdle(guild)) {
+				guild.getAudioManager().closeAudioConnection();
+				return;
+			}
+			for (int i = (args.length>1 ? Integer.parseInt(args[1]) : 1); i==1; i--) {
+				skip(guild);
+			}
+			break;
+		case "stop":
+			if (isIdle(guild)) {
+				return;
+			}
+			getManager(guild).purgeQueue();
+			skip(guild);
+			guild.getAudioManager().closeAudioConnection();
+			
+			break;
+		case "shuffle":
+			if (isIdle(guild)) {
+				getManager(guild).shuffleQueue();
+			}
+			break;
+		case "now":
+		case "info":
+			if (isIdle(guild)) {
+				return;
+			}
+				final AudioTrack track=getPlayer(guild).getPlayingTrack();
+				final AudioTrackInfo info=track.getInfo();
+				event.getTextChannel().sendMessage(
+						new EmbedBuilder().setDescription("**CURRENT TRACK INFO:**").addField("Title",info.title, false)
+						.addField("Duration", "\'["+getTimeStamp(track.getPosition())+"/"+getTimeStamp(track.getDuration())+"]\'", false)
+						.addField("Author:", info.author, false)
+						.build()
+						).queue();
+				
+		case "queue":
+			if (isIdle(guild)) {
+				return;
+			}
+			final int sideNum=args.length>1?Integer.parseInt(args[1]):1;
+			final List<String> tracks=new ArrayList<>();
+			List<String> trackSublist;
+			getManager(guild).getQueue().forEach(audioInfo->tracks.add(buildQueueMessage(audioInfo)));
+			if (tracks.size()>20) {
+				trackSublist = tracks.subList((sideNum-1)*20, (sideNum-1)*20+20);
+			}
+			else {
+				trackSublist=tracks;
+			}
+			final String out=trackSublist.stream().collect(Collectors.joining("\n"));
+			final int sideNumAll=tracks.size()>=20?tracks.size()/20:1;
+			STATIC.msg(event.getTextChannel(), "**CURRENT QUEUE:**\n"+
+									"*["+getManager(guild).getQueue().size()+" Tracks | Side "+sideNum+" / "+sideNumAll+"]*"+out);
+			
+			
+			break;
+		default:
+			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(guild)));
+			break;
+		}
+	}
+
+	
+	/**
+	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
+	 */
+	@Override
+	public String help(String prefix) {
+		return "Play one or more youTube video in the audio channel you are OR\n"
+				+ "go to the next music in the Queue OR\n"
+				+ "stop the music OR\n"
+				+ "shuffle the music OR\n"
+				+ "get info about the track you are listening OR\n"
+				+ "list the queue\n"
+				+ "*WARNING: this does not work with any YouTube-Video, just try it*\n"
+				+ "(see Permission *playMusic* in Command perm get)\n"
+				+"*Syntax*: "+prefix+"music play/p (<number of Tracks you want to Play>) <URL of the video>/<search term>, skip/s, stop, shuffle, now/info, queue";
+	}
+
+	@Override
+	public String getCommandType() {
+		return CMD_TYPE_USER;
+	}
+}
