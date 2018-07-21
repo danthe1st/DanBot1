@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * gibt eine Guildspezifische Message of the day aus(Standardwert: Einladelink f. Bot)
+ * Command for getting/setting a guild-specified Message of the day(standard: invite link for the Bot and the Support Server)
  * @author Daniel Schmid
  *
  */
@@ -18,12 +18,6 @@ public class CmdMotd implements Command{
 	private static Map<Guild, String> motd=new HashMap<Guild, String>();
 	private static final String stdMotd="Invite: https://discordapp.com/api/oauth2/authorize?client_id=371042228891549707&permissions=8&scope=bot\n"
 			+ "Support: https://discord.gg/qmwcEjF";
-	
-	
-	
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "motd")) {
 			return;
@@ -77,15 +71,10 @@ public class CmdMotd implements Command{
 		}
 		
 	}
-
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	public String help(String prefix) {
 		return "displays or sets the message of the day!\n"
 				+ "(see Permission *motd(.show/.set)* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"motd ((set )<new motd>)";
-
 	}
 	@Override
 	public String getCommandType() {

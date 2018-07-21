@@ -24,9 +24,8 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command f. Umfragen innerhalb eines Discord-Servers
+ * Command for Polls in a Guild
  * @author Daniel Schmid
- *
  */
 public class CmdVote implements Command, Serializable{
 
@@ -37,14 +36,13 @@ public class CmdVote implements Command, Serializable{
 	private static HashMap<Guild, Poll> polls=new HashMap<>();
 	private static final String[] EMOTI= {":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":keycap_ten:"};
 	/**
-	 * Interne, Serialisierbare Klasse f. eine Umfrage<br>
-	 * <b>Eine Umfrage besitzt:</b><br>
-	 * den Ersteller der Umfrage(Discord-ID)<br>
-	 * den Text der Umfrage<br>
-	 * Alle Antwortm�glichkeiten<br>
-	 * wie oft jede Antwort ausgew�hlt wurde
+	 * An internal class for a Poll<br>
+	 * <b>A Poll contains:</b><br>
+	 * the creator of the Poll(Discord User ID)<br>
+	 * the Text of the Poll<br>
+	 * a List of answer possibilities<br>
+	 *  a number how often every answer was taken
 	 * @author Daniel Schmid
-	 *
 	 */
 	private class Poll implements Serializable{
 		private static final long serialVersionUID = 1L;
@@ -64,10 +62,11 @@ public class CmdVote implements Command, Serializable{
 		}
 	}
 	/**
-	 * gibt eine Umfrage als EmbedBuilder zur�ck(�hnlich wie toString)
-	 * @param poll Die Umfrage selbst
-	 * @param g Der Discord-Server
-	 * @return Umfrage als EmbedBuilder
+	 * returns a Poll as {@link EmbedBuilder}
+	 * 
+	 * @param poll The Poll
+	 * @param g The Guild(Discord-Server)
+	 * @return Poll as {@link EmbedBuilder}
 	 */
 	private EmbedBuilder getParsedPoll(final Poll poll, final Guild g) {
 		final StringBuilder ansStr=new StringBuilder();
@@ -85,9 +84,9 @@ public class CmdVote implements Command, Serializable{
 				.setColor(Color.cyan);
 	}
 	/**
-	 * erstellt eine neue Umfrage(Fehlernachricht wenn schon Umfrage vorhanden)
-	 * @param args Das arg-Array des Commands
-	 * @param event Das MessageReceivedEvent des Commands
+	 * creates a new Poll(errormessage if there is a poll wich already exists
+	 * @param args Arguments-Arrey of the Command
+	 * @param event {@link MessageReceivedEvent} of the Command
 	 */
 	private void craetePoll(final String[] args, final MessageReceivedEvent event) {
 		if (polls.containsKey(event.getGuild())) {
@@ -104,9 +103,9 @@ public class CmdVote implements Command, Serializable{
 		
 	}
 	/**
-	 * w�hlt f. eine Umfrage
-	 * @param args Das arg-Array des Commands
-	 * @param event Das MessageReceivedEvent des Commands
+	 * votes for a Poll
+	 * @param args Arguments-Arrey of the Command
+	 * @param event {@link MessageReceivedEvent} of the Command
 	 */
 	private void votePoll(final String[] args, final MessageReceivedEvent event) {
 		if (!polls.containsKey(event.getGuild())) {
@@ -133,8 +132,8 @@ public class CmdVote implements Command, Serializable{
 		event.getMessage().delete().queue();
 	}
 	/**
-	 * sendet eine Nachricht mit d. Daten der Vote(der Guild)
-	 * @param event Das MessageReceivedEvent des Commands
+	 * sends a Message with the date of the current Poll(of the {@link Guild})
+	 * @param event The {@link MessageReceivedEvent} of the Command
 	 */
 	private void voteStats(final MessageReceivedEvent event) {
 		if (!polls.containsKey(event.getGuild())) {
@@ -145,8 +144,8 @@ public class CmdVote implements Command, Serializable{
 		
 	}
 	/**
-	 * beendet eine Umfrage
-	 * @param event Das MessageReceivedEvent des Commands
+	 * ends the Running Poll
+	 * @param event The {@link MessageReceivedEvent} of the Command
 	 */
 	private void closeVote(final MessageReceivedEvent event) {
 		if (!polls.containsKey(event.getGuild())) {
@@ -160,9 +159,9 @@ public class CmdVote implements Command, Serializable{
 		STATIC.msg(event.getTextChannel(), "Poll closed by "+ event.getAuthor().getAsMention()+".");
 	}
 	/**
-	 * speichert eine Umfrage
-	 * @param guild Der Discord-Server
-	 * @throws IOException
+	 * saves a Poll
+	 * @param guild The Guild(Discord-Server)
+	 * @throws IOException If an I/O error has occurred.
 	 */
 	private void savePoll(final Guild guild) throws IOException {
 		if(!polls.containsKey(guild)) {
@@ -183,11 +182,11 @@ public class CmdVote implements Command, Serializable{
 		oos.close();
 	}
 	/**
-	 * l�dt die Umfrage der Guild und gibt diese zur�ck
-	 * @param g Die Guild(Discord-Server)
-	 * @return Die Umfrage
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * loads a Poll and returns it
+	 * @param g The Guild(Discord-Server)
+	 * @return The Poll
+	 * @throws IOException If an I/O error has occurred.
+	 * @throws ClassNotFoundException Class Poll cannot be found.
 	 */
 	private static Poll getPoll(final Guild g) throws IOException, ClassNotFoundException {
 		if(polls.containsKey(g)) {
@@ -202,8 +201,8 @@ public class CmdVote implements Command, Serializable{
 		return out;
 	}
 	/**
-	 * L�dt alle Umfragen
-	 * @param jda Die Java Discord API
+	 * loads all Polls
+	 * @param jda The JDA Class
 	 */
 	public static void loadPolls(final JDA jda) {
 		jda.getGuilds().forEach(g->{
@@ -217,9 +216,6 @@ public class CmdVote implements Command, Serializable{
 			}
 		});
 	}
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "vote")) {
@@ -281,9 +277,6 @@ public class CmdVote implements Command, Serializable{
 	}
 
 
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "Creates a poll OR\n"

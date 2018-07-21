@@ -3,34 +3,35 @@ package commands;
 import java.awt.Color;
 
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.LoggerUtils;
 import util.STATIC;
 /**
- * Interface f. Command<br>
+ * Interface for Commands<br>
  * @author Daniel Schmid
- *
  */
 public interface Command {
 	/**
-	 * false wenn Command ausgef�hrt werden soll
-	 * @param args Argumente des Commands
-	 * @param event Event der Empfangenen Command-Nachricht
-	 * @return false wenn ausgef�hrt werden darf
+	 * returns if the Command is blocked or something
+	 * @param args the Command-Arguments
+	 * @param event The {@link MessageReceivedEvent} of the incoming {@link Message}
+	 * @return false if Command should be executed, else true
 	 */
 	public default boolean allowExecute(String[] args, MessageReceivedEvent event) {
 		return true;
 	}
 	/**
-	 * Der Command selbst
-	 * @param args Argumente des Commands
-	 * @param event Event der Empfangenen Command-Nachricht
+	 * The Execution of the Command
+	 * @param args the Command-Arguments
+	 * @param event The {@link MessageReceivedEvent} of the incoming {@link Message}
 	 */
 	public void action(String[] args, MessageReceivedEvent event);
 	/**
-	 * Nach Ausf�hrung des Commands
-	 * @param success wurde der Command ausgef�hrt(boolean)
-	 * @param event Event der Empfangenen Command-Nachricht
+	 * after Command execution
+	 * @param success has the command been executed?
+	 * @param event The {@link MessageReceivedEvent} of the incoming {@link Message}
 	 */
 	public default void executed(boolean success, MessageReceivedEvent event) {
 		
@@ -54,19 +55,19 @@ public interface Command {
 		LoggerUtils.logCommand(event);
 	}
 	/**
-	 * Hilfe zu einem Befehl
-	 * @param prefix Der Prefix der Commands in dieser Guild
-	 * @return Hilfe
+	 * help for the Command
+	 * @param prefix The prefix of the {@link Guild}
+	 * @return help String
 	 */
 	public String help(String prefix);
 	/**
-	 * gibt den Command-Type des Commands zurück<br>
-	 * dieser wird für eine Gruppierung von Commands verwendet
-	 * @return der Command Type
+	 * returns the Command-type<br>
+	 * The Command-Type is used for grouping Commands
+	 * @return the Command-type
 	 */
 	public String getCommandType();
 	
-	//Command-Types
+	//Command-types
 	public static final String CMD_TYPE_ADMIN="Admin Command - only dan1st";
 	public static final String CMD_TYPE_BOT_MODERATION="DanBot1 Moderation Command";
 	public static final String CMD_TYPE_USER="User Command";

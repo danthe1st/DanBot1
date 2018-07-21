@@ -5,10 +5,15 @@ import java.util.List;
 import commands.Command;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 import util.STATIC;
-
+/**
+ * Command to move {@link Member}s from their current {@link VoiceChannel} to the AFK-{@link VoiceChannel}
+ * @author Daniel Schmid
+ *
+ */
 public class CmdVoiceKick implements Command{
 
 	@Override
@@ -31,16 +36,13 @@ public class CmdVoiceKick implements Command{
 		} catch (NullPointerException e) {
 			STATIC.errmsg(event.getTextChannel(), "No AFK Channel found.");
 		}
-		
 	}
-
 	@Override
 	public String help(String prefix) {
 		return "kicks a user out of a voice Channel\n"
 				+ "(see Permission *vkick* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"vkick <user>";
 	}
-
 	@Override
 	public String getCommandType() {
 		return CMD_TYPE_GUILD_MODERATION;

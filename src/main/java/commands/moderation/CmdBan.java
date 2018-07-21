@@ -9,7 +9,7 @@ import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command um ein Mitglied zu bannen
+ * Command to ban a {@link Member}
  * @author Daniel Schmid
  *
  */
@@ -32,16 +32,6 @@ public class CmdBan implements Command{
 			String reason=null;
 			int time=0;
 			int argCount=1;
-//			if (args.length>argCount) {
-//				try {
-//					Integer.parseInt(args[1]);
-//					argCount++;
-//				} catch (Exception e) {
-//					
-//				}
-//			}
-			
-			
 			if (args.length>argCount) {
 				reason="";
 				for (int i = argCount; i < args.length; i++) {
@@ -61,14 +51,9 @@ public class CmdBan implements Command{
 		
 		
 	}
-
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	public String help(String prefix) {
 		return "bans a user (see Permission *ban* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"ban <victim> (<reason>)";
-
 	}
 	@Override
 	public String getCommandType() {

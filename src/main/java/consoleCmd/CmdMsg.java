@@ -5,7 +5,11 @@ import java.awt.Color;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.TextChannel;
-
+/**
+ * Console Command to write a Message
+ * @author Daniel Schmid
+ *
+ */
 public class CmdMsg implements Command{
 
 	@Override

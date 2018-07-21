@@ -7,15 +7,10 @@ import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command f. zuspammen v. Chat
+ * Command to spam a Message
  * @author Daniel Schmid
- *
  */
 public class CmdSpam implements Command {
-	
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "spam")) {
@@ -40,9 +35,6 @@ public class CmdSpam implements Command {
 			STATIC.errmsg(event.getTextChannel(), "Please use a number as argument 1!");
 		}
 	}
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "Spams a number of messages(ATTENTION: takes a while because of Discord Spam Protection)"

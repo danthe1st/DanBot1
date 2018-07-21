@@ -2,31 +2,32 @@ package core;
 
 import java.util.ArrayList;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * zerlegt den Command und führt ihn zu einem <code>CommandContainer</code> zusammen.
+ * Class to parse a Command into a {@link CommandContainer}
  * @author Daniel Schmid
- *
  */
-
 public class CommandParser {
 	/**
-	 * zerlegt den Command und führt ihn zu einem <code>CommandContainer</code> zusammen.
-	 * @param raw der Cammand selbst
-	 * @param event das <code>MessageRecievedExent</code> von Discord
-	 * @return der Command als CommandContainer
+	 * zerlegt den Command und fï¿½hrt ihn zu einem <code>CommandContainer</code> zusammen.
+	 * method to parse the Command
+	 * @param raw the Message Content as String
+	 * @param event the {@link MessageReceivedEvent} from the Message
+	 * @return the parsed Command
 	 */
 	public static CommandContainer parser(final String raw, final MessageReceivedEvent event) {
 		
 		return parser(raw, event, STATIC.getPrefix(event.getGuild()));
 	}
 	/**
-	 * zerlegt den Command und führt ihn zu einem <code>CommandContainer</code> zusammen.
-	 * @param raw der Cammand selbst
-	 * @param event das <code>MessageRecievedExent</code> von Discord
-	 * @param prefix Der Command-Prefix
-	 * @return der Command als CommandContainer
+	 * zerlegt den Command und fï¿½hrt ihn zu einem <code>CommandContainer</code> zusammen.
+	 * method to parse the Command
+	 * @param raw the Message Content as String
+	 * @param event the {@link MessageReceivedEvent} from the Message
+	 * @param prefix the {@link Guild} prefix
+	 * @return the parsed Command
 	 */
 	public static CommandContainer parser(final String raw, final MessageReceivedEvent event, final String prefix) {
 		final String beheaded=raw.replaceFirst(prefix, "");
@@ -44,8 +45,8 @@ public class CommandParser {
 		return new CommandContainer(raw, beheaded, splitBeheaded, invoke, args, event);
 	}
 	/**
-	 * Container f. Command<br>
-	 * enthält einzelne Command-Teile
+	 * Container for parsed Commands
+	 * contains {@link MessageReceivedEvent} and splitted Message Content
 	 * @author Daniel Schmid
 	 *
 	 */

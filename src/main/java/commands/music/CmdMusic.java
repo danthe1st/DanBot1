@@ -24,10 +24,12 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
-
+/**
+ * The music Command
+ * @author Daniel Schmid
+ */
 public class CmdMusic implements Command{
 
 	private static Guild guild;
@@ -62,20 +64,20 @@ public class CmdMusic implements Command{
 		return PLAYERS.get(g).getValue();
 	}
 	/**
-	 * �berpr�ft ob Musik gespielt wird
-	 * @param g Die Guild(der Discord-Server)
-	 * @return wird Musik gespielt?
+	 * tests if music is played
+	 * @param g The Guild(Discord-Server)
+	 * @return true if music is played
 	 */
 	private boolean isIdle(final Guild g) {
 		return !hasPlayer(g)|| getPlayer(g).getPlayingTrack()==null;
 	}
 	/**
-	 * L�dt einen Track in die queue
-	 * @param identifier 
-	 * @param author Auftraggeber des Tracks
-	 * @param msg Die Nachrichricht mit dem Befehl den Track zu laden
+	 * loads a track into the queue
+	 * @param identifier the identifier-String
+	 * @param msg The {@link Message} with the Command to load the Music
 	 */
-	private void loadTrack(final String identifier, final Member author, final Message msg,TextChannel channel) {
+	private void loadTrack(final String identifier, final Message msg) {
+		Member author=msg.getMember();
 		final Guild guild=author.getGuild();
 		getPlayer(guild);
 		MANAGER.setFrameBufferDuration(1000);
@@ -83,9 +85,8 @@ public class CmdMusic implements Command{
 			
 			@Override
 			public void trackLoaded(final AudioTrack track) {
-				getManager(guild).queue(track, author,channel);
+				getManager(guild).queue(track, author,msg.getTextChannel());
 			}
-			
 			@Override
 			public void playlistLoaded(final AudioPlaylist playlist) {
 				//getManager(guild).queue(playlist.getTracks().get(0), author);
@@ -93,25 +94,24 @@ public class CmdMusic implements Command{
 					if (playlist.getTracks().size()<i) {
 						return;
 					}
-					getManager(guild).queue(playlist.getTracks().get(i), author,channel);
+					getManager(guild).queue(playlist.getTracks().get(i), author,msg.getTextChannel());
 				}
 			}
-			
 			@Override
 			public void noMatches() {
-				
+				STATIC.errmsg(msg.getTextChannel(), "no tracks found");
 			}
 			
 			@Override
 			public void loadFailed(final FriendlyException exception) {
-				
+				STATIC.errmsg(msg.getTextChannel(), "Cannot load Track");
 			}
 		});
 		
 	}
 	/**
-	 * �berspringt den aktuellen Track
-	 * @param g
+	 * skips the active track
+	 * @param g The {@link Guild}
 	 */
 	private void skip(final Guild g) {
 		getPlayer(g).stopTrack();
@@ -120,9 +120,9 @@ public class CmdMusic implements Command{
 		}
 	}
 	/**
-	 * gibt Zeit als String
-	 * @param millis Die Zeit in ms
-	 * @return Die Zeit als String
+	 * gets a time as a String
+	 * @param millis The time in Milliseconds
+	 * @return The Zeit as String
 	 */
 	private String getTimeStamp(final long millis) {
 		long seconds = millis / 1000;
@@ -133,9 +133,9 @@ public class CmdMusic implements Command{
         return (hours == 0 ? "" : hours + ":") + String.format("%02d", mins) + ":" + String.format("%02d", seconds);
 	}
 	/**
-	 * gibt die einen Track f�r die queue-info als String zur�ck
-	 * @param info Der Track als Audio
-	 * @return Der Track als String
+	 * gets a String from a {@link AudioInfo}
+	 * @param info The Track as {@link AudioInfo}
+	 * @return The Track as String
 	 */
 	private String buildQueueMessage(final AudioInfo info) {
 		final AudioTrackInfo trackInfo=info.getTrack().getInfo();
@@ -143,9 +143,6 @@ public class CmdMusic implements Command{
 		final long length=trackInfo.length;
 		return "\'["+getTimeStamp(length)+"]\'"+title+"\n";
 	}
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "playMusic")) {
@@ -175,7 +172,7 @@ public class CmdMusic implements Command{
 			if (!(input.startsWith("http://")||input.startsWith("https://"))) {
 				input="ytsearch: "+input;
 			}
-			loadTrack(input, event.getMember(), event.getMessage(),event.getTextChannel());
+			loadTrack(input, event.getMessage());
 			break;
 		case "skip":
 		case "s":

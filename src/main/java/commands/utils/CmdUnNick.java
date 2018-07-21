@@ -10,9 +10,11 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 import util.STATIC;
-
+/**
+ * Command to unnick a {@link Member}
+ * @author Daniel Schmid
+ */
 public class CmdUnNick implements Command{
-
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if((args.length==0&&!PermsCore.check(event, "unnick",false))||(!PermsCore.check(event, "unnick.others"))) {
@@ -45,10 +47,7 @@ public class CmdUnNick implements Command{
 				STATIC.errmsg(event.getTextChannel(), "I don't have the permission to unnick "+member.getEffectiveName()+", please contact an Administrator");
 			}
 		}
-			
-		
 	}
-
 	@Override
 	public String help(String prefix) {
 		return "Unnicks Players\n"
@@ -56,7 +55,6 @@ public class CmdUnNick implements Command{
 				+ "(see Permission *unnick(.others)* in Command perm get)\n"
 				+ "*Syntax*: "+prefix+"unnick (<Player names>)";
 	}
-
 	@Override
 	public String getCommandType() {
 		return CMD_TYPE_GUILD_MODERATION;

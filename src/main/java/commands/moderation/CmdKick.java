@@ -9,15 +9,11 @@ import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Befehl um einen User zu kicken
+ * Command to kick a {@link Member}
  * @author Daniel Schmid
- *
  */
 public class CmdKick implements Command{
 	
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "kick")) {
 			return;
@@ -36,7 +32,6 @@ public class CmdKick implements Command{
 				}
 			}
 			for (Member user : users) {
-				
 				try {
 					event.getGuild().getController().kick(user, reason).queue();
 				} catch (Exception e) {
@@ -47,15 +42,10 @@ public class CmdKick implements Command{
 		
 		
 	}
-
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	public String help(String prefix) {
 		return "kicks a user\n"
 				+ "(see Permission *kick* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"kick <victim>";
-
 	}
 	@Override
 	public String getCommandType() {

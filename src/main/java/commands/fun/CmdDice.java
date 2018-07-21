@@ -1,4 +1,4 @@
-package commands.roleplay;
+package commands.fun;
 
 import java.awt.Color;
 import java.util.Random;
@@ -7,12 +7,13 @@ import commands.Command;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
-
+/**
+ * Command to Roll a dice
+ * @author Daniel Schmid
+ *
+ */
 public class CmdDice implements Command{
 	private static Random rand=new Random();
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "dice")) {
@@ -45,9 +46,6 @@ public class CmdDice implements Command{
 		
 		STATIC.msg(event.getTextChannel(), "You got "+erg+valuesBuilder);
 	}
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zurück
-	 */
 	@Override
 	public String help(String prefix) {
 		return "Rolls the dice one time or often.\n"

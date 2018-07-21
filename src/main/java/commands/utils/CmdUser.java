@@ -10,14 +10,10 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command f. Userinfo (gibt vorhandene Informationen zu einem Benutzer aus)
+ * Command to echo userinfo
  * @author Daniel Schmid
- *
  */
 public class CmdUser implements Command{
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "userinfo")) {
 			return;
@@ -28,42 +24,11 @@ public class CmdUser implements Command{
 			return;
 		}
 		List<Member> users=STATIC.getMembersFromMsg(event.getMessage());
-//		for (String uname : args) {
-//			
-//			ArrayList<Member> usersTmp=new ArrayList<>();
-//		 	usersTmp.addAll(event.getGuild().getMembersByEffectiveName(uname, true));
-//			if (usersTmp.isEmpty()) {
-//				List<Member> members = event.getGuild().getMembersByName(uname, true);
-//				for (Member member : members) {
-//					usersTmp.add(member);
-//				}
-//			}
-//			if (usersTmp.isEmpty()) {
-//				List<Member> members=event.getGuild().getMembersByNickname(uname, true);
-//				for (Member member : members) {
-//					usersTmp.add(member);
-//				}
-//			}
-//			if (usersTmp.isEmpty()) {
-//				
-//				try {
-//					usersTmp.add((event.getGuild().getMemberById(uname)));
-//				} catch (Exception e) {
-//				}
-//				
-//				
-//			}
-//			for (Member member : usersTmp) {
-//				users.add(member);
-//			}
-//		}
-		
 		if (users.isEmpty()) {
 			STATIC.errmsg(event.getTextChannel(), "User not found");
 				
 				return;
 		}
-		
 		EmbedBuilder emB=new EmbedBuilder().setColor(Color.gray);
 		boolean first=true;
 		for (Member member : users) {
@@ -89,7 +54,6 @@ public class CmdUser implements Command{
 			if (member.getGame()!=null) {
 				emB.appendDescription("**Game**: *"+member.getGame().getName()+"* \n");
 			}
-			
 			emB.appendDescription("**joined** the Guild: *"+member.getJoinDate().getDayOfMonth()+"."+member.getJoinDate().getMonthValue()+"."+member.getJoinDate().getYear()+"* \n");
 			if (!member.getRoles().isEmpty()) {
 				emB.appendDescription("***Roles***: \n");
@@ -101,26 +65,16 @@ public class CmdUser implements Command{
 					}
 					emB.appendDescription("\n");
 				}
-				
 			}
-			
-			
 			first=false;
-			
 		}
 		event.getAuthor().openPrivateChannel().complete().sendMessage(emB.build()).queue();
 	}
-
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	public String help(String prefix) {
 		return "Writes information about a member of the guild\n"
 				+ "(see Permission *userinfo* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"user <username, nickname or id>";
-
 	}
-
 	@Override
 	public String getCommandType() {
 		return CMD_TYPE_USER;

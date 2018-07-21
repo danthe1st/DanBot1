@@ -1,17 +1,4 @@
 package util;
-/*
-	BEARBEITET!!!
-		von Daniel Schmid
-
-	Created by:	  Schlaubi (github.com/DRSchlaubi)
-	Contributor:  zekro (github.com/zekrotja)
-	
-	READ BEFORE USAGE: http://s.zekro.de/codepolicy
-	Following #07, this code is also fully covered 
-	by this licence with same conditions!
-
-*/
-
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -26,30 +13,31 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Utilities f. Log-Dateien usw.
- * @author Daniel Schmid
- *
+ * utilities for Logging
  */
 public class LoggerUtils extends ListenerAdapter {	 
 	private final static String logfileName = "cmdlog.txt";
-
 	/**
-	 * gibt die Zeit als String im Format [dd.MM.yyyy - HH:mm:ss] zurück
-	 * @return aktuelle Zeit als String
+	 * gets current time in format [dd.MM.yyyy - HH:mm:ss]
+	 * @return current time in format [dd.MM.yyyy - HH:mm:ss]
 	 */
 	private static String getCurrentSystemTime() {
         return getCurrentSystemTime("[dd.MM.yyyy - HH:mm:ss]");
     }
+	/**
+	 * gets current time in a specified format
+	 * @param format the format
+	 * @return the time in the Format
+	 */
 	private static String getCurrentSystemTime(String format) {
         DateFormat dateFormat = new SimpleDateFormat(format);
         Date date = new Date();
-
         return dateFormat.format(date);
     }
 	
 	/**
-	 * schreibt einen ausgeführten Command in eine Log-Datei
-	 * @param event Das MessageReceivedEvent des Commands
+	 * writes an executed Command in a Log file
+	 * @param event The {@link MessageReceivedEvent} of the Command
 	 */
     public static void logCommand(MessageReceivedEvent event) {
 		File path=new File(STATIC.getSettingsDir() +"/"+event.getGuild().getId());
@@ -63,10 +51,10 @@ public class LoggerUtils extends ListenerAdapter {
 		write(STATIC.getSettingsDir()+"/"+logfileName, s);
     }
     /**
-     * schreibt Text in eine Datei<br>
-     * Jeder übergegebene Parameter(text) wird mit einem Zeilenumbruch terminiert
-     * @param filepath Der Pfad der Datei
-     * @param text Der zu schreibende Text
+     * writes text in a File<br>
+     * every text-parameter will be terminated with a line break
+     * @param filepath Der the path of the Log File
+     * @param text The text to write
      */
     private static void write(String filepath, String... text) {
     	if (text.length==0) {

@@ -9,14 +9,10 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command um Server-Rollen zu �ndern
+ * Command to Change Guild-Roles
  * @author Daniel Schmid
- *
  */
 public class CmdRole implements Command{
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if (args.length==1) {
 			List<Role> roles=STATIC.getRolesFromMsg(event.getMessage());
@@ -47,17 +43,11 @@ public class CmdRole implements Command{
 			STATIC.errmsg(event.getTextChannel(), "User not found: "+args[1]);
 		}
 		event.getGuild().getController().addRolesToMember(members.get(0), roles).queue();
-		
 	}
-
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	public String help(String prefix) {
 		return "Let a user join a role\n"
 				+ "(see Permission *role* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"role <group> [<user>]";
-
 	}
 	@Override
 	public String getCommandType() {

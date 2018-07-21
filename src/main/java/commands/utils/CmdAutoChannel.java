@@ -18,7 +18,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Klasse f. Command v. Autochannel-Feature
+ * Command for AutoChannels
  * @author Daniel Schmid
  *
  */
@@ -37,10 +37,10 @@ public class CmdAutoChannel implements Command, Serializable {
 		return jda.getGuildById(id);
 	}
 	/**
-	 * setzt einen neuen autochannel
-	 * @param id ID des autochannels
-	 * @param g Die Guild(der Discord-server)
-	 * @param tc Der Discord-Textkanal
+	 * sets an autochannel
+	 * @param id ID of the autochannel
+	 * @param g the Guild(Discord-server)
+	 * @param tc The {@link TextChannel} where responses should be sent
 	 */
 	private void setChannel(final String id, final Guild g, final TextChannel tc) {
 		final VoiceChannel vc=getVoiceChannel(id, g);
@@ -59,10 +59,10 @@ public class CmdAutoChannel implements Command, Serializable {
 		
 	}
 	/**
-	 * l�scht einen vorhandenen autochannel
-	 * @param id ID des autochannels
-	 * @param g Die Guild(der Discord-server)
-	 * @param tc Der Discord-Textkanal
+	 * deletes an autochannel
+	 * @param id ID of the autochannels
+	 * @param g The Guild(Discord-server)
+	 * @param tc The {@link TextChannel} where responses should be sent
 	 */
 	private void unsetChan(final String id, final Guild g, final TextChannel tc) {
 		final VoiceChannel vc=getVoiceChannel(id, g);
@@ -79,28 +79,28 @@ public class CmdAutoChannel implements Command, Serializable {
 		}
 	}
 	/**
-	 * l�scht einen vorhandenen autochannel
-	 * @param vc Der VoiceChannel
+	 * deletes an autochannel
+	 * @param vc Der autochannel to delete as {@link VoiceChannel}
 	 */
 	public static void unsetChan(final VoiceChannel vc) {
 		autoChannels.remove(vc);
 		save();
 	}
 	/**
-	 * schreibt Nachricht mit allen autochannels in den �bergegebenen Textkanal
-	 * @param g Guild(Discord Server)
-	 * @param tc Der Textkanal
+	 * sends a Message with all autochannels in one {@link Guild} in a {@link TextChannel}
+	 * @param g the Guild(Discord Server)
+	 * @param tc Der {@link TextChannel} for responses
 	 */
-	private void listChans(final Guild g, final TextChannel tc) {
+	private void listChans(final TextChannel tc) {
 		final StringBuilder sb=new StringBuilder().append("**AUTO CHANNELS:\n\n**");
 		autoChannels.keySet().stream()
-			.filter(vc->autoChannels.get(vc).equals(g))
+			.filter(vc->autoChannels.get(vc).equals(tc.getGuild()))
 			.forEach(vc->sb.append(String.format(":white_small_square: \'%s\' *(%s)\n", vc.getName(), vc.getId())));
 		
 		STATIC.msg(tc, sb.toString());
 	}
 	/**
-	 * speichert die autochannels
+	 * saves all autochannels
 	 */
 	private static void save() {
 		final File path=new File(STATIC.getSettingsDir());
@@ -119,7 +119,7 @@ public class CmdAutoChannel implements Command, Serializable {
 		}
 	}
 	/**
-	 * L�dt die autochannels
+	 * loads all autochannels
 	 * @param jda
 	 */
 	public static void load(final JDA jda) {
@@ -149,9 +149,6 @@ public class CmdAutoChannel implements Command, Serializable {
 		
 	}
 
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "autoChannel")) {
@@ -166,7 +163,7 @@ public class CmdAutoChannel implements Command, Serializable {
 		}
 		switch (args[0]) {
 		case "list":
-			listChans(g, tc);
+			listChans(tc);
 			break;
 		case "set":
 		case "add":
@@ -193,11 +190,6 @@ public class CmdAutoChannel implements Command, Serializable {
 		}
 		
 	}
-
-	
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "Set or unset or list channels which are duplicated when somebody joins\n(see Permission *autochannel* in Command perm get)\n"

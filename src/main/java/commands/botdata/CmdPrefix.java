@@ -6,14 +6,11 @@ import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Befehl f. Pr�fix�nderungen und prefix anzeigen
+ * Command to change/show the Bot prefix
  * @author Daniel Schmid
  *
  */
 public class CmdPrefix implements Command{
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "prefix")) {
@@ -45,10 +42,6 @@ public class CmdPrefix implements Command{
 			break;
 		}
 	}
-
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "set or show the preifx\n"

@@ -1,7 +1,10 @@
 package core;
 
 import java.util.Scanner;
-
+/**
+ * used to close a {@link Scanner} when Application stopps
+ * @author Daniel Schmid
+ */
 public class ScanCloser implements Runnable{
 	private Scanner scan;
 	

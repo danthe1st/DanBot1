@@ -13,6 +13,7 @@ import commands.botdata.CmdPrefix;
 import commands.botdata.CmdVote;
 import commands.dan1st.CmdEval;
 import commands.dan1st.CmdSudo;
+import commands.fun.CmdDice;
 import commands.moderation.CmdAutoRole;
 import commands.moderation.CmdBan;
 import commands.moderation.CmdKick;
@@ -20,7 +21,6 @@ import commands.moderation.CmdRole;
 import commands.moderation.CmdVoiceKick;
 import commands.multicolor.CmdMultiColor;
 import commands.music.CmdMusic;
-import commands.roleplay.CmdDice;
 import commands.utils.CmdAutoChannel;
 import commands.utils.CmdClear;
 import commands.utils.CmdClearPMs;
@@ -42,8 +42,8 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 /**
- * <b>Main-Methode</b><br>
- * Initiiert den Discord-Bot
+ * <b>Main-Class</b><br>
+ * Initiates the Bot
  * @author Daniel Schmid
  */
 public class Main {

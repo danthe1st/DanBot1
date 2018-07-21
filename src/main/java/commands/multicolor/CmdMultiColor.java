@@ -9,7 +9,10 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import util.STATIC;
-
+/**
+ * Command to administrate multicolor Roles
+ * @author Daniel Schmid
+ */
 public class CmdMultiColor implements Command{
 
 	@Override

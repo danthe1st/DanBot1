@@ -9,7 +9,10 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import util.STATIC;
-
+/**
+ * Core Command for multicolor System
+ * @author Daniel Schmid
+ */
 public final class MultiColorChanger implements Runnable{
 
 	private List<Role> roles=new ArrayList<>();
@@ -18,9 +21,6 @@ public final class MultiColorChanger implements Runnable{
 			
 	};
 	private static MultiColorChanger changer=new MultiColorChanger();
-	
-	
-	
 	private MultiColorChanger() {
 		new Thread(this).start();
 	}

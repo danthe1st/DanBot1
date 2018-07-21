@@ -10,7 +10,10 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
-
+/**
+ * Console Command to get information about an user
+ * @author Daniel Schmid
+ */
 public class CmdUser implements Command{
 
 	@Override

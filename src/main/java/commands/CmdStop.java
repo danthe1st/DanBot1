@@ -7,13 +7,10 @@ import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command um den Bot zu stoppen(sofort)
+ * Command to stop the Bot
  * @author Daniel Schmid
  */
 public class CmdStop implements Command{
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "stop")) {
@@ -29,11 +26,6 @@ public class CmdStop implements Command{
 		
 		System.exit(0);
 	}
-
-	
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "Emergancy-stopps the Bot\n"

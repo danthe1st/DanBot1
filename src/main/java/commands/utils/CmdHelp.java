@@ -11,14 +11,10 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command um Hilfe zu allen Commands auszugeben
+ * prints help for all Commands
  * @author Daniel Schmid
- *
  */
 public class CmdHelp implements Command{
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		Map<String, Map<String,Command>> commandTypes=new HashMap<>();
@@ -32,7 +28,6 @@ public class CmdHelp implements Command{
 		eb.setDescription("\t**Bot Help**\n"
 						+ "for a complete Description visit *https://www.wwwmaster.at/daniel/data/DanBot1/*\n\n");
 		commandTypes.forEach((typeName,commands)->{
-			//eb= new EmbedBuilder();
 			eb.appendDescription("`"+typeName+"`:\n")
 			.setColor(Color.GREEN);
 			
@@ -58,30 +53,7 @@ public class CmdHelp implements Command{
 			
 			eb.clear();
 		});
-//		EmbedBuilder eb= new EmbedBuilder(stdBuilder);
-//		for (String key : CommandHandler.commands.keySet()) {
-//			try {
-//				EmbedBuilder backUp=new EmbedBuilder(eb);
-//				Command command=CommandHandler.commands.get(key);
-//				String help="**"+STATIC.getPrefix(event.getGuild()) +key+"**:\n"+command.help(event.getGuild())+"\n\n";
-//				eb.appendDescription(help);
-//				if (!(eb.isValidLength(AccountType.CLIENT)&&eb.isValidLength(AccountType.BOT))) {
-//					event.getAuthor().openPrivateChannel().complete().sendMessage(backUp.build()).queue();
-//					eb= new EmbedBuilder(stdBuilder);
-//					eb.appendDescription(help);
-//				}
-//			} catch (Exception e) {
-//				
-//			}
-//			
-//		}
-//		event.getAuthor().openPrivateChannel().complete().sendMessage(eb.build()).queue();
 	}
-
-	
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "Show this help\n"

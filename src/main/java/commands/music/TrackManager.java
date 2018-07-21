@@ -19,7 +19,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import util.STATIC;
 /**
- * Core-Klasse f�r Musik
+ * Core-Class for Music
  */
 public class TrackManager extends AudioEventAdapter{
 	private final AudioPlayer PLAYER;
@@ -31,9 +31,9 @@ public class TrackManager extends AudioEventAdapter{
 		this.queue=new LinkedBlockingQueue<>();
 	}
 	/**
-	 * f�gt neuen Track hinzu
-	 * @param track der Track
-	 * @param author Der, der den Befehl gegeben hat
+	 * adds a Track
+	 * @param track the track to add
+	 * @param author The {@link Member} who ordered the track
 	 */
 	public void queue(final AudioTrack track, final Member author,TextChannel channel) {
 		final AudioInfo info=new AudioInfo(track, author,channel);
@@ -44,23 +44,20 @@ public class TrackManager extends AudioEventAdapter{
 		}
 	}
 	/**
-	 * 
-	 * @return n�chste Tracks
+	 * gets the next tracks
+	 * @return next tracks
 	 */
 	public Set<AudioInfo> getQueue() {
 		return new LinkedHashSet<>(queue);
 	}
-//	public AudioInfo getInfo(final AudioTrack track) {
-//		return queue.stream().filter(info -> info.getTrack().equals(track)).findFirst().orElse(null);
-//	}
 	/**
-	 * Queue l�schen
+	 * deletes the queue
 	 */
 	public void purgeQueue() {
 		queue.clear();
 	}
 	/**
-	 * Reihenfolge zuf�llig ver�ndern
+	 * randomizes the queue
 	 */
 	public void shuffleQueue() {
 		final List<AudioInfo> cqueue = new ArrayList<>(getQueue());
@@ -72,11 +69,11 @@ public class TrackManager extends AudioEventAdapter{
 		queue.addAll(cqueue);
 	}
 	/**
-	 * Listener: wenn ein Track gestartet wird<br>
-	 * 	Wenn Guild-Member der Befehl gesendet hat in VoiceChannel:<br>
-	 * 	  spiele Track in diesem Channel ab<br>
-	 * 	Wenn nicht:<br>
-	 * 		n�chster Track
+	 * listener if a track is started<br>
+	 * if the {@link Member} who ordered the track is in a {@link VoiceChannel}:<br>
+	 *    play track in the {@link VoiceChannel} of the {@link Member}
+	 * else
+	 *    next track
 	 */
 	@Override
 	public void onTrackStart(final AudioPlayer player, final AudioTrack track) {
@@ -92,12 +89,11 @@ public class TrackManager extends AudioEventAdapter{
 		}
 	}
 	/**
-	 * Listener: wenn ein Track gestoppt wird<br>
-	 * 	spiele n�chstes Element ab oder gehe aus VoiceChannel heraus
+	 * listener when a track is stopped<br>
+	 * play next traxk or leave the {@link VoiceChannel}
 	 */
 	@Override
 	public void onTrackEnd(final AudioPlayer player, final AudioTrack track, final AudioTrackEndReason endReason) {
-		
 		AudioInfo head=this.queue.poll();
 		if (head==null) {
 			return;
@@ -106,14 +102,17 @@ public class TrackManager extends AudioEventAdapter{
 		
 		if (queue.isEmpty()) {
 			if (g.getAudioManager().isConnected()) {
-					new Thread(new ConnectionCloser(g)).start();
-					//g.getAudioManager().closeAudioConnection();
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							g.getAudioManager().closeAudioConnection();
+						}
+					}
+				).start();
 			}
 		}
 		else {
 			player.playTrack(queue.element().getTrack());
 		}
 	}
-
-	
 }

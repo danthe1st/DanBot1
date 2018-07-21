@@ -7,10 +7,11 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
-
+/**
+ * Clears history of private Messages (min 2, max 100 Messages)
+ * @author Daniel Schmid
+ */
 public class CmdClearPMs implements Command {
-
-	
 	private int getInt(final String str) {
 		try {
 			return Integer.parseInt(str);

@@ -14,33 +14,23 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
 /**
- * Listener um automatisch {@link Role}s zuzuweisen
+ * Listener to automatically assign roles
  * @author Daniel Schmid
- *
  */
 public class AutoRoleListener extends ListenerAdapter{
 	private static HashMap<String, List<Role>> roles=new HashMap<>();
-	//@SuppressWarnings("unchecked")
 	public AutoRoleListener(JDA jda) {
 		if (roles==null) {
 			roles=new HashMap<>();
 		}
 		for (Guild g : jda.getGuilds()) {
-//			Object oRoles=STATIC.load(g.getId()+"/roles.dat");
-//			
-//			if (oRoles==null) {
-//				return;
-//			}
-//			
-//			List<Role> roles=new ArrayList<>( (List<Role>) oRoles);
-//			AutoRoleListener.roles.put(g.getId(), roles);
 			load(g);
 		}
 		
 	}
 	/**
-	 * Rolle als autorole Registrieren
-	 * @param role Die Rolle die hinzugefügt werden soll
+	 * register a role as an autorole
+	 * @param role the role to be registered
 	 */
 	public static void addRole(Role role) {
 		
@@ -52,11 +42,10 @@ public class AutoRoleListener extends ListenerAdapter{
 		roles.add(role);
 		
 		save(role.getGuild());
-		//STATIC.save(role.getGuild().getId()+"/roles.dat", AutoRoleListener.roles.get(role.getGuild().getId()).toArray());
 	}
 	/**
-	 * Rollen speichern
-	 * @param g die {@link Guild} in der die Rollen gespeichert werden sollen
+	 * save autoroles for a {@link Guild}
+	 * @param g the {@link Guild} where autoroles should be saved
 	 */
 	private static void save(Guild g) {
 		List<Role> roles=AutoRoleListener.roles.get(g.getId());
@@ -69,8 +58,8 @@ public class AutoRoleListener extends ListenerAdapter{
 		STATIC.save(g.getId()+"/roles.dat", roleIDs);
 	}
 	/**
-	 * Rollen laden
-	 * @param g die {@link Guild} in der die Rollen geladen werden sollen
+	 * loads autoroles for a {@link Guild}
+	 * @param g the {@link Guild} where autoroles should be loaded
 	 */
 	private static void load(Guild g) {
 		String[] roleIDs=(String[]) STATIC.load(g.getId()+"/roles.dat");
@@ -84,7 +73,7 @@ public class AutoRoleListener extends ListenerAdapter{
 		AutoRoleListener.roles.put(g.getId(), roles);
 	}
 	/**
-	 * Rolle als autorole unregistrieren
+	 * unregister an autorole
 	 * @param role Die Rolle die gelöscht werden soll
 	 */
 	public static void removeRole(Role role) {
@@ -95,17 +84,11 @@ public class AutoRoleListener extends ListenerAdapter{
 		roles.remove(role);
 		STATIC.save(role.getGuild().getId()+"/roles.dat", AutoRoleListener.roles.get(role.getGuild().getId()).toArray());
 	}
-	/**
-	 * getter für die Rollen
-	 * @param g die {@link Guild} in der sich die Rollen befinden
-	 * @return die Rollen in dieser {@link Guild}
-	 */
 	public static List<Role> getRoles(Guild g){
 		return new UnmodifiableList<>(roles.get(g.getId()));
 	}
 	/**
-	 * Listener-Methode wenn jemand einer {@link Guild} beitritt<br>
-	 * Falls autoroles konfiguriert sind werden diese zugewiesen
+	 * Listener when someone joines a {@link Guild} and there are autoroles the roles will be added to the user
 	 */
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {

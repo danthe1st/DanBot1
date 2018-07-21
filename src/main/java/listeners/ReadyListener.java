@@ -6,13 +6,13 @@ import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
 /**
- * Listener f. start
+ * Listener on Bot Login
  * @author Daniel Schmid
  */
 public class ReadyListener extends ListenerAdapter {
 	/**
-	 * wenn gestartet:<br>
-	 * Gibt die Server in denen der Bot aktiv ist mitsamt ID und einminütiger Einladung mit sysout aus.
+	 * on login:<br>
+	 * prints all {@link Guild}s the Bot is in with {@link System#out}
 	 */
 	public void onReady(final ReadyEvent event) {
 		System.out.println("\nThis Bot is running on following servers: \n");

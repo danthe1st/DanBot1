@@ -15,7 +15,10 @@ import consoleCmd.CmdMsg;
 import consoleCmd.CmdUser;
 import consoleCmd.Command;
 import net.dv8tion.jda.core.JDA;
-
+/**
+ * Core Class for the Console, for entering Commands with {@link System#in}
+ * @author Daniel Schmid
+ */
 public class Console implements Runnable{
 	private Scanner scan;
 	private JDA jda;

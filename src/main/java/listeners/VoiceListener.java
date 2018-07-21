@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
@@ -11,16 +12,15 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMuteEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
 /**
- * Listener f. VoiceLogs
+ * Listener for VoiceLogs
  * @author Daniel Schmid
- *
  */
 public class VoiceListener extends ListenerAdapter {
 	private static final String VOICE_LOGGER_CHANNEL_NAME="VoiceLog";
 	
 	
 	/**
-	 * Wenn jmd in einem Sprachkanal joined und es einen Textkanal VoiceLog gibt wird die aktion in den Textkanal gesendet
+	 * Listener to log when someone joines a {@link VoiceChannel}
 	 */
 	@Override
 	public void onGuildVoiceJoin(final GuildVoiceJoinEvent event) {
@@ -40,7 +40,7 @@ public class VoiceListener extends ListenerAdapter {
 		}, STATIC.INFO_TIMEOUT);
 	}
 	/**
-	 * Wenn jmd einen Sprachkanal verlässt und es einen Textkanal VoiceLog gibt wird die aktion in den Textkanal gesendet
+	 * Listener to log when someone leaves a {@link VoiceChannel}
 	 */
 	@Override
 	public void onGuildVoiceLeave(final GuildVoiceLeaveEvent event) {
@@ -52,7 +52,7 @@ public class VoiceListener extends ListenerAdapter {
 			).queue();
 	}
 	/**
-	 * Wenn jmd zwischen Sprachkanäle gemoved wird und es einen Textkanal VoiceLog gibt wird die aktion in den Textkanal gesendet
+	 * Listener to log when someone is moved between {@link VoiceChannel}s
 	 */
 	@Override
 	public void onGuildVoiceMove(final GuildVoiceMoveEvent event) {
@@ -64,7 +64,7 @@ public class VoiceListener extends ListenerAdapter {
 			).queue();
 	}
 	/**
-	 * Wenn jmd in einem Sprachkanal gemutet wird und es einen Textkanal VoiceLog gibt wird die aktion in den Textkanal gesendet
+	 * Listener to log when someone is muted
 	 */
 	@Override
 	public void onGuildVoiceMute(final GuildVoiceMuteEvent event) {

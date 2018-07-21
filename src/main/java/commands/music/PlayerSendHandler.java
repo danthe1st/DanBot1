@@ -4,10 +4,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 import net.dv8tion.jda.core.audio.AudioSendHandler;
 /**
- * Implementierung von net.dv8tion.jda.core.audio.AudioSendHandler;
- * 
+ * Implementation of {@link AudioSendHandler};
  * @author Daniel Schmid 
- *
  */
 public class PlayerSendHandler implements AudioSendHandler {
 
@@ -18,9 +16,6 @@ public class PlayerSendHandler implements AudioSendHandler {
         this.audioPlayer = audioPlayer;
     }
 
-    /**
-     * kann Sound abgespielt werden bzw. wird Sound abgespielt?
-     */
     @Override
     public boolean canProvide() {
         if (lastFrame == null) {
@@ -28,9 +23,6 @@ public class PlayerSendHandler implements AudioSendHandler {
         }
         return lastFrame != null;
     }
-    /**
-     * lädt einen Frame und gibt diesen zurück
-     */
     @Override
     public byte[] provide20MsAudio() {
         if (lastFrame == null) {
@@ -43,9 +35,6 @@ public class PlayerSendHandler implements AudioSendHandler {
         return data;
     }
 
-    /**
-     * Standardwert <code>true</code>
-     */
     @Override
     public boolean isOpus() {
         return true;

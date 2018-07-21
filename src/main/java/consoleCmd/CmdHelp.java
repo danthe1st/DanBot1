@@ -3,7 +3,11 @@ package consoleCmd;
 import java.util.Map;
 
 import net.dv8tion.jda.core.JDA;
-
+/**
+ * Console Command for help
+ * @author Daniel Schmid
+ *
+ */
 public class CmdHelp implements Command{
 
 	private Map<String, Command> commands;

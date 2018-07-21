@@ -5,10 +5,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 /**
- * Info for an Audio Track<br>
+ * Information-Class for an Audio Track<br>
  * contains the author and the track itself.
  * @author Daniel Schmid
- *
  */
 public class AudioInfo {
 

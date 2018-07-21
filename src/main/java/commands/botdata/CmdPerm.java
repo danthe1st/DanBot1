@@ -8,14 +8,11 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Befehl f. Guildspezifische Permissions
+ * Command forcguild-specified Bot-Permissions
  * @author Daniel Schmid
  *
  */
 public class CmdPerm implements Command{
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		
@@ -154,15 +151,8 @@ public class CmdPerm implements Command{
 					
 				}
 				oldRoleTmp+=" "+args[i+1];
-//				if (STATIC.getPerms(event.getGuild()). containsKey(oldRoleTmp)) {
-//					oldRole=oldRoleTmp;
-//					newRoleStart=i+1;
-//					break;
-//				}
-//				oldRoleTmp+=" "+args[i+1];
 			}
 			String newRole=args[newRoleStart];
-			
 			for (int i = newRoleStart+1; i < args.length; i++) {
 				newRole+=" "+args[i];
 			}
@@ -188,17 +178,11 @@ public class CmdPerm implements Command{
 			return;
 		}
 	}
-
-	
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) {
 		return "get, set, reset, reload or change a DanBot1-Permission Role Permissions\n"
 				+ "(see *perm* Permissions in Command perm get)\n"
 				+"*Syntax*: "+prefix+"perm get/show, reload, reset, set <PermissionName> <Permission groups>, changeRole <old Role> <new Role>";
-	
 	}
 	@Override
 	public String getCommandType() {

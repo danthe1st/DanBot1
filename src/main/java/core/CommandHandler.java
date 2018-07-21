@@ -3,18 +3,18 @@ package core;
 import java.util.HashMap;
 
 import commands.Command;
+import core.CommandParser.CommandContainer;
 import util.STATIC;
 /**
- * wird v. Listener aufgerufen wenn Chat-Nachricht mit Pr�fix beginnt
+ * executed by a listener when Message sent which begins with the Bot prefix
  * @author Daniel Schmid
- *
  */
 public class CommandHandler {
 	public static final CommandParser parse=new CommandParser();
 	public static HashMap<String, Command> commands=new HashMap<String, Command>();
 	/**
-	 * Methode die den Command ausführt(+executed...)
-	 * @param cmd Der aufgeteilte Command
+	 * loads Command and executes it
+	 * @param cmd the Command as {@link CommandContainer}
 	 */
 	public static void handleCommand(final CommandParser.CommandContainer cmd) {
 		if(commands.containsKey(cmd.invoke.toLowerCase())) {

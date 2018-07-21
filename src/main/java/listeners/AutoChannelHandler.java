@@ -13,15 +13,13 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
 /**
- * Listener f. autochannel-Feature
+ * Listener for autochannel-feature
  * @author Daniel Schmid
- *
  */
 public class AutoChannelHandler extends ListenerAdapter{
 	List<VoiceChannel> active=new ArrayList<>();
 	/**
-	 * wenn jmd einem Sprachkanal beitritt:<br>
-	 * wenn dieser Sprachkanal ein registrierter, autochannel: erstelle neuen Channel mit selben Eigenschaften und positioniert den beigetretenen User in diesem
+	 * when someone joines a registrated autochannel the channel will be duplicated with the same properties as the origin channel and the user will be moved into the duplicated Channel
 	 */
 	@Override
 	public void onGuildVoiceJoin(final GuildVoiceJoinEvent event) {
@@ -43,9 +41,8 @@ public class AutoChannelHandler extends ListenerAdapter{
 		}
 	}
 	/**
-	 * venn jmd gemoved wird bzw den Channel wechselt<br>
-	 * ist der gewechselte Channel eine autochannel-Kopie und der gewechselte ist letzter: l�sche diese autochannel-Kopie<br>
-	 * wird in einem registriertem, autochannel gewechselt: erstelle neuen Channel mit selben Eigenschaften und positioniert den beigetretenen User in diesem
+	 * if someone is moved out of a copy of an autochannel and there is no user left the copy will be deleted<br>
+	 * if someone is moved into a registrated autochannel the channel will be duplicated with the same properties as the origin channel and the user will be moved into the duplicated Channel
 	 */
 	@Override
 	public void onGuildVoiceMove(final GuildVoiceMoveEvent event) {
@@ -73,8 +70,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 		}
 	}
 	/**
-	 * wenn jmd. einen Sprachkanal verl�sst<br>
-	 * ist der verlassene Channel eine autochannel-Kopie und der User der den Channel verlassen hat ist letzter: l�sche diese autochannel-Kopie<br>
+	 * if someone leaves a copy of an autochannel the copy will be deleted
 	 */
 	@Override
 	public void onGuildVoiceLeave(final GuildVoiceLeaveEvent event) {
@@ -85,8 +81,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 		}
 	}
 	/**
-	 * wenn ein Sprachkanal gelöscht wird:<br>
-	 * wenn dieser ein registrierter autochannel ist: unregistriere diesen
+	 * if a registrated autochannel is deleted it will be unregistered
 	 */
 	@Override
 	public void onVoiceChannelDelete(final VoiceChannelDeleteEvent event) {
@@ -96,9 +91,9 @@ public class AutoChannelHandler extends ListenerAdapter{
 		}
 	}
 	/**
-	 * wenn der Sprachkanal ein autochannel ist, der erstellt und nict mehr gel�scht wurde-->true
-	 * @param vc Der Discord-Sprachkanal
-	 * @return <code>true</code> wenn alter autochannel sonst <code>false</code>
+	 * tests if a Channel is a copy of an Autochannel created before the Bot started
+	 * @param vc The {@link VoiceChannel} to test
+	 * @return true if it is a copy of an autochannel
 	 */
 	private boolean isOldAutoChannel(final VoiceChannel vc) {
 		try {

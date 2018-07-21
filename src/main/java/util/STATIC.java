@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Invite;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -29,15 +29,10 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 
 /**
- * Klasse f. Konstanten, Daten und util-Methoden<br>
- * <b>KEINE INSTANZ ODER VERERBUNG SOLL M�GLICH SEIN!!!</b>
+ * Class for Constants, data and utility-methods
  * @author Daniel Schmid
- *
  */
 public final class STATIC {
-	/**
-	 * Konstruktor soll unsichtbar sein
-	 */
 	private STATIC(){}
 	private static HashMap<Guild, String> prefixe=new HashMap<>();
 	private static final String PREFIX="--";
@@ -52,7 +47,7 @@ public final class STATIC {
 	private static final HashMap<Guild, HashMap<String, String[]>> permsLocal=new HashMap<Guild, HashMap<String, String[]>>();
 	private static final Map<String, String> markupEscapeMap=new HashMap<>();
 	/**
-	 * Initialisiere PERMS
+	 * initialize permissions and markup escapes
 	 */
 	static {
 		PERMS.put("ping", new String[] {"*"});
@@ -101,38 +96,38 @@ public final class STATIC {
 		markupEscapeMap.put("|", "\\|");//varied
 	}
 	/**
-	 * sendet eine Fehlernachricht
-	 * @param channel Der {@link TextChannel} in dem die Nachricht gesendet werden soll
-	 * @param text Der Text der Nachricht(als {@link String})
+	 * sends an Error Message
+	 * @param channel The {@link TextChannel} where the Message should be sent
+	 * @param text The text of the Message as {@link String}
 	 */
 	public static void errmsg(TextChannel channel, String text) {
 		msg(channel, text, Color.RED, true);
 	}
 	/**
-	 * sende eine Nachricht<br>
-	 * standardfarbe: {@link Color#GREEN}
-	 * @param channel Der {@link TextChannel} in dem die Nachricht gesendet werden soll
-	 * @param text Der Text der Nachricht(als {@link String})
+	 * send a Message
+	 * standardColor: {@link Color#GREEN}
+	 * @param channel The {@link TextChannel} where the Message should be sent
+	 * @param text The text of the Message as {@link String}
 	 */
 	public static void msg(TextChannel channel, String text) {
 		msg(channel, text, Color.GREEN, false);
 	}
 	/**
-	 * sende eine Nachricht<br>
-	 * standardfarbe: {@link Color#GREEN}
-	 * @param channel Der {@link TextChannel} in dem die Nachricht gesendet werden soll
-	 * @param text Der Text der Nachricht(als {@link String})
-	 * @param timeout soll die Nachricht automatisch gelöscht werden?
+	 * send a Message
+	 * standardColor: {@link Color#GREEN}
+	 * @param channel The {@link TextChannel} where the Message should be sent
+	 * @param text The text of the Message as {@link String}
+	 * @param timeout should the Message be deleted automatically
 	 */
 	public static void msg(TextChannel channel, String text,boolean timeout) {
 		msg(channel, text, Color.GREEN, timeout);
 	}
 	/**
-	 * sende eine Nachricht<br>
-	 * @param channel Der {@link TextChannel} in dem die Nachricht gesendet werden soll
-	 * @param text Der Text der Nachricht(als {@link String})
-	 * @param color Die Farbe der Nachricht({@link MessageEmbed})
-	 * @param timeout soll die Nachricht automatisch gelöscht werden?
+	 * send a Message
+	 * @param channel The {@link TextChannel} where the Message should be sent
+	 * @param text The text of the Message as {@link String}
+	 * @param color the {@link Color} of the Message
+	 * @param timeout should the Message be deleted automatically
 	 */
 	public static void msg(TextChannel channel, String text,Color color,boolean timeout) {
 		try {
@@ -155,9 +150,9 @@ public final class STATIC {
 		}
 	}
 	/**
-	 * escaped Discord Formatierungen
-	 * @param unescaped der Text mit Formatierungen
-	 * @return Der Text mit escapten Formatierungen
+	 * Method to escape Discord Formattings
+	 * @param unescaped the unescaped Text
+	 * @return The escaped Text
 	 */
 	public static String escapeDiscordMarkup(String unescaped) {
 		for (String toEscape : markupEscapeMap.keySet()) {
@@ -196,9 +191,9 @@ public final class STATIC {
 		return roles;
 	}
 	/**
-	 * sucht {@link Member}s in einer {@link Message}
-	 * @param msg die zu durchsuchende Nachricht
-	 * @return die Members
+	 * gets {@link Member}s from a {@link Message}
+	 * @param msg the Message
+	 * @return a {@link List} of {@link Member}s
 	 */
 	public static List<Member> getMembersFromMsg(Message msg){
 		String[] args=msg.getContentRaw().split(" ");
@@ -228,26 +223,30 @@ public final class STATIC {
 		return members;
 	}
 	/**
-	 * Getter f. Prefix einer Guild
-	 * @param g Die Guild(Discord-Server)
-	 * @return der Pr�fix f. d. Guild
+	 * gets Bot Prefix for a specified Guild
+	 * @param g The Guild(Discord-Server)
+	 * @return the Prefix of the Guild
 	 */
 	public static String getPrefix(final Guild g) {
-		//loadPrefix(g);
 		final String prefix=prefixe.get(g);
 		if(prefix==null) {
 			return PREFIX;
 		}
 		return prefix;
 	}
+	/**
+	 * gets the prefix of a Guild and escapes it
+	 * @param g the {@link Guild}
+	 * @return the escaped prefix
+	 */
 	public static String getPrefixExcaped(final Guild g) {
 		return escapeDiscordMarkup(getPrefix(g));
 	}
 	/**
-	 * Getter f. permission innerhalb einer Guild mithilfe des Permissionnamens
-	 * @param g Die Guild d. gesuchten Permission
-	 * @param permName Der name der ges. Permission
-	 * @return Die Gruppen, die die Permissions haben
+	 * gets guild-local Permission info using a specified permission name
+	 * @param g The {@link Guild} from the Permission
+	 * @param permName The name of the Permission
+	 * @return A String[] of the Role names which have the Permission
 	 */
 	public static String[] getPerm(Guild g, String permName) {
 		
@@ -265,9 +264,9 @@ public final class STATIC {
 		return PERMS.get(permName);
 	}
 	/**
-	 * Gibt eine java.util.Map mit den Permissions einer Guild zur�ck
-	 * @param g Die Guild(Discord-Server)
-	 * @return die Permissions
+	 * gets the Permissions of a {@link Guild}
+	 * @param g The Guild(Discord-Server)
+	 * @return A {@link Map} of the Permissions
 	 */
 	public static Map<String, String[]> getPerms(Guild g) {
 		
@@ -281,18 +280,18 @@ public final class STATIC {
 		return PERMS;
 	}
 	/**
-	 * resettet die Permissions f. eine Guild
-	 * @param g Die Guild(Discord-Server)
+	 * resets the Permissions for a Guild
+	 * @param g The Guild(Discord-Server)
 	 */
 	public static void resetPerms(Guild g) {
 		permsLocal.put(g, PERMS);
 		savePerms(g);
 	}
 	/**
-	 * entfernt eine <b>benutzerdefinierte</b> Permission
-	 * @param g Die Guild(Discord-Server)
-	 * @param permName Der Name der Permission
-	 * @return erfolgreich?
+	 * deletes a <b>userdefined</b> Permission in a {@link Guild}
+	 * @param g The Guild(Discord-Server)
+	 * @param permName The name of the Permission which should be deleted
+	 * @return true if something changed
 	 */
 	public static boolean removePerm(Guild g, String permName) {
 		if (permsLocal.get(g).containsKey(permName)) {
@@ -306,10 +305,10 @@ public final class STATIC {
 		return false;
 	}
 	/**
-	 * sucht alle F�lle wo diese Rolle vorkommt und �ndert sie
-	 * @param g Die Guild(Discord-Server)
-	 * @param roleToChange Die Rolle, die die Permissions hat
-	 * @param newRole Die Rolle, die die Permissions haben soll
+	 * replaces all occurencies of a Role to an another Role in a specified {@link Guild}
+	 * @param g The Guild(Discord-Server)
+	 * @param roleToChange The name of the Role should be replaced
+	 * @param newRole The name of the Role to Replace with
 	 */
 	public static void chRole(Guild g, String roleToChange, String newRole) {
 		//loadPerms(g);
@@ -323,8 +322,8 @@ public final class STATIC {
 		savePerms(g);
 	}
 	/**
-	 * Lädt eventuell neue Permissions(durch Update) in die Guild
-	 * @param g
+	 * reloads new Permissions(came with a Bot Update)
+	 * @param g the {@link Guild} to Reload
 	 */
 	public static void reloadPerms(Guild g) {
 		loadPerms(g);
@@ -341,10 +340,10 @@ public final class STATIC {
 		savePerms(g);
 	}
 	/**
-	 * setzt eine Permission in einer Guild
-	 * @param g Die Guild(Discord-Server)
-	 * @param permName Der Name d. Permission
-	 * @param perm Wer hat die Permission(Rollen)
+	 * sets a Permission in a {@link Guild}
+	 * @param g The Guild(Discord-Server)
+	 * @param permName The Name of the Permission
+	 * @param perm The names of the Roles who should have the Permission
 	 */
 	public static void setPerm(Guild g, String permName, String[] perm) {
 		
@@ -380,8 +379,8 @@ public final class STATIC {
 		} catch (Exception e) {}
 	}
 	/**
-	 * Lädt die Daten der Guilds
-	 * @param jda Die JDA
+	 * Loads data of all Guilds
+	 * @param jda The JDA Instance
 	 */
 	public static void loadData(JDA jda) {
 		for (Guild guild : jda.getGuilds()) {
@@ -393,17 +392,17 @@ public final class STATIC {
 		MultiColorChanger.loadRoles(jda);
 	}
 	/**
-	 * setze Prefix f. eine Guild auf bestimmten Wert
-	 * @param g Die Guild(Discord-Server)
-	 * @param prefix Der zu setzende Prefix
+	 * sets the Bot prefix for a Guild
+	 * @param g The Guild(Discord-Server)
+	 * @param prefix the prefix to set
 	 */
 	public static void setPrefix(final Guild g, final String prefix) {
 		prefixe.put(g, prefix);
 		savePrefix(g);
 	}
 	/**
-	 * speichert den Prefix einer Guild in einer Datei
-	 * @param guild die Guild(Discord-Server)
+	 * saves the Guild prefix to a File
+	 * @param guild the Guild(Discord-Server)
 	 */
 	private static void savePrefix(final Guild guild){
 		if (!new File(STATIC.getSettingsDir()+"/"+guild.getId()).exists()) {
@@ -445,8 +444,8 @@ public final class STATIC {
 	}
 	
 	/**
-	 * Lädt den Prefix einer Guild
-	 * @param g Die Guild(Discord-Server)
+	 * loads the prefix from a Guild
+	 * @param g The Guild(Discord-Server)
 	 */
 	private static void loadPrefix(final Guild g) {
 		if (!new File(STATIC.getSettingsDir()+"/"+g.getId()).exists()) {
@@ -468,8 +467,8 @@ public final class STATIC {
 		}
 	}
 	/**
-	 * speichert die Permissions einer Guild
-	 * @param guild Die Guild(Discord-Server)
+	 * saves the Permissions of a {@link Guild}
+	 * @param guild The Guild(Discord-Server)
 	 */
 	private static void savePerms(final Guild guild){
 		
@@ -504,8 +503,8 @@ public final class STATIC {
 		}
 	}
 	/**
-	 * Lädt die Permissions einer Guild
-	 * @param g Die Guild(Discord-Server)
+	 * Loads the Permissions of a {@link Guild}
+	 * @param g The Guild(Discord-Server)
 	 */
 	@SuppressWarnings("unchecked")
 	private static void loadPerms(final Guild g) {
@@ -537,9 +536,9 @@ public final class STATIC {
 		}
 	}
 	/**
-	 * Getter g. Loggerchannel-Name
-	 * @param g Die Guild(Discord-Server)
-	 * @return Der Name d. Logger-Channels d. Guild
+	 * gets the name of the Logger Channel for a {@link Guild}
+	 * @param g The Guild(Discord-Server)
+	 * @return The name of Logger-Channels of the Guild
 	 */
 	public static String getCmdLogger(Guild g) {
 		if (cmdLoggerNames.containsKey(g.getId())) {
@@ -548,8 +547,8 @@ public final class STATIC {
 		return STD_CMD_LOGGER_NAME;
 	}
 	/**
-	 * Setter g. Loggerchannel-Name
-	 * @param g Die Guild(Discord-Server)
+	 * sets the name of the Logger Channel for a {@link Guild}
+	 * @param g The Guild(Discord-Server)
 	 * @param channel Der Name d. Logger-Channels d. Guild
 	 */
 	public static void setCmdLogger(Guild g, String channel) {
@@ -558,15 +557,15 @@ public final class STATIC {
 		saveCmdLogger();
 	}
 	/**
-	 * speichert die Loggerchannels in eine Datei
+	 * saves the Logger Channels in a File
 	 */
 	private static void saveCmdLogger() {
 		save("cmdLogger.dat", cmdLoggerNames);
 	}
 	/**
-	 * lädt Daten zu einer {@link Guild}
-	 * @param g die {@link Guild} (Discord-Server)
-	 * @return Serverdaten als {@link String}
+	 * gets data from a {@link Guild}
+	 * @param g The {@link Guild}(Discord-Server)
+	 * @return data as a {@link String}
 	 */
 	public static String getServerData(Guild g){
 		String retString=g.getName()+" ["+g.getId()+"]";
@@ -574,9 +573,9 @@ public final class STATIC {
 		
 	}
 	/**
-	 * Sucht eine {@link Invite} in einer {@link Guild}
-	 * @param g die {@link Guild} in der nach einer {@link Invite} gesucht werden soll
-	 * @return die URL der {@link Invite} oder <code>null</code> falls keine Invite vorhanden ist.
+	 * gets an {@link Invite} in a Guild
+	 * @param g The {@link Guild} where an {@link Invite} should be loaded
+	 * @return the URL of the {@link Invite} or <code>null</code> if there is no {@link Invite}
 	 */
 	public static String getActiveInvite(Guild g) {
 		
@@ -611,9 +610,9 @@ public final class STATIC {
 		return "";
 	}
 	/**
-	 * Sucht eine {@link Invite} in einer {@link Guild} oder erstellt eine, falls keine vorhanden ist
-	 * @param g die {@link Guild} in der nach einer {@link Invite} gesucht werden soll
-	 * @return die URL der {@link Invite}
+	 * gets an {@link Invite} in a Guild or creates one if there is none
+	 * @param g The {@link Guild} where an {@link Invite} should be loaded
+	 * @return the URL of the {@link Invite}
 	 */
 	public static String createInvite(Guild g) {
 		
@@ -641,8 +640,7 @@ public final class STATIC {
 		return "";
 	}
 	/**
-	 * Lädt die Loggerchannels aus einer Datei
-	 * @return
+	 * Loads the Loggerchannels from a File
 	 */
 	@SuppressWarnings("unchecked")
 	private static void loadCmdLogger() {
@@ -654,9 +652,9 @@ public final class STATIC {
 		//return (HashMap<String, String>)load("cmdLogger.dat");
 	}
 	/**
-	 * speichert ein Objekt in einer Datei
-	 * @param filename Der Name der Datei
-	 * @param toSave Das Object, das zu sichern ist
+	 * saves an Object into a File
+	 * @param filename The name of the File
+	 * @param toSave The Object to save(should be {@link Serializable})
 	 */
 	public static void save(String filename, Object toSave) {
 		final File file=new File(STATIC.getSettingsDir()+"/"+filename);
@@ -677,9 +675,9 @@ public final class STATIC {
 		}
 	}
 	/**
-	 * lädt ein Objekt aus einer Datei
-	 * @param filename Der Name der Datei
-	 * @return Das Object, das zu laden ist
+	 * Loads an Object from a File
+	 * @param filename The name of the file
+	 * @return The Object to load
 	 */
 	public static Object load(String filename) {
 		Object o=null;
@@ -697,8 +695,8 @@ public final class STATIC {
 		return o;
 	}
 	/**
-	 * gibt den Speicherpfad zurück bzw. erstellt diesen(falls nötig)
-	 * @return der Pfad, wo Daten gespeichert werden sollen
+	 * gets the Path for Files to save/load and creates it (if nessecery)
+	 * @return the Path for Botdata Files
 	 */
 	public static String getSettingsDir() {
 		File dir=new File(SETTINGS_DIR);

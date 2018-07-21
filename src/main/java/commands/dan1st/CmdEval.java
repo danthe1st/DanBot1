@@ -8,7 +8,10 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import commands.Command;
-
+/**
+ * Command to Evaluate Code
+ * @author Daniel Schmid
+ */
 public class CmdEval implements Command{
 	private ScriptEngine se;
 	
@@ -27,14 +30,10 @@ public class CmdEval implements Command{
 			STATIC.errmsg(event.getTextChannel(), "This command can be *only* used by Daniel Schmid!");
 			return;
 		}
-		
-		
         se.put("event", event);
         se.put("jda", event.getJDA());
         se.put("guild", event.getGuild());
         se.put("channel", event.getChannel());
-//        se.put("Sysout", System.out);
-//        se.put("Syserr", System.err);
        
         String script="";
         for (String string : args) {

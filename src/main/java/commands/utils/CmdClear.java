@@ -9,41 +9,31 @@ import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command um den Chat-Verlauf zu leeren
- * @author Daniel Schmid
- *
+ * Command to delete the Chat-History (min 2, max 100 Messages)
+ * @author Daniel Schmid 
  */
 public class CmdClear implements Command {
 
 	
 	/**
-	 * gibt int-Wert aus String (falls m�gl.)
-	 * @param str Der String
-	 * @return der String als int(oder 0)
+	 * parses {@link String} to int
+	 * @param str Der String to be parsed
+	 * @return the String as int(or 0 if parsing failed)
 	 */
 	private int getInt(final String str) {
 		try {
 			return Integer.parseInt(str);
 		} catch (final Exception e) {
-			e.printStackTrace();
 			return 0;
 		}
 	}
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	@Override
 	public void action(String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "clearChat")) {
 			return;
 		}
-		
-		
-		
 		if(args.length>0) {
 			int num=getInt(args[0]);
-			
-			
 			if(num>1&&num<=100) {
 				try {
 					final MessageHistory history=new MessageHistory(event.getTextChannel());
@@ -72,11 +62,6 @@ public class CmdClear implements Command {
 			STATIC.errmsg(event.getTextChannel(),"Not enough arguments, a number is needed.");
 		}
 	}
-
-	
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
 	public String help(String prefix) { 
 		return "Clears minimal 2 and maximum 100 Messages in the current text Channel(the messages should not be older then 2 weeks\n"

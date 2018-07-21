@@ -6,7 +6,11 @@ import listeners.AutoRoleListener;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
-
+/**
+ * Command to administrate autoroles<br>
+ * An autorole is a role which is given to a user when joining the Guild (Discord Server)
+ * @author Daniel Schmid
+ */
 public class CmdAutoRole implements Command {
 
 	@Override

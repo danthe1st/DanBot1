@@ -2,10 +2,13 @@ package commands.dan1st;
 import commands.Command;
 import core.CommandHandler;
 import core.CommandParser;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
+/**
+ * Command for executing Commands as another user
+ * @author Daniel Schmid
+ */
 public class CmdSudo implements Command{
 
 	@Override
@@ -39,9 +42,9 @@ public class CmdSudo implements Command{
 		String raw=event.getMessage().getContentRaw().replaceAll(toReplace, STATIC.getPrefix(event.getGuild()));
 		String display=event.getMessage().getContentDisplay().replaceAll(toReplace, STATIC.getPrefix(event.getGuild()));
 		String stripped=event.getMessage().getContentRaw().replaceAll(toReplace, STATIC.getPrefix(event.getGuild()));
-		MessageBuilder builder=new SudoMessageBuilder(event.getMessage(), raw, display, stripped,user);
+		SudoMessage msg=new SudoMessage(event.getMessage(),raw, display, stripped,user);
 			
-		MessageReceivedEvent sudoEvent=new MessageReceivedEvent(event.getJDA(), event.getResponseNumber(), builder.build());
+		MessageReceivedEvent sudoEvent=new MessageReceivedEvent(event.getJDA(), event.getResponseNumber(), msg);
 		CommandHandler.handleCommand(CommandParser.parser(sudoEvent.getMessage().getContentRaw(), sudoEvent, STATIC.getPrefix(event.getGuild())));
 	}
 
