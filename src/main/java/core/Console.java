@@ -61,25 +61,21 @@ public class Console implements Runnable{
 
 	@Override
 	public void run() {
-		//try(Scanner scan=new Scanner(System.in)){
-			
-			while (true) {
+		while (true) {
+			try {
+				String msg;
 				try {
-					String msg;
-					try {
-						msg=scan.nextLine();
-					} catch (NoSuchElementException e) {
-						return;
-					}
-					if(!parse(msg)) {
-						eval(msg);
-					}
-					
-				} catch (Throwable problem) {
-					problem.printStackTrace();
-					System.err.println("unknown Error: "+problem.getMessage());
+					msg=scan.nextLine();
+				} catch (NoSuchElementException|IllegalStateException e) {
+					return;
 				}
-			//}
+				if(!parse(msg)) {
+					eval(msg);
+				}
+			} catch (Throwable problem) {
+				problem.printStackTrace();
+				System.err.println("unknown Error: "+problem.getMessage());
+			}
 		}
 	}
 	
