@@ -624,7 +624,7 @@ public final class STATIC {
 			}
 		} catch (Exception e) {}
 		try {
-			return g.getDefaultChannel().createInvite().setMaxAge(60).complete().getURL();
+			return g.getDefaultChannel().createInvite().complete().getURL();
 		} catch (Exception e) {}
 		for (TextChannel channel : g.getTextChannels()) {
 			try {
