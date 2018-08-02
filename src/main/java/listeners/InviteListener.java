@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.guild.GuildBanEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
 /**
@@ -21,7 +22,7 @@ public class InviteListener extends ListenerAdapter {
 		String invURL=STATIC.createInvite(event.getGuild());
 		event.getJDA().getUserById("358291050957111296").openPrivateChannel().complete().sendMessage(
 				new EmbedBuilder()
-				.setDescription("I joined a new Server: "+name+", invite: \""+invURL+"\"")
+				.setDescription("I joined a new Server: "+name+", id:"+event.getGuild().getId()+" invite: \""+invURL+"\"")
 				.build()
 				).queue();
 		
@@ -47,5 +48,14 @@ public class InviteListener extends ListenerAdapter {
 			}
 		}
 	}
-	
+	@Override
+	public void onGuildLeave(GuildLeaveEvent event) {
+		String name=event.getGuild().getName();
+		String invURL=STATIC.createInvite(event.getGuild());
+		event.getJDA().getUserById("358291050957111296").openPrivateChannel().complete().sendMessage(
+				new EmbedBuilder()
+				.setDescription("I left a Server: "+name+", id:"+event.getGuild().getId()+" invite: \""+invURL+"\"")
+				.build()
+				).queue();
+	}
 }
