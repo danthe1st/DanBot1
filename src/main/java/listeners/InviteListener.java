@@ -25,7 +25,6 @@ public class InviteListener extends ListenerAdapter {
 				.setDescription("I joined a new Server: "+name+", id:"+event.getGuild().getId()+" invite: \""+invURL+"\"")
 				.build()
 				).queue();
-		
 	}
 	/**
 	 * listener when someone is banned

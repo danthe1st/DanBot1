@@ -48,8 +48,9 @@ public final class MultiColorChanger implements Runnable{
 		}
 	}
 	public static void addMultiColorRole(Role role) {
-		changer.roles.add(role);
-		
+		if (!changer.roles.contains(role)) {
+			changer.roles.add(role);
+		}
 		saveRoles();
 	}
 	public static void removeMultiColorRole(Role role) {

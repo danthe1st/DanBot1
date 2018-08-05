@@ -146,6 +146,7 @@ public class Main {
 				builder.setAutoReconnect(true);
 				builder.setStatus(status);
 				builder.setGame(Game.playing(game));
+				builder.setRequestTimeoutRetry(true);
 				
 				initListeners(builder);
 				addCommands();

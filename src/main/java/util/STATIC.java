@@ -185,8 +185,10 @@ public final class STATIC {
 					role=rolesLocal.get(0);
 				}
 			}
+			if (role!=null) {
+				roles.add(role);
+			}
 			
-			roles.add(role);
 		}
 		return roles;
 	}

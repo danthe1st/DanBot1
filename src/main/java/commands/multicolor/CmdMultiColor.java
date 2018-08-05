@@ -20,12 +20,16 @@ public class CmdMultiColor implements Command{
 		if(!PermsCore.check(event, "multicolor.set")) {
 			return;
 		}		
-		if (args.length<2) {
+		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), "missing args!");
 			return;
 		}
 		switch (args[0]) {
 		case "add":{
+			if (args.length<2) {
+				STATIC.errmsg(event.getTextChannel(), "missing args!");
+				return;
+			}
 			List<Role> roles=STATIC.getRolesFromMsg(event.getMessage());
 			if (roles.isEmpty()) {
 				STATIC.errmsg(event.getTextChannel(), "Role not found.");
@@ -47,6 +51,10 @@ public class CmdMultiColor implements Command{
 			break;
 		}
 		case "remove":{
+			if (args.length<2) {
+				STATIC.errmsg(event.getTextChannel(), "missing args!");
+				return;
+			}
 			List<Role> roles=STATIC.getRolesFromMsg(event.getMessage());
 			if (roles.isEmpty()) {
 				STATIC.errmsg(event.getTextChannel(), "Role not found.");
