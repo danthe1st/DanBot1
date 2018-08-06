@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import commands.CmdStop;
 import commands.CmdRestart;
+import commands.botdata.CmdAutoChannel;
 import commands.botdata.CmdLogger;
 import commands.botdata.CmdMotd;
 import commands.botdata.CmdPerm;
@@ -21,9 +22,8 @@ import commands.moderation.CmdBan;
 import commands.moderation.CmdKick;
 import commands.moderation.CmdRole;
 import commands.moderation.CmdVoiceKick;
-import commands.multicolor.CmdMultiColor;
+import commands.moderation.multicolor.CmdMultiColor;
 import commands.music.CmdMusic;
-import commands.utils.CmdAutoChannel;
 import commands.utils.CmdClear;
 import commands.utils.CmdClearPMs;
 import commands.utils.CmdHelp;

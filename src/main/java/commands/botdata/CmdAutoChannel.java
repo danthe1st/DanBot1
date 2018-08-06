@@ -1,13 +1,15 @@
-package commands.utils;
+package commands.botdata;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import commands.Command;
 import core.PermsCore;
@@ -16,6 +18,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import util.MapWrapper;
 import util.STATIC;
 /**
  * Command for AutoChannels
@@ -103,19 +106,24 @@ public class CmdAutoChannel implements Command, Serializable {
 	 * saves all autochannels
 	 */
 	private static void save() {
-		final File path=new File(STATIC.getSettingsDir());
-		if (!path.exists()) {
-			path.mkdir();
-		}
 		final HashMap<String, String> out=new HashMap<>();
 		autoChannels.forEach((vc,g)->out.put(vc.getId(), g.getId()));
+		File file=new File(STATIC.getSettingsDir()+"/autochannels.xml");
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+			}
+		}
 		try {
-			final FileOutputStream fos=new FileOutputStream(STATIC.getSettingsDir()+"/autochannels.dat");
-			final ObjectOutputStream oos=new ObjectOutputStream(fos);
-			oos.writeObject(out);
-			oos.close();
-		} catch (final IOException e) {
-			e.printStackTrace();
+			JAXBContext context = JAXBContext
+			        .newInstance(MapWrapper.class);
+			Marshaller m = context.createMarshaller();
+	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+	        m.marshal(new MapWrapper<>(out), file);
+		} catch (JAXBException e) {
+			
 		}
 	}
 	/**
@@ -123,30 +131,25 @@ public class CmdAutoChannel implements Command, Serializable {
 	 * @param jda
 	 */
 	public static void load(final JDA jda) {
-		
-		final File file=new File(STATIC.getSettingsDir()+"/autochannels.dat");
-		if (!file.exists()) {
-			return;
-		}
 		try {
-			final FileInputStream fis=new FileInputStream(file);
-			final ObjectInputStream ois=new ObjectInputStream(fis);
-			@SuppressWarnings("unchecked")
-			final HashMap<String, String> out=(HashMap<String, String>)ois.readObject();
-			ois.close();
-			out.forEach((vId, gId)->{
-				final Guild g=getGuild(gId, jda);
-				try {
-					autoChannels.put(getVoiceChannel(vId, g), g);
-				} catch (Exception e) {
-				}
-			});
-			
-		} catch (IOException|ClassNotFoundException e) {
-			e.printStackTrace();
+			final File file=new File(STATIC.getSettingsDir()+"/autochannels.xml");
+			JAXBContext context=JAXBContext.newInstance(MapWrapper.class);
+			 Unmarshaller um = context.createUnmarshaller();
+
+		        // Reading XML from the file and unmarshalling.
+			 @SuppressWarnings("unchecked")
+			MapWrapper<String,String> data = (MapWrapper<String,String>) um.unmarshal(file);
+		       Map<String,String> out=data.getData();
+			 
+		       out.forEach((vId, gId)->{
+					final Guild g=getGuild(gId, jda);
+					try {
+						autoChannels.put(getVoiceChannel(vId, g), g);
+					} catch (Exception e) {
+					}
+				});
+		} catch (JAXBException e) {
 		}
-		
-		
 	}
 
 	@Override

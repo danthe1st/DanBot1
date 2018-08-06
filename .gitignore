@@ -1,6 +1,10 @@
+#eclipse stuff
 .settings/
-DanBot1/
-SERVER_SETTINGS/
-target/
 .classpath
 .project
+#Settings directory from the Bot
+SERVER_SETTINGS/
+#maven stuff
+target/
+#other things
+DanBot1/

@@ -1,4 +1,4 @@
-package commands.multicolor;
+package commands.moderation.multicolor;
 
 import java.util.List;
 
