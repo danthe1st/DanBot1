@@ -76,11 +76,12 @@ public class Main {
 			case "?":
 			case "help":
 			case "-?":
+			case "/help":
 			case "-help":
 				System.out.println("DanBot1 is a Discord Bot by Daniel Schmid\n"
 						+ "See http://wwwmaster.at/daniel/data/DanBot1 for a list of all Commands\n"
 						+ "possible arguments:\n"
-						+ "\t?/help\tshow this help\n"
+						+ "\t?\tshow this help\n"
 //							+ "noStop\tsets the Bot unstoppable\n"
 						+ "\tgame=<name>\tSets a game name\n"
 						+ "\tnickname=<name>\tsets a nickname in all Servers\n"
