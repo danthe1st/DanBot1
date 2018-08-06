@@ -28,14 +28,17 @@ public class Console implements Runnable{
 	public static void runConsole(Scanner scan,JDA jda) {
 		if (theConsole==null) {
 			theConsole=new Console(scan, jda);
-			theConsole.run();
+			Thread conThread=new Thread(theConsole, "Console");
+			conThread.setDaemon(true);
+			conThread.start();
+			
 		}
 		else {
 			theConsole.jda=jda;
 		}
 		
 	}
-	public Console(Scanner scan, JDA jda) {
+	private Console(Scanner scan, JDA jda) {
 		if (scan==null||jda==null) {
 			throw new NullPointerException();
 		}

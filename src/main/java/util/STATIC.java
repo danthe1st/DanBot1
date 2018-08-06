@@ -140,7 +140,12 @@ public final class STATIC {
 				new Timer().schedule(new TimerTask() {
 					@Override
 					public void run() {
-						msg.delete().queue();
+						try {
+							msg.delete().queue();
+						} catch (IllegalArgumentException e) {
+							//wenn JDA bereits heruntergefahren
+						}
+						
 						
 					}
 				}, STATIC.INFO_TIMEOUT);

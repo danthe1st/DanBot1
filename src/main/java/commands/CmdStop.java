@@ -23,7 +23,6 @@ public class CmdStop implements Command{
 		STATIC.msg(event.getTextChannel(), "DanBot1 "+STATIC.VERSION +" stopped.",Color.ORANGE,false);
 		System.out.println("stopped by "+event.getAuthor());
 		event.getJDA().shutdown();
-		
 		System.exit(0);
 	}
 	@Override

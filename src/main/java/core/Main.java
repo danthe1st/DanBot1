@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import javax.security.auth.login.LoginException;
 
+import org.json.JSONObject;
+
 import commands.CmdStop;
 import commands.CmdRestart;
 import commands.botdata.CmdLogger;
@@ -40,7 +42,8 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.WebSocketCode;
+import net.dv8tion.jda.core.entities.impl.JDAImpl;
 /**
  * <b>Main-Class</b><br>
  * Initiates the Bot
@@ -145,7 +148,8 @@ public class Main {
 				builder.setToken(token);	
 				builder.setAutoReconnect(true);
 				builder.setStatus(status);
-				builder.setGame(Game.playing(game));
+				//builder.setGame(Game.playing(game));
+				
 				builder.setRequestTimeoutRetry(true);
 				
 				initListeners(builder);
@@ -154,8 +158,8 @@ public class Main {
 				try {
 					jda=builder.buildBlocking();
 					jda.addEventListener(new AutoRoleListener(jda));
-					
-					new Console(scan, jda).run();
+					loadRichPresence((JDAImpl) jda);
+					Console.runConsole(scan, jda);
 				} catch (final LoginException e) {
 					System.err.println("The entered token is not valid!");
 					token=null;
@@ -172,7 +176,7 @@ public class Main {
 		
 	}
 	/**
-	 * f�gt Commands der Command-Map hinzu
+	 * adds Commands to the Command-Map
 	 */
 	private static void addCommands() {
 		CommandHandler.commands.put("ping", new CmdPing());
@@ -206,6 +210,46 @@ public class Main {
 		CommandHandler.commands.put("clearpm", new CmdClearPMs());
 		CommandHandler.commands.put("vkick", new CmdVoiceKick());
 	}
+	
+	public static void loadRichPresence(JDAImpl jda) { //JDA object can be casted to a JDAImpl
+        JSONObject obj = new JSONObject();
+        JSONObject gameObj = new JSONObject();
+
+        /* LAYOUT:
+        * name
+        * details
+        * time elapsed (timestamps)
+        * status
+        */
+        gameObj.put("name",  game);
+        gameObj.put("type", 0); //1 if streaming
+        gameObj.put("details", "waiting for commands");
+        gameObj.put("state", "online");
+        gameObj.put("timestamps", new JSONObject().put("start", 1508373056)); //somehow used for the time elapsed thing I assume, you can probably also set the end to make it show "xx:xx left"
+
+        JSONObject assetsObj = new JSONObject();
+        assetsObj.put("large_image", "danbot1_big"); //ID of large icon
+        assetsObj.put("largeImageKey", "danbot1_big"); //ID of large icon
+        assetsObj.put("large_text", "Large Text");
+
+        assetsObj.put("small_image", "danbot1_small"); //ID of small icon
+        assetsObj.put("smallImageKey", "danbot1_small"); //ID of small icon
+//test with imageConfig???
+        gameObj.put("assets", assetsObj);
+        gameObj.put("application_id", "371042228891549707"); //Application ID
+
+        obj.put("game", gameObj);
+        obj.put("afk", jda.getPresence().isIdle());
+        obj.put("status", jda.getPresence().getStatus().getKey());
+        obj.put("since", System.currentTimeMillis());
+
+        //System.out.println(obj);
+       
+        jda.getClient().send(new JSONObject()
+                .put("d", obj)
+                .put("op", WebSocketCode.PRESENCE).toString());
+    }
+	
 	/**
 	 * initiiert die Listener
 	 * @param builder der JDABuilder
