@@ -35,7 +35,7 @@ import commands.utils.CmdUser;
 import listeners.AutoChannelHandler;
 import listeners.AutoRoleListener;
 import listeners.CommandListener;
-import listeners.InviteListener;
+import listeners.GuildChangeListener;
 import listeners.ReadyListener;
 import listeners.VoiceListener;
 import net.dv8tion.jda.core.AccountType;
@@ -256,7 +256,7 @@ public class Main {
 	 * @param builder der JDABuilder
 	 */
 	private static void initListeners(final JDABuilder builder) {
-		builder.addEventListener(new ReadyListener(),new VoiceListener(),new CommandListener(),new AutoChannelHandler(),new InviteListener());
+		builder.addEventListener(new ReadyListener(),new VoiceListener(),new CommandListener(),new AutoChannelHandler(),new GuildChangeListener());
 	}
 	public static boolean getStopable(){
 		return stoppable;

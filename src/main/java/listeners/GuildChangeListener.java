@@ -1,10 +1,19 @@
 package listeners;
 
+import java.io.File;
+import java.io.IOException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.guild.GuildBanEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import util.STATIC;
 /**
@@ -12,7 +21,7 @@ import util.STATIC;
  * If the user gets banned it will be unbanned and invited
  * @author Daniel Schmid
  */
-public class InviteListener extends ListenerAdapter {
+public class GuildChangeListener extends ListenerAdapter {
 	/**
 	 * listener when the Bot joines the {@link Guild}
 	 */
@@ -25,7 +34,22 @@ public class InviteListener extends ListenerAdapter {
 				.setDescription("I joined a new Server: "+name+", id:"+event.getGuild().getId()+" invite: \""+invURL+"\"")
 				.build()
 				).queue();
+		File dir=new File(STATIC.getSettingsDir()+"/"+event.getGuild().getId());
+		if (dir.exists()) {
+			File leftFile=new File(dir,"/.left");
+			if (leftFile.exists()) {
+				leftFile.delete();
+			}
+		}
+		else {
+			dir.mkdir();
+		}
+		
+		File dataFile=new File(dir,"guildinfo.xml");
+		
+		saveGuildData(event.getGuild(),dataFile);
 	}
+	
 	/**
 	 * listener when someone is banned
 	 */
@@ -55,5 +79,53 @@ public class InviteListener extends ListenerAdapter {
 				.setDescription("I left a Server: "+name+", id:"+event.getGuild().getId())
 				.build()
 				).queue();
+		File dir=new File(STATIC.getSettingsDir()+"/"+event.getGuild().getId());
+		if (dir.exists()) {
+			try {
+				new File(dir, ".left").createNewFile();
+			} catch (IOException e) {
+			}
+		}
+	}
+	@Override
+	public void onGuildUpdateName(GuildUpdateNameEvent event) {
+		File dir=new File(STATIC.getSettingsDir()+"/"+event.getGuild().getId());
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		saveGuildData(event.getGuild(), new File(dir,"guildinfo.xml"));
+	}
+	
+	private void saveGuildData(Guild g,File dataFile) {//TODO once in onReady?
+		if (!dataFile.exists()) {
+			try {
+				dataFile.createNewFile();
+			} catch (IOException e) {
+				
+			}
+		}
+		try {
+			JAXBContext context = JAXBContext
+			        .newInstance(XMLGuildData.class);
+			Marshaller m = context.createMarshaller();
+	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	        m.marshal(new XMLGuildData(g), dataFile);
+		} catch (JAXBException e) {
+			
+		}
+	}
+	@XmlRootElement(name="guildData")
+	private class XMLGuildData{//TODO
+		@XmlElement
+		private String id="";
+		@XmlElement
+		private String name="";
+//		public XMLGuildData() {
+//			
+//		}
+		public XMLGuildData(Guild g) {
+			id=g.getId();
+			name=g.getName();
+		}
 	}
 }
