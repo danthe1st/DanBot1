@@ -41,9 +41,6 @@ public class VoiceListener extends ListenerAdapter {
 		if (event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).isEmpty()||!event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).canTalk()) {
 			return;
 		}
-		event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).sendMessage(
-				"Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was moved from Voice Channel \""+event.getChannelLeft().getName() +"\" to \""+event.getChannelJoined().getName()+"\""
-			).queue();
 		STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was moved from Voice Channel \""+event.getChannelLeft().getName() +"\" to \""+event.getChannelJoined().getName()+"\"");
 	}
 	/**
@@ -59,11 +56,7 @@ public class VoiceListener extends ListenerAdapter {
 			if(!event.isMuted()) {
 				unmuted="un";
 			}
-			event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).sendMessage(
-					"Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was "+unmuted+"muted in Voice Channel "+event.getVoiceState().getAudioChannel()
-				).queue();
 			STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was "+unmuted+"muted in Voice Channel "+event.getVoiceState().getAudioChannel());
 		}
-		
 	}
 }
