@@ -1,9 +1,5 @@
 package listeners;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
@@ -27,17 +23,7 @@ public class VoiceListener extends ListenerAdapter {
 		if (event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).isEmpty()||!event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).canTalk()) {
 			return;
 		}
-		final Message msg=event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).sendMessage(
-			"Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" joined Voice Channel \""+event.getChannelJoined().getName()+"\""
-		).complete();
-		new Timer().schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				msg.delete().queue();
-				
-			}
-		}, STATIC.INFO_TIMEOUT);
+		STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" joined Voice Channel \""+event.getChannelJoined().getName()+"\"");
 	}
 	/**
 	 * Listener to log when someone leaves a {@link VoiceChannel}
@@ -47,9 +33,7 @@ public class VoiceListener extends ListenerAdapter {
 		if (event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).isEmpty()||!event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).canTalk()) {
 			return;
 		}
-		event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).sendMessage(
-				"Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" left Voice Channel \""+event.getChannelLeft().getName()+"\""
-			).queue();
+		STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" left Voice Channel \""+event.getChannelLeft().getName()+"\"");
 	}
 	/**
 	 * Listener to log when someone is moved between {@link VoiceChannel}s
@@ -62,6 +46,7 @@ public class VoiceListener extends ListenerAdapter {
 		event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).sendMessage(
 				"Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was moved from Voice Channel \""+event.getChannelLeft().getName() +"\" to \""+event.getChannelJoined().getName()+"\""
 			).queue();
+		STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was moved from Voice Channel \""+event.getChannelLeft().getName() +"\" to \""+event.getChannelJoined().getName()+"\"");
 	}
 	/**
 	 * Listener to log when someone is muted
@@ -79,6 +64,7 @@ public class VoiceListener extends ListenerAdapter {
 			event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0).sendMessage(
 					"Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was "+unmuted+"muted in Voice Channel "+event.getVoiceState().getAudioChannel()
 				).queue();
+			STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was "+unmuted+"muted in Voice Channel "+event.getVoiceState().getAudioChannel());
 		}
 		
 	}

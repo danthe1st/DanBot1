@@ -15,6 +15,7 @@ import commands.botdata.CmdPerm;
 import commands.botdata.CmdPrefix;
 import commands.botdata.CmdVote;
 import commands.dan1st.CmdEval;
+import commands.dan1st.CmdReload;
 import commands.dan1st.CmdSudo;
 import commands.fun.CmdDice;
 import commands.moderation.CmdAutoRole;
@@ -210,6 +211,7 @@ public class Main {
 		CommandHandler.commands.put("dice", new CmdDice());
 		CommandHandler.commands.put("clearpm", new CmdClearPMs());
 		CommandHandler.commands.put("vkick", new CmdVoiceKick());
+		CommandHandler.commands.put("reload", new CmdReload());
 	}
 	
 	public static void loadRichPresence(JDAImpl jda) { //JDA object can be casted to a JDAImpl

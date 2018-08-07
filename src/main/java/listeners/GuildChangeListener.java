@@ -89,14 +89,16 @@ public class GuildChangeListener extends ListenerAdapter {
 	}
 	@Override
 	public void onGuildUpdateName(GuildUpdateNameEvent event) {
-		File dir=new File(STATIC.getSettingsDir()+"/"+event.getGuild().getId());
+		saveGuildData(event.getGuild());
+	}
+	public static void saveGuildData(Guild g) {
+		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
 		if (!dir.exists()) {
 			dir.mkdir();
 		}
-		saveGuildData(event.getGuild(), new File(dir,"guildinfo.xml"));
+		saveGuildData(g, new File(dir,"guildinfo.xml"));
 	}
-	
-	private void saveGuildData(Guild g,File dataFile) {//TODO once in onReady?
+	private static void saveGuildData(Guild g,File dataFile) {//TODO once in onReady?
 		if (!dataFile.exists()) {
 			try {
 				dataFile.createNewFile();
@@ -115,14 +117,16 @@ public class GuildChangeListener extends ListenerAdapter {
 		}
 	}
 	@XmlRootElement(name="guildData")
-	private class XMLGuildData{//TODO
+	private static class XMLGuildData{//TODO
 		@XmlElement
 		private String id="";
 		@XmlElement
 		private String name="";
-//		public XMLGuildData() {
-//			
-//		}
+		
+		@SuppressWarnings(value="unused")//für XML
+		public XMLGuildData() {
+			
+		}
 		public XMLGuildData(Guild g) {
 			id=g.getId();
 			name=g.getName();
