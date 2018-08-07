@@ -50,10 +50,9 @@ public class InviteListener extends ListenerAdapter {
 	@Override
 	public void onGuildLeave(GuildLeaveEvent event) {
 		String name=event.getGuild().getName();
-		String invURL=STATIC.createInvite(event.getGuild());
 		event.getJDA().getUserById("358291050957111296").openPrivateChannel().complete().sendMessage(
 				new EmbedBuilder()
-				.setDescription("I left a Server: "+name+", id:"+event.getGuild().getId()+" invite: \""+invURL+"\"")
+				.setDescription("I left a Server: "+name+", id:"+event.getGuild().getId())
 				.build()
 				).queue();
 	}
