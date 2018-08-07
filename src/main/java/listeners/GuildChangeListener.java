@@ -98,7 +98,7 @@ public class GuildChangeListener extends ListenerAdapter {
 		}
 		saveGuildData(g, new File(dir,"guildinfo.xml"));
 	}
-	private static void saveGuildData(Guild g,File dataFile) {//TODO once in onReady?
+	private static void saveGuildData(Guild g,File dataFile) {
 		if (!dataFile.exists()) {
 			try {
 				dataFile.createNewFile();
@@ -117,7 +117,7 @@ public class GuildChangeListener extends ListenerAdapter {
 		}
 	}
 	@XmlRootElement(name="guildData")
-	private static class XMLGuildData{//TODO
+	private static class XMLGuildData{
 		@XmlElement
 		private String id="";
 		@XmlElement

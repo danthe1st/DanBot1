@@ -13,8 +13,6 @@ import util.STATIC;
  */
 public class VoiceListener extends ListenerAdapter {
 	private static final String VOICE_LOGGER_CHANNEL_NAME="VoiceLog";
-	
-	
 	/**
 	 * Listener to log when someone joines a {@link VoiceChannel}
 	 */
