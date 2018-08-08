@@ -11,9 +11,10 @@ public class CmdReload implements Command {
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (!event.getAuthor().getId().equals("358291050957111296")) {
-			STATIC.errmsg(event.getTextChannel(), "This command can be *only* used by Daniel Schmid!");
+			STATIC.errmsg(event.getTextChannel(), "This command can be *only* used by the developer of this Bot!");
 			return;
 		}
+		STATIC.loadData(event.getJDA());
 		for (Guild guild : event.getJDA().getGuilds()) {
 			GuildChangeListener.saveGuildData(guild);
 		}
