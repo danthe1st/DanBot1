@@ -1,4 +1,4 @@
-package commands.botadmin;
+package commands.dan1st;
 
 import commands.Command;
 import listeners.GuildChangeListener;

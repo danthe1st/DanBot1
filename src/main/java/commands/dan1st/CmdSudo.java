@@ -1,4 +1,4 @@
-package commands.botadmin;
+package commands.dan1st;
 import commands.Command;
 import core.CommandHandler;
 import core.CommandParser;

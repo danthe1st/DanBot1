@@ -7,9 +7,6 @@ import javax.security.auth.login.LoginException;
 import org.json.JSONObject;
 
 import commands.CmdStop;
-import commands.botadmin.CmdEval;
-import commands.botadmin.CmdReload;
-import commands.botadmin.CmdSudo;
 import commands.CmdRestart;
 import commands.botdata.CmdAutoChannel;
 import commands.botdata.CmdLogger;
@@ -17,6 +14,9 @@ import commands.botdata.CmdMotd;
 import commands.botdata.CmdPerm;
 import commands.botdata.CmdPrefix;
 import commands.botdata.CmdVote;
+import commands.dan1st.CmdEval;
+import commands.dan1st.CmdReload;
+import commands.dan1st.CmdSudo;
 import commands.fun.CmdDice;
 import commands.moderation.CmdAutoRole;
 import commands.moderation.CmdBan;
@@ -158,7 +158,8 @@ public class Main {
 				addCommands();
 				
 				try {
-					jda=builder.buildBlocking();
+					jda=builder.build();
+					jda.awaitReady();
 					jda.addEventListener(new AutoRoleListener(jda));
 					loadRichPresence((JDAImpl) jda);
 					Console.runConsole(scan, jda);

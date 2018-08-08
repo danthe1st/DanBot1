@@ -1,4 +1,4 @@
-package commands.botadmin;
+package commands.dan1st;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;

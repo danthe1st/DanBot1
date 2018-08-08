@@ -1,4 +1,4 @@
-package commands.botadmin;
+package commands.dan1st;
 
 import java.time.OffsetDateTime;
 import java.util.Formatter;
