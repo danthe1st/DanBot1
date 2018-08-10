@@ -7,5 +7,5 @@ git add .
 
 git commit -m %TIME%"
 git push -u origin --all -f
-::git remote remove origin
+git remote remove origin
 pause>nul
