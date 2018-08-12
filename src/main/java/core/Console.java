@@ -25,16 +25,15 @@ public class Console implements Runnable{
 	private Map<String,Command> commands=new HashMap<>();
 	private ScriptEngine se = new ScriptEngineManager().getEngineByName("Nashorn");
 	private static Console theConsole=null;
-	public static void runConsole(Scanner scan,JDA jda) {
-		if (theConsole==null) {
+	public static synchronized void runConsole(Scanner scan,JDA jda) {
+		if (theConsole!=null) {
+			theConsole.jda=jda;
+		}
+		else {
 			theConsole=new Console(scan, jda);
 			Thread conThread=new Thread(theConsole, "Console");
 			conThread.setDaemon(true);
 			conThread.start();
-			
-		}
-		else {
-			theConsole.jda=jda;
 		}
 		
 	}

@@ -19,10 +19,11 @@ import commands.dan1st.CmdReload;
 import commands.dan1st.CmdSudo;
 import commands.fun.CmdDice;
 import commands.moderation.CmdAutoRole;
-import commands.moderation.CmdBan;
 import commands.moderation.CmdKick;
 import commands.moderation.CmdRole;
 import commands.moderation.CmdVoiceKick;
+import commands.moderation.ban.CmdBan;
+import commands.moderation.ban.CmdTimeBan;
 import commands.moderation.multicolor.CmdMultiColor;
 import commands.music.CmdMusic;
 import commands.utils.CmdClear;
@@ -213,6 +214,8 @@ public class Main {
 		CommandHandler.commands.put("clearpm", new CmdClearPMs());
 		CommandHandler.commands.put("vkick", new CmdVoiceKick());
 		CommandHandler.commands.put("reload", new CmdReload());
+		CommandHandler.commands.put("tban", new CmdTimeBan());//TODO add to webpage
+		CommandHandler.commands.put("timeban", new CmdTimeBan());
 	}
 	
 	public static void loadRichPresence(JDAImpl jda) { //JDA object can be casted to a JDAImpl

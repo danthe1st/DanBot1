@@ -24,7 +24,7 @@ public class CmdRole implements Command{
 				}
 				
 			}
-			event.getGuild().getController().addRolesToMember(event.getGuild().getMember(event.getAuthor()), roles);
+			event.getGuild().getController().addRolesToMember(event.getGuild().getMember(event.getAuthor()), roles).queue();
 			return;
 		}
 		if( !(PermsCore.check(event, "role")) ) {

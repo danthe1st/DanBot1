@@ -13,7 +13,7 @@ public class CmdSay implements Command {
 		if(!PermsCore.check(event, "say")) {
 			return;
 		}		
-		if(args.length<0) {
+		if(args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), "not anough arguments");
 		}
 		String msg="";

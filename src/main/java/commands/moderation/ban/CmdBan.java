@@ -1,4 +1,4 @@
-package commands.moderation;
+package commands.moderation.ban;
 
 import net.dv8tion.jda.core.entities.Member;
 

@@ -11,8 +11,12 @@ public class ListWrapper<E> {
 	public ListWrapper() {
 		setData(new ArrayList<>());
 	}
+//	public ListWrapper(ArrayList<E> data) {
+//		this.setData(data);
+//	}
+	
 	public ListWrapper(List<E> data) {
-		this.setData(data);
+		this.data=new ArrayList<>(data);
 	}
 	public List<E> getData() {
 		return data;

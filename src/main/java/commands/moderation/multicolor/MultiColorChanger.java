@@ -124,11 +124,10 @@ public final class MultiColorChanger implements Runnable{
 		}
 		try {
 			JAXBContext context = JAXBContext
-			        .newInstance(MapWrapper.class);
+			        .newInstance(ListWrapper.class);
 			Marshaller m = context.createMarshaller();
 	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-	        m.marshal(new ListWrapper<>(ids), file);
+	        m.marshal(new ListWrapper<Long>(ids), file);
 		} catch (JAXBException e) {
 			
 		}
