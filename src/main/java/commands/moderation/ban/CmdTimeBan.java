@@ -99,7 +99,7 @@ public class CmdTimeBan implements Command{
 			}
 		}
 		//									ms	 s	 min	 h
-		return   System.currentTimeMillis()+1000*60*(min+60+(h+24*d));
+		return   System.currentTimeMillis()+1000*60*(min+60*(h+24*d));
 	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ban")) {
