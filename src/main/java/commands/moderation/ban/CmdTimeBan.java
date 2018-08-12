@@ -11,24 +11,22 @@ import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
- * Command to ban a {@link Member}
+ * Command to ban a {@link Member} until a specified time expires
  * @author Daniel Schmid
- *
  */
-public class CmdTimeBan implements Command{//TODO
-	//private String[] toTry=new String[] {"DD:HH:mm"};
+public class CmdTimeBan implements Command{
 	private long getBanTime(String time) {
 		int d=0;
 		int h=0;
 		int min=0;
 		
-		//Minuten
+		//days
 		int posEnde=time.indexOf(":");
 		if (posEnde==-1) {
 			posEnde=time.length();
 		}
 		int posAnfang=0;
-		//suche Minutenstring
+		//get day-String
 		String sH="";
 		try {
 			sH=time.substring(posAnfang,posEnde);
@@ -38,7 +36,7 @@ public class CmdTimeBan implements Command{//TODO
 		catch (Exception e) {
 			
 		}
-		//parse Minutenstring
+		//parse day-String
 		
 		try {
 			d=Integer.parseInt(sH);
@@ -48,7 +46,7 @@ public class CmdTimeBan implements Command{//TODO
 		}
 		
 		if (posEnde<time.length()) {
-			//Sekunden
+			//hours
 			posAnfang=posEnde+1;
 			String substr=time.substring(posAnfang);
 			int colonIndex=substr.indexOf(":");
@@ -60,7 +58,7 @@ public class CmdTimeBan implements Command{//TODO
 			}
 			
 			
-			//suche Sekundenstring
+			//get h-String
 			String sSek="";
 			try {
 				sSek=time.substring(posAnfang,posEnde);
@@ -68,7 +66,7 @@ public class CmdTimeBan implements Command{//TODO
 			}
 			catch (Exception e) {
 			}
-			//parse Sekundenstring
+			//parse h-String
 			
 			try {
 				h=Integer.parseInt(sSek);
@@ -77,11 +75,11 @@ public class CmdTimeBan implements Command{//TODO
 			catch (Exception e) {
 			}
 			
-			//Zehntelsekunden
+			//minutes
 			if (posEnde<time.length()) {
 				posAnfang=posEnde+1;
 				posEnde=time.length();
-				//suche Zehntelsekundenstring
+				//get min-String
 				String sZSek="";
 				try {
 					sZSek=time.substring(posAnfang,posEnde);
@@ -91,7 +89,7 @@ public class CmdTimeBan implements Command{//TODO
 				}
 				
 				
-				//parse Zehntelsekundenstring
+				//parse min-String
 				try {
 					min=Integer.parseInt(sZSek);
 				} catch (NumberFormatException e) {
@@ -102,22 +100,7 @@ public class CmdTimeBan implements Command{//TODO
 		}
 		//									ms	 s	 min	 h
 		return   System.currentTimeMillis()+1000*60*(min+60+(h+24*d));
-		//return ((d*60+h)*60+min)*1000+System.currentTimeMillis();
-		
-//		for (String string : toTry) {
-//			DateFormat formatter = new SimpleDateFormat(string);
-//			try {
-//				return formatter.parse(time).getTime()+System.currentTimeMillis();
-//			} catch (ParseException e) {
-//			}
-//		}
-//		return -1;
 	}
-	
-
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ban")) {
 			return;
@@ -138,7 +121,6 @@ public class CmdTimeBan implements Command{//TODO
 			reason="";
 			for (int i = argCount; i < args.length; i++) {
 				reason=reason+args[i];
-				
 			}
 		}
 		if (reason==null||reason.equals("")) {

@@ -14,12 +14,6 @@ import util.STATIC;
  *
  */
 public class CmdBan implements Command{
-
-	
-
-	/**
-	 * Der Befehl selbst(siehe help)
-	 */
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ban")) {
 			return;
