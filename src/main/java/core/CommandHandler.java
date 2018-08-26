@@ -35,19 +35,6 @@ public class CommandHandler {
 		}
 		else{
 			STATIC.errmsg(cmd.event.getTextChannel(), "That Command is not not known.");
-//			final Message msg=cmd.event.getTextChannel().sendMessage(
-//					new EmbedBuilder()
-//					.setDescription("That Command is not not known.")
-//					.setColor(Color.red)
-//					.build()).complete();
-//			new Timer().schedule(new TimerTask() {
-//				
-//				@Override
-//				public void run() {
-//					msg.delete().queue();
-//					
-//				}
-//			}, STATIC.INFO_TIMEOUT);
 		}
 	}
 }

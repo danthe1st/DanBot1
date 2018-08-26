@@ -1,6 +1,5 @@
 package listeners;
 
-import core.Main;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -18,9 +17,9 @@ public class ReadyListener extends ListenerAdapter {
 		System.out.println("\nThis Bot is running on following servers: \n");
 		for (final Guild g : event.getJDA().getGuilds()) {
 			System.out.println(STATIC.getServerData(g));
-			try {
-				g.getController().setNickname(g.getMember(event.getJDA().getSelfUser()), Main.getNickname()).queue();
-			} catch (Exception e) {}
+//			try {
+//				g.getController().setNickname(g.getMember(event.getJDA().getSelfUser()), Main.getNickname()).queue();
+//			} catch (Exception e) {}
 		}
 		//preload Data
 		commands.botdata.CmdAutoChannel.load(event.getJDA());

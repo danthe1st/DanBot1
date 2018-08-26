@@ -34,7 +34,7 @@ public class AutoUnbanner {
 		synchronized (unbans) {
 			unbans.forEach((k,v)->{
 				if (k.longValue()<System.currentTimeMillis()) {
-					for (User user : v.user(jda)) {
+					for (String user : v.user()) {
 						v.guild(jda).getController().unban(user).queue();
 						
 						toRemove.add(k);
@@ -64,16 +64,19 @@ public class AutoUnbanner {
 			timer=new Timer();
 			long delay=time-System.currentTimeMillis();
 			if (delay<0) {
-				for (User user : unban.user(jda)) {
+				for (String user : unban.user()) {
 					unban.guild(jda).getController().unban(user).queue();
 				}
 			}
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					for (User user : unban.user(jda)) {
+					for (String user : unban.user()) {
 						unban.guild(jda).getController().unban(user).queue();
 					}
+					unbans.remove(time);
+					saveUnBans();
+					
 				}
 			},delay);
 		}
@@ -123,6 +126,8 @@ public class AutoUnbanner {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
+				System.out.println("cannot create File unbans.xml");
+				return;
 			}
 		}
 		try {

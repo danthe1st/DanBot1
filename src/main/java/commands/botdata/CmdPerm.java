@@ -180,9 +180,9 @@ public class CmdPerm implements Command{
 	}
 	@Override
 	public String help(String prefix) {
-		return "get, set, reset, reload or change a DanBot1-Permission Role Permissions\n"
+		return "get, set, remove, reset, reload or change a DanBot1-Permission Role Permissions\n"
 				+ "(see *perm* Permissions in Command perm get)\n"
-				+"*Syntax*: "+prefix+"perm get/show, reload, reset, set <PermissionName> <Permission groups>, changeRole <old Role> <new Role>";
+				+"*Syntax*: "+prefix+"perm get/show, reload, reset, set <Permission name> <Permission groups>,remove/rem <Permission name> (<Permission groups), changeRole <old Role> <new Role>";
 	}
 	@Override
 	public String getCommandType() {

@@ -17,7 +17,7 @@ public interface Command {
 	 * returns if the Command is blocked or something
 	 * @param args the Command-Arguments
 	 * @param event The {@link MessageReceivedEvent} of the incoming {@link Message}
-	 * @return false if Command should be executed, else true
+	 * @return true if Command should be executed, else false
 	 */
 	public default boolean allowExecute(String[] args, MessageReceivedEvent event) {
 		return true;

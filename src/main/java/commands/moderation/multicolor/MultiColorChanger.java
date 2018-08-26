@@ -16,7 +16,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import util.ListWrapper;
-import util.MapWrapper;
 import util.STATIC;
 /**
  * Core Command for multicolor System
@@ -26,8 +25,9 @@ public final class MultiColorChanger implements Runnable{
 
 	private List<Role> roles=new ArrayList<>();
 	private Color[] colers= {
-			Color.red,Color.green,Color.yellow
-			
+			Color.red,Color.green,Color.yellow,
+			//orange									//turquise
+			new Color(0xff6a00),Color.BLUE,Color.PINK,new Color(0x00cbff)
 	};
 	private static MultiColorChanger changer=new MultiColorChanger();
 	private MultiColorChanger() {
@@ -79,7 +79,7 @@ public final class MultiColorChanger implements Runnable{
 	public static void loadRoles(JDA jda) {
 		try {
 			final File file=new File(STATIC.getSettingsDir()+"/multicolorRoles.xml");
-			JAXBContext context=JAXBContext.newInstance(MapWrapper.class);
+			JAXBContext context=JAXBContext.newInstance(ListWrapper.class);
 			 Unmarshaller um = context.createUnmarshaller();
 
 		        // Reading XML from the file and unmarshalling.
@@ -96,17 +96,6 @@ public final class MultiColorChanger implements Runnable{
 				}
 		} catch (JAXBException e) {
 		}
-		
-		
-//		@SuppressWarnings("unchecked")
-//		List<Long> ids=(List<Long>) STATIC.load("multiColorRoles.dat");
-//		if (ids==null) {
-//			return;
-//		}
-//		changer.roles.clear();
-//		for (Long id : ids) {
-//			changer.roles.add(jda.getRoleById(id.longValue()));
-//		}
 	}
 	public static void saveRoles() {
 		List<Long> ids=new ArrayList<>();
@@ -131,7 +120,5 @@ public final class MultiColorChanger implements Runnable{
 		} catch (JAXBException e) {
 			
 		}
-		
-		//STATIC.save("multiColorRoles.dat", ids);
 	}
 }

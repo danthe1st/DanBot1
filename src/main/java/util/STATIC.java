@@ -222,6 +222,9 @@ public final class STATIC {
 			if (member==null) {
 				List<Member> membersLocal=msg.getGuild().getMembersByEffectiveName(args[i], true);
 				if (!membersLocal.isEmpty()) {
+					membersLocal=msg.getGuild().getMembersByName(args[i], true);
+				}
+				if (!membersLocal.isEmpty()) {
 					member=membersLocal.get(0);
 				}
 			}

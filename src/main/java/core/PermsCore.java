@@ -53,4 +53,29 @@ public class PermsCore {
 		}
 		return false;
 	}
+	/**
+	 * tests if the Author of a Message is the Developer of this Bot<br>
+	 * if not an errormessage will be sent.
+	 * @param event the {@link MessageReceivedEvent} of the Message
+	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
+	 */
+	public static boolean checkOwner(MessageReceivedEvent event) {
+		return checkOwner(event, true);
+	}
+	/**
+	 * tests if the Author of a Message is the Developer of this Bot<br
+	 * if forbidden and doErrMsg is true an errormessage will be sent.
+	 * @param event the {@link MessageReceivedEvent} of the Message
+	 * @param doErrMsg should an Error-Message be sent?
+	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
+	 */
+	public static boolean checkOwner(MessageReceivedEvent event,boolean doErrMsg) {
+		if(event.getAuthor().getId().equals("358291050957111296")||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
+			return true;
+		}
+		if (doErrMsg) {
+			STATIC.errmsg(event.getTextChannel(),"You need to be the developer of the Bot to do this!");
+		}
+		return false;
+	}
 }

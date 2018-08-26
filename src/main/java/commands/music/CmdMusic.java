@@ -251,7 +251,6 @@ public class CmdMusic implements Command{
 				+ "shuffle the music OR\n"
 				+ "get info about the track you are listening OR\n"
 				+ "list the queue\n"
-				+ "*WARNING: this does not work with any YouTube-Video, just try it*\n"
 				+ "(see Permission *playMusic* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"music play/p (<number of Tracks you want to Play>) <URL of the video>/<search term>, skip/s, stop, shuffle, now/info, queue";
 	}

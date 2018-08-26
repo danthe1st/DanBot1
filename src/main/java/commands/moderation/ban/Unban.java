@@ -13,6 +13,9 @@ public class Unban{
 	private String guild;
 	private String[] user;
 	public Unban(Guild guild,User... user) {
+		if (user==null) {
+			throw new IllegalArgumentException("no user defined");
+		}
 		this.setGuild(guild.getId());
 		this.user=new String[user.length];
 		for (int i = 0; i < user.length; i++) {
@@ -26,12 +29,13 @@ public class Unban{
 	public Guild guild(JDA jda) {
 		return jda.getGuildById(getGuild());
 	}
-	public User[] user(JDA jda) {
-		User[] users=new User[this.user.length];
-		for (int i = 0; i < user.length; i++) {
-			users[i]=jda.getUserById(user[i]);
-		}
-		return users;
+	public String[] user() {
+		return user.clone();
+//		User[] users=new User[this.user.length];
+//		for (int i = 0; i < user.length; i++) {
+//			users[i]=jda.getUserById(user[i]);
+//		}
+//		return users;
 	}
 	public String getGuild() {
 		return guild;

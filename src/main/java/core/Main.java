@@ -45,6 +45,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.WebSocketCode;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.JDAImpl;
 /**
  * <b>Main-Class</b><br>
@@ -67,6 +68,7 @@ public class Main {
 	}
 	
 	public static void main(final String[] args) {
+		
 		Main.args=args;
 		JDA jda = null;
 		for (String arg : args) {
@@ -151,15 +153,16 @@ public class Main {
 				builder.setToken(token);	
 				builder.setAutoReconnect(true);
 				builder.setStatus(status);
-				//builder.setGame(Game.playing(game));
+				builder.setGame(Game.playing(game));
 				
 				builder.setRequestTimeoutRetry(true);
 				
 				initListeners(builder);
-				addCommands();
+				
 				
 				try {
 					jda=builder.build();
+					addCommands();
 					jda.awaitReady();
 					jda.addEventListener(new AutoRoleListener(jda));
 					loadRichPresence((JDAImpl) jda);
@@ -177,6 +180,10 @@ public class Main {
 				}
 				break;
 			}
+			
+			
+			
+			
 		
 	}
 	/**

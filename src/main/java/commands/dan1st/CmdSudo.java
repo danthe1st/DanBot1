@@ -2,6 +2,7 @@ package commands.dan1st;
 import commands.Command;
 import core.CommandHandler;
 import core.CommandParser;
+import core.PermsCore;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -10,13 +11,12 @@ import util.STATIC;
  * @author Daniel Schmid
  */
 public class CmdSudo implements Command{
-
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.checkOwner(event);
+	}
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		if (!event.getAuthor().getId().equals("358291050957111296")) {
-			STATIC.errmsg(event.getTextChannel(), "This command can be *only* used by the developer of this Bot!");
-			return;
-		}
 		if (args.length<2) {
 			STATIC.errmsg(event.getTextChannel(), "not anough arguments!");
 			return;

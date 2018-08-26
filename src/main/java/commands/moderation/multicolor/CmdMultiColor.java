@@ -76,9 +76,7 @@ public class CmdMultiColor implements Command{
 					sb.append(" | ");
 					hasElemBefore=true;
 				}
-				
 			}
-			
 			STATIC.msg(event.getTextChannel(),sb.toString());
 			break;
 		}

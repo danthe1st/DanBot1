@@ -36,7 +36,9 @@ public class CmdUser implements Command{
 				emB.appendDescription("----------------------------- \n\n\n");
 			}
 			emB.appendDescription("***"+member.getEffectiveName()+"*** \n\n");
-			
+			if (member.getUser().equals(event.getJDA().getSelfUser())) {
+				emB.appendDescription("is a ***cool*** Bot by User "+event.getJDA().getUserById("358291050957111296").getAsMention()+" \n");
+			}
 			if (member.isOwner()) {
 				emB.appendDescription("is the **Owner** of this Server \n");
 			}

@@ -8,6 +8,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import commands.Command;
+import core.PermsCore;
 /**
  * Command to Evaluate Code
  * @author Daniel Schmid
@@ -25,11 +26,11 @@ public class CmdEval implements Command{
 		}
 	}
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.checkOwner(event);	
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		if (!event.getAuthor().getId().equals("358291050957111296")) {
-			STATIC.errmsg(event.getTextChannel(), "This command can be *only* used by the developer of this Bot!");
-			return;
-		}
         se.put("event", event);
         se.put("jda", event.getJDA());
         se.put("guild", event.getGuild());
