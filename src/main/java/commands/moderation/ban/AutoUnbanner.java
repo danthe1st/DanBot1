@@ -66,6 +66,16 @@ public class AutoUnbanner {
 			if (delay<0) {
 				for (String user : unban.user()) {
 					unban.guild(jda).getController().unban(user).queue();
+					User JDAUser=jda.getUserById(user);
+					String inv=STATIC.createInvite(jda.getGuildById(unban.getGuild()));
+					if (JDAUser!=null) {
+						String msg="Your timeban from the Server "+unban.getGuild()+" ran out";
+						if (inv!=null) {
+							msg+="Invite: "+inv;
+						}
+						JDAUser.openPrivateChannel().complete().sendMessage(msg).queue();
+					}
+					
 				}
 			}
 			timer.schedule(new TimerTask() {

@@ -626,7 +626,9 @@ public final class STATIC {
 	 * @return the URL of the {@link Invite}
 	 */
 	public static String createInvite(Guild g) {
-		
+		if (g==null) {
+			return null;
+		}
 		try {		
 			for (Invite inv : g.getInvites().complete()) {
 				if (!inv.isExpanded()) {
