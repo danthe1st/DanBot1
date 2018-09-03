@@ -92,7 +92,11 @@ public final class MultiColorChanger implements Runnable{
 				}
 				changer.roles.clear();
 				for (Long id : ids) {
-					changer.roles.add(jda.getRoleById(id.longValue()));
+					Role role=jda.getRoleById(id.longValue());
+					if (role!=null) {
+						changer.roles.add(role);
+					}
+					
 				}
 		} catch (JAXBException e) {
 		}
