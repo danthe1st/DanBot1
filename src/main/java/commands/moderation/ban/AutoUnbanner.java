@@ -35,8 +35,8 @@ public class AutoUnbanner {
 			unbans.forEach((k,v)->{
 				if (k.longValue()<System.currentTimeMillis()) {
 					for (String user : v.user()) {
-						v.guild(jda).getController().unban(user).queue();
-						
+						//v.guild(jda).getController().unban(user).queue();
+						unban(v.guild(jda), user);
 						toRemove.add(k);
 						
 					}
@@ -65,16 +65,9 @@ public class AutoUnbanner {
 			long delay=time-System.currentTimeMillis();
 			if (delay<0) {
 				for (String user : unban.user()) {
-					unban.guild(jda).getController().unban(user).queue();
-					User JDAUser=jda.getUserById(user);
-					String inv=STATIC.createInvite(jda.getGuildById(unban.getGuild()));
-					if (JDAUser!=null) {
-						String msg="Your timeban from the Server "+unban.getGuild()+" ran out";
-						if (inv!=null) {
-							msg+="Invite: "+inv;
-						}
-						JDAUser.openPrivateChannel().complete().sendMessage(msg).queue();
-					}
+					//unban.guild(jda).getController().unban(user).queue();
+					unban(unban.guild(jda), user);
+					
 					
 				}
 			}
@@ -82,7 +75,8 @@ public class AutoUnbanner {
 				@Override
 				public void run() {
 					for (String user : unban.user()) {
-						unban.guild(jda).getController().unban(user).queue();
+						//unban.guild(jda).getController().unban(user).queue();
+						unban(unban.guild(jda), user);
 					}
 					unbans.remove(time);
 					saveUnBans();
@@ -91,10 +85,24 @@ public class AutoUnbanner {
 			},delay);
 		}
 	}
+	private  void unban(Guild g,String user) {
+		g.getController().unban(user).queue();
+		System.out.println("unbanned user with id ["+user+"] from guild "+g.getName());
+		User JDAUser=jda.getUserById(user);
+		String inv=STATIC.createInvite(g);
+		if (JDAUser!=null) {
+			String msg="Your timeban from the Server "+g.getName()+" ran out";
+			if (inv!=null) {
+				msg+="Invite: "+inv;
+			}
+			JDAUser.openPrivateChannel().complete().sendMessage(msg).queue();
+		}
+	}
 	public static void addUnBan(Guild g,User user,long systime) {
 		
 		Unban unban=new Unban(g, user);
 		boolean needreload;
+		getUnbanner(user.getJDA());
 		synchronized (unbanner.unbans) {
 			getUnbanner(g.getJDA()).unbans.put(Long.valueOf(systime), unban);
 			needreload=unbanner.unbans.get(unbanner.unbans.firstKey())==unban;
@@ -118,15 +126,15 @@ public class AutoUnbanner {
 		try {
 			final File file=new File(STATIC.getSettingsDir()+"/unbans.xml");
 			JAXBContext context=JAXBContext.newInstance(MapWrapper.class,Unban.class);
-			 Unmarshaller um = context.createUnmarshaller();
+			Unmarshaller um = context.createUnmarshaller();
 
 		        // Reading XML from the file and unmarshalling.
-			 @SuppressWarnings("unchecked")
-			 MapWrapper<Long,Unban> data = (MapWrapper<Long,Unban>) um.unmarshal(file);
-			 getUnbanner(jda).unbans=new TreeMap<>(data.getData());
-			 if (!unbanner.unbans.isEmpty()) {
-				 unbanner.reloadTimer();
-			 }
+			@SuppressWarnings("unchecked")
+			MapWrapper<Long,Unban> data = (MapWrapper<Long,Unban>) um.unmarshal(file);
+			getUnbanner(jda).unbans=new TreeMap<>(data.getData());
+			if (!unbanner.unbans.isEmpty()) {
+				unbanner.reloadTimer();
+			}
 		} catch (JAXBException e) {
 		}
 	}

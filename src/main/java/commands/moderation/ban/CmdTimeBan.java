@@ -132,7 +132,7 @@ public class CmdTimeBan implements Command{
 				event.getGuild().getController().ban(user,0, reason).queue();
 				AutoUnbanner.addUnBan(event.getGuild(), user.getUser(), time);
 			} catch (Exception e) {
-				STATIC.errmsg(event.getTextChannel(), "unknown Error banning user "+user.getNickname());
+				STATIC.errmsg(event.getTextChannel(), "unknown Error banning user "+user.getEffectiveName());
 			}
 		}
 	}
