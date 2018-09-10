@@ -38,7 +38,7 @@ public class CmdClear implements Command {
 				try {
 					final MessageHistory history=new MessageHistory(event.getTextChannel());
 					List<Message>msgs;
-					event.getMessage().delete().queue();
+					event.getMessage().delete().reason("autodelete").queue();
 					
 					msgs=history.retrievePast(num).complete();
 					int numMsgs=msgs.size();

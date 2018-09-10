@@ -56,7 +56,6 @@ public class Main {
 	private static boolean stoppable=true;
 	private static String game=System.getProperty("game");
 	private static OnlineStatus status=OnlineStatus.ONLINE;
-	private static String nickname="DanBot1";
 	private static String token=System.getProperty("token");
 	private static final Scanner scan=new Scanner(System.in);
 	private static String[] args;
@@ -98,10 +97,6 @@ public class Main {
 			default:
 				if (arg.toLowerCase().startsWith("game=")) {
 					game=arg.replaceAll("_", " ").substring(5);
-					continue;
-				}
-				else if (arg.toLowerCase().startsWith("nickname=")||arg.toLowerCase().startsWith("name=")) {
-					nickname=arg.replaceAll("_", " ").substring(arg.indexOf("="));
 					continue;
 				}
 				else if (arg.toLowerCase().startsWith("token=")) {
@@ -224,7 +219,10 @@ public class Main {
 		CommandHandler.commands.put("tban", new CmdTimeBan());
 		CommandHandler.commands.put("timeban", new CmdTimeBan());
 	}
-	
+	/**
+	 * should load a RichPresence, but unfortunatly this doesn't work.
+	 * @param jda the Representation of the <b>Java Discord API</b> as {@link JDAImpl}
+	 */
 	public static void loadRichPresence(JDAImpl jda) { //JDA object can be casted to a JDAImpl
         JSONObject obj = new JSONObject();
         JSONObject gameObj = new JSONObject();
@@ -271,12 +269,17 @@ public class Main {
 	private static void initListeners(final JDABuilder builder) {
 		builder.addEventListener(new ReadyListener(),new VoiceListener(),new CommandListener(),new AutoChannelHandler(),new GuildChangeListener());
 	}
+	/**
+	 * tests if the Bot is stoppable
+	 * @return <code>true</code> if it s stoppable
+	 */
 	public static boolean getStopable(){
 		return stoppable;
 	}
-	public static String getNickname() {
-		return nickname;
-	}
+	/**
+	 * get the Program arguments the Bot is started with.
+	 * @return
+	 */
 	public static String[] getArgs() {
 		return args;
 	}

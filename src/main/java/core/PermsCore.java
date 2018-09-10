@@ -130,14 +130,6 @@ public class PermsCore {
 		}
 		return false;
 	}
-	
-	
-	
-	
-	
-	//TODO copy dat to xml/reload it, testing
-	
-	
 	/**
 	 * gets guild-local Permission info using a specified permission name
 	 * @param g The {@link Guild} from the Permission
@@ -340,6 +332,12 @@ public class PermsCore {
 			loadPerms(g);
 		}
 	}
+	/**
+	 * get the ISnowflake Id from a role name or null if the Role doesn't exist
+	 * @param name the name of the Role
+	 * @param g the Guild the Role is in
+	 * @return the id of the role or <code>null</code>
+	 */
 	public static String getRoleFromName(String name,Guild g) {
 		if (name.equals("*")) {
 			return name;
@@ -354,6 +352,12 @@ public class PermsCore {
 		}
 		return role.getId();
 	}
+	/**
+	 * get the ISnowflake Ids from an Array of role names 
+	 * @param names the Array of role names
+	 * @param g the Guild the Roles are in
+	 * @return the ids of the roles represented by a {@link String} array
+	 */
 	public static String[] getRolesFromNames(String[] names,Guild g) {
 		List<String> roleIds=new ArrayList<>();
 		for (String role : names) {
@@ -366,27 +370,16 @@ public class PermsCore {
 		
 		return roleIds.toArray(new String[roleIds.size()]);
 	}
+	/**
+	 * gets the standard Permissions for a Guild specified as ISnowflake ids
+	 * @param g the {@link Guild}
+	 * @return the standard-permissions for the guild
+	 */
 	private static Map<String, String[]> getStdPermsAsIds(Guild g){
 		Map<String, String[]> perms=new HashMap<>();
 		STD_PERMS.forEach((permName,permData)->{
 			perms.put(permName, getRolesFromNames(permData, g));
 		});
 		return perms;
-	}
-	public static void permReload(JDA jda) {
-		for (Guild g : jda.getGuilds()) {
-			Map<String, String[]> oldPerms=STATIC.getOldPerms(g);
-		
-						
-			if (oldPerms==null) {
-				continue;
-			}
-			Map<String, String[]> perms=new HashMap<>();
-			oldPerms.forEach((permName,permData)->{
-				perms.put(permName, getRolesFromNames(permData, g));
-			});
-			PermsCore.perms.put(g.getId(), perms);
-			savePerms(g);
-		}
 	}
 }

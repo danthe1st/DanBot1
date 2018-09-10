@@ -37,11 +37,10 @@ public class CmdClearPMs implements Command {
 					int numMsgs=0;
 					for (Message message : msgs) {
 						try {
-							message.delete().queue();
+							message.delete().reason("commanded by user").queue();
 							numMsgs++;
 						} catch (Exception e) {
 						}
-						
 					}
 					STATIC.msg(event.getTextChannel(), "Deleting "+numMsgs+" messages", true);
 				}
@@ -50,7 +49,6 @@ public class CmdClearPMs implements Command {
 				}
 			 }
 			 else {
-				 
 				STATIC.errmsg(event.getTextChannel(), "enter a number beetween 2 and 100");
 			 }
 		}
