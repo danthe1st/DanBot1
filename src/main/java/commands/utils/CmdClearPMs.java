@@ -54,9 +54,9 @@ public class CmdClearPMs implements Command {
 				STATIC.errmsg(event.getTextChannel(), "enter a number beetween 2 and 100");
 			 }
 		}
-		//else {
-			//STATIC.errmsg(event.getTextChannel(),"Not enough arguments, a number is needed.");
-		//}
+		else {
+			STATIC.errmsg(event.getTextChannel(),"Not enough arguments, a number is needed.");
+		}
 	}
 
 	@Override
