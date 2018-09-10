@@ -282,7 +282,7 @@ public class PermsCore {
 				perms.get(g.getId()).put(permName, permsNew);
 				savePerms(g);
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {e.printStackTrace();}
 	}
 	private static final String saveName="perms.dat";
 	/**
@@ -305,7 +305,7 @@ public class PermsCore {
 			} catch (IOException e) {
 			}
 		}
-		STATIC.save(g.getId()+saveName, guildPerms);
+		STATIC.save(g.getId()+"/"+saveName, guildPerms);
 	}
 	/**
 	 * Loads the Permissions of a {@link Guild}
@@ -321,7 +321,7 @@ public class PermsCore {
 		if (!file.exists()) {
 			return;
 		}
-		perms.put(g.getId(), (Map<String, String[]>) STATIC.load(g.getId()+saveName));
+		perms.put(g.getId(), (Map<String, String[]>) STATIC.load(g.getId()+"/"+saveName));
 	}
 	/**
 	 * loads the Permissions of all {@link Guild}s
