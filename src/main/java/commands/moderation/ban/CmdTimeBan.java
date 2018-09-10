@@ -139,7 +139,6 @@ public class CmdTimeBan implements Command{
 	public String help(String prefix) {
 		return "bans a user (see Permission *ban* in Command perm get)\n"
 				+ "the time should be in the format *days*, *days:hours* or *days:hours:minutes* without whitespaces(only numbers and colons).\n"
-				+ "***WORKING IN PROCESS***\n"
 				+"*Syntax*: "+prefix+"tban <time> <victim> (<reason>)";
 	}
 	@Override
