@@ -221,7 +221,7 @@ public class Main {
 		CommandHandler.commands.put("clearpm", new CmdClearPMs());
 		CommandHandler.commands.put("vkick", new CmdVoiceKick());
 		CommandHandler.commands.put("reload", new CmdReload());
-		CommandHandler.commands.put("tban", new CmdTimeBan());//TODO add to webpage
+		CommandHandler.commands.put("tban", new CmdTimeBan());
 		CommandHandler.commands.put("timeban", new CmdTimeBan());
 	}
 	

@@ -17,6 +17,7 @@ import java.util.TimerTask;
 
 import commands.moderation.ban.AutoUnbanner;
 import commands.moderation.multicolor.MultiColorChanger;
+import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -253,33 +254,33 @@ public final class STATIC {
 	public static String getPrefixExcaped(final Guild g) {
 		return escapeDiscordMarkup(getPrefix(g));
 	}
-	/**
-	 * gets guild-local Permission info using a specified permission name
-	 * @param g The {@link Guild} from the Permission
-	 * @param permName The name of the Permission
-	 * @return A String[] of the Role names which have the Permission
-	 */
-	public static String[] getPerm(Guild g, String permName) {
-		
-		try {
-			//loadPerms(g);
-			if(permsLocal.get(g)!=null) {
-				if (permsLocal.get(g).get(permName)==null) {
-					permsLocal.get(g).put(permName, new String[] {""});
-				}
-				return permsLocal.get(g).get(permName);
-			}
-		} catch (Exception e) {
-		}
-		
-		return PERMS.get(permName);
-	}
-	/**
-	 * gets the Permissions of a {@link Guild}
-	 * @param g The Guild(Discord-Server)
-	 * @return A {@link Map} of the Permissions
-	 */
-	public static Map<String, String[]> getPerms(Guild g) {
+//	/**
+//	 * gets guild-local Permission info using a specified permission name
+//	 * @param g The {@link Guild} from the Permission
+//	 * @param permName The name of the Permission
+//	 * @return A String[] of the Role names which have the Permission
+//	 */
+//	public static String[] getPerm(Guild g, String permName) {
+//		
+//		try {
+//			//loadPerms(g);
+//			if(permsLocal.get(g)!=null) {
+//				if (permsLocal.get(g).get(permName)==null) {
+//					permsLocal.get(g).put(permName, new String[] {""});
+//				}
+//				return permsLocal.get(g).get(permName);
+//			}
+//		} catch (Exception e) {
+//		}
+//		
+//		return PERMS.get(permName);
+//	}
+//	/**
+//	 * gets the Permissions of a {@link Guild}
+//	 * @param g The Guild(Discord-Server)
+//	 * @return A {@link Map} of the Permissions
+//	 */
+	public static Map<String, String[]> getOldPerms(Guild g) {
 		
 		try {
 			//loadPerms(g);
@@ -290,105 +291,105 @@ public final class STATIC {
 		
 		return PERMS;
 	}
-	/**
-	 * resets the Permissions for a Guild
-	 * @param g The Guild(Discord-Server)
-	 */
-	public static void resetPerms(Guild g) {
-		permsLocal.put(g, PERMS);
-		savePerms(g);
-	}
-	/**
-	 * deletes a <b>userdefined</b> Permission in a {@link Guild}
-	 * @param g The Guild(Discord-Server)
-	 * @param permName The name of the Permission which should be deleted
-	 * @return true if something changed
-	 */
-	public static boolean removePerm(Guild g, String permName) {
-		if (permsLocal.get(g).containsKey(permName)) {
-			if (PERMS.containsKey(permName)) {
-				return false;
-			}
-			permsLocal.get(g).remove(permName);
-			savePerms(g);
-			return true;
-		}
-		return false;
-	}
-	/**
-	 * replaces all occurencies of a Role to an another Role in a specified {@link Guild}
-	 * @param g The Guild(Discord-Server)
-	 * @param roleToChange The name of the Role should be replaced
-	 * @param newRole The name of the Role to Replace with
-	 */
-	public static void chRole(Guild g, String roleToChange, String newRole) {
-		//loadPerms(g);
-		for (String[] perm : permsLocal.get(g).values()) {
-			for (int i = 0; i < perm.length; i++) {
-				if (perm[i].equals(roleToChange)) {
-					perm[i]=newRole;
-				}
-			}
-		}
-		savePerms(g);
-	}
-	/**
-	 * reloads new Permissions(came with a Bot Update)
-	 * @param g the {@link Guild} to Reload
-	 */
-	public static void reloadPerms(Guild g) {
-		loadPerms(g);
-		HashMap<String, String[]> perms=permsLocal.get(g);
-		if (perms==null) {
-			permsLocal.put(g, PERMS);
-			return;
-		}
-		for (String permName : PERMS.keySet()) {
-			if (!(perms.containsKey(permName))) {
-				perms.put(permName, PERMS.get(permName));
-			}
-		}
-		savePerms(g);
-	}
-	/**
-	 * sets a Permission in a {@link Guild}
-	 * @param g The Guild(Discord-Server)
-	 * @param permName The Name of the Permission
-	 * @param perm The names of the Roles who should have the Permission
-	 */
-	public static void setPerm(Guild g, String permName, String[] perm) {
-		
-		try {
-			//loadPerms(g);
-			if(g!=null) {
-				
-				if (!permsLocal.containsKey(g)) {
-					permsLocal.put(g, PERMS);
-					
-				}
-				permsLocal.get(g).put(permName, perm);
-				
-				int num=0;
-				for (String string : permsLocal.get(g).get(permName)) {
-					if(string!=null) {
-						num++;
-					}
-				}
-				String[] permsNew=new String[num];
-				
-				for (int i = 0,j=0; i < perm.length; i++) {
-					if (perm[i]!=null) {
-						permsNew[j]=perm[i];
-						perm[i]=null;
-						j++;
-						continue;
-					}
-				}
-				permsLocal.get(g).put(permName, permsNew);
-				savePerms(g);
-			}
-		} catch (Exception e) {}
-	}
+//	/**
+//	 * resets the Permissions for a Guild
+//	 * @param g The Guild(Discord-Server)
+//	 */
+//	public static void resetPerms(Guild g) {
+//		permsLocal.put(g, PERMS);
+//		savePerms(g);
+//	}
+//	/**
+//	 * deletes a <b>userdefined</b> Permission in a {@link Guild}
+//	 * @param g The Guild(Discord-Server)
+//	 * @param permName The name of the Permission which should be deleted
+//	 * @return true if something changed
+//	 */
+//	public static boolean removePerm(Guild g, String permName) {
+//		if (permsLocal.get(g).containsKey(permName)) {
+//			if (PERMS.containsKey(permName)) {
+//				return false;
+//			}
+//			permsLocal.get(g).remove(permName);
+//			savePerms(g);
+//			return true;
+//		}
+//		return false;
+//	}
+//	/**
+//	 * replaces all occurencies of a Role to an another Role in a specified {@link Guild}
+//	 * @param g The Guild(Discord-Server)
+//	 * @param roleToChange The name of the Role should be replaced
+//	 * @param newRole The name of the Role to Replace with
+//	 */
+//	public static void chRole(Guild g, String roleToChange, String newRole) {
+//		//loadPerms(g);
+//		for (String[] perm : permsLocal.get(g).values()) {
+//			for (int i = 0; i < perm.length; i++) {
+//				if (perm[i].equals(roleToChange)) {
+//					perm[i]=newRole;
+//				}
+//			}
+//		}
+//		savePerms(g);
+//	}
+//	/**
+//	 * reloads new Permissions(came with a Bot Update)
+//	 * @param g the {@link Guild} to Reload
+//	 */
+//	public static void reloadPerms(Guild g) {
+//		loadPerms(g);
+//		HashMap<String, String[]> perms=permsLocal.get(g);
+//		if (perms==null) {
+//			permsLocal.put(g, PERMS);
+//			return;
+//		}
+//		for (String permName : PERMS.keySet()) {
+//			if (!(perms.containsKey(permName))) {
+//				perms.put(permName, PERMS.get(permName));
+//			}
+//		}
+//		savePerms(g);
+//	}
+//	/**
+//	 * sets a Permission in a {@link Guild}
+//	 * @param g The Guild(Discord-Server)
+//	 * @param permName The Name of the Permission
+//	 * @param perm The names of the Roles who should have the Permission
+//	 */
+//	public static void setPerm(Guild g, String permName, String[] perm) {
+//		
+//		try {
+//			//loadPerms(g);
+//			if(g!=null) {
+//				
+//				if (!permsLocal.containsKey(g)) {
+//					permsLocal.put(g, PERMS);
+//					
+//				}
+//				permsLocal.get(g).put(permName, perm);
+//				
+//				int num=0;
+//				for (String string : permsLocal.get(g).get(permName)) {
+//					if(string!=null) {
+//						num++;
+//					}
+//				}
+//				String[] permsNew=new String[num];
+//				
+//				for (int i = 0,j=0; i < perm.length; i++) {
+//					if (perm[i]!=null) {
+//						permsNew[j]=perm[i];
+//						perm[i]=null;
+//						j++;
+//						continue;
+//					}
+//				}
+//				permsLocal.get(g).put(permName, permsNew);
+//				savePerms(g);
+//			}
+//		} catch (Exception e) {}
+//	}
 	/**
 	 * Loads data of all Guilds
 	 * @param jda The JDA Instance
@@ -396,11 +397,15 @@ public final class STATIC {
 	public static void loadData(JDA jda) {
 		for (Guild guild : jda.getGuilds()) {
 			loadPrefix(guild);
-			loadPerms(guild);
+//			System.out.println("loading Permissions for Guild "+guild.getName()+"...");
+//			loadPerms(guild);
+			
+			PermsCore.loadPerms(guild);
 		}
 		loadCmdLogger();
 		MultiColorChanger.loadRoles(jda);
 		AutoUnbanner.loadUnBans(jda);
+		
 	}
 	/**
 	 * sets the Bot prefix for a Guild
@@ -477,75 +482,75 @@ public final class STATIC {
 			}
 		}
 	}
-	/**
-	 * saves the Permissions of a {@link Guild}
-	 * @param guild The Guild(Discord-Server)
-	 */
-	private static void savePerms(final Guild guild){
-		
-		if (!new File(STATIC.getSettingsDir()+"/"+guild.getId()).exists()) {
-			new File(STATIC.getSettingsDir()+"/"+guild.getId()).mkdirs();
-		}
-		
-		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/perms.dat";
-		File file=new File(saveFile);
-		if(!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-		if(!permsLocal.containsKey(guild)) {
-			final File f=new File(saveFile);
-			f.delete();
-			return;
-		}
-		
-		final HashMap<String, String[]> perms=permsLocal.get(guild);
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(saveFile);
-			final ObjectOutputStream oos=new ObjectOutputStream(fos);
-			oos.writeObject(perms);
-			oos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	/**
-	 * Loads the Permissions of a {@link Guild}
-	 * @param g The Guild(Discord-Server)
-	 */
-	@SuppressWarnings("unchecked")
-	private static void loadPerms(final Guild g) {
-		if (!new File(STATIC.getSettingsDir()+"/"+g.getId()).exists()) {
-			new File(STATIC.getSettingsDir()+"/"+g.getId()).mkdirs();
-		}
-		final File file=new File(STATIC.getSettingsDir()+"/"+g.getId()+"/perms.dat");
-		if (!file.exists()) {
-			if (!permsLocal.containsKey(g)) {
-				permsLocal.put(g, PERMS);
-				savePerms(g);
-			}
-			return;
-		}
-		
-		else {
-			try {
-				final FileInputStream fis=new FileInputStream(file);
-				final ObjectInputStream ois=new ObjectInputStream(fis);
-				permsLocal.put(g, (HashMap<String, String[]>) ois.readObject());
-				ois.close();
-			} catch (IOException|ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			if (!permsLocal.containsKey(g)) {
-				permsLocal.put(g, PERMS);
-				savePerms(g);
-			}
-		}
-	}
+//	/**
+//	 * saves the Permissions of a {@link Guild}
+//	 * @param guild The Guild(Discord-Server)
+//	 */
+//	private static void savePerms(final Guild guild){
+//		
+//		if (!new File(STATIC.getSettingsDir()+"/"+guild.getId()).exists()) {
+//			new File(STATIC.getSettingsDir()+"/"+guild.getId()).mkdirs();
+//		}
+//		
+//		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/perms.dat";
+//		File file=new File(saveFile);
+//		if(!file.exists()) {
+//			try {
+//				file.createNewFile();
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
+//		if(!permsLocal.containsKey(guild)) {
+//			final File f=new File(saveFile);
+//			f.delete();
+//			return;
+//		}
+//		
+//		final HashMap<String, String[]> perms=permsLocal.get(guild);
+//		FileOutputStream fos;
+//		try {
+//			fos = new FileOutputStream(saveFile);
+//			final ObjectOutputStream oos=new ObjectOutputStream(fos);
+//			oos.writeObject(perms);
+//			oos.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	/**
+//	 * Loads the Permissions of a {@link Guild}
+//	 * @param g The Guild(Discord-Server)
+//	 */
+//	@SuppressWarnings("unchecked")
+//	private static void loadPerms(final Guild g) {
+//		if (!new File(STATIC.getSettingsDir()+"/"+g.getId()).exists()) {
+//			new File(STATIC.getSettingsDir()+"/"+g.getId()).mkdirs();
+//		}
+//		final File file=new File(STATIC.getSettingsDir()+"/"+g.getId()+"/perms.dat");
+//		if (!file.exists()) {
+//			if (!permsLocal.containsKey(g)) {
+//				permsLocal.put(g, PERMS);
+//				savePerms(g);
+//			}
+//			return;
+//		}
+//		
+//		else {
+//			try {
+//				final FileInputStream fis=new FileInputStream(file);
+//				final ObjectInputStream ois=new ObjectInputStream(fis);
+//				permsLocal.put(g, (HashMap<String, String[]>) ois.readObject());
+//				ois.close();
+//			} catch (IOException|ClassNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//			if (!permsLocal.containsKey(g)) {
+//				permsLocal.put(g, PERMS);
+//				savePerms(g);
+//			}
+//		}
+//	}
 	/**
 	 * gets the name of the Logger Channel for a {@link Guild}
 	 * @param g The Guild(Discord-Server)
@@ -592,25 +597,19 @@ public final class STATIC {
 		
 		try {		
 			for (Invite inv : g.getInvites().complete()) {
-				if (!inv.isExpanded()) {
-					return inv.getURL();
-				}
+				return inv.getURL();
 			}
 			
 		} catch (InsufficientPermissionException e) {
 			try {
 				for (TextChannel channel : g.getTextChannels()) {
 					for (Invite inv : channel.getInvites().complete()) {
-						if (!inv.isExpanded()) {
-							return inv.getURL();
-						}
+						return inv.getURL();
 					}
 				}
 				for (VoiceChannel channel : g.getVoiceChannels()) {
 					for (Invite inv : channel.getInvites().complete()) {
-						if (!inv.isExpanded()) {
-							return inv.getURL();
-						}
+						return inv.getURL();
 					}
 				}
 			} catch (InsufficientPermissionException e2) {
@@ -629,25 +628,34 @@ public final class STATIC {
 		if (g==null) {
 			return null;
 		}
-		try {		
-			for (Invite inv : g.getInvites().complete()) {
-				if (!inv.isExpanded()) {
-					return inv.getURL();
-				}
-			}
-		} catch (Exception e) {}
+		String invite=getActiveInvite(g);
+		if (invite!=null) {
+			return invite;
+		}
+		return createInvite(g,0);
+	}
+	/**
+	 * creates an {@link Invite} in a Guild.
+	 * @param g The {@link Guild} where an {@link Invite} should be loaded
+	 * @param maxAge the max age of the invite.
+	 * @return the URL of the {@link Invite}
+	 */
+	private static String createInvite(Guild g,int maxAge) {
+		if (g==null) {
+			return null;
+		}
 		try {
-			return g.getDefaultChannel().createInvite().complete().getURL();
+			return g.getDefaultChannel().createInvite().setMaxAge(maxAge).complete().getURL();
 		} catch (Exception e) {}
 		for (TextChannel channel : g.getTextChannels()) {
 			try {
-				return channel.createInvite().setMaxAge(60).complete().getURL();
+				return channel.createInvite().setMaxAge(maxAge).complete().getURL();
 			} catch (Exception e) {}
 		}
 		
 		for (VoiceChannel channel : g.getVoiceChannels()) {
 			try {
-				return channel.createInvite().setMaxAge(60).complete().getURL();
+				return channel.createInvite().setMaxAge(maxAge).complete().getURL();
 			} catch (Exception e) {}
 		}
 		return "";

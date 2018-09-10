@@ -57,7 +57,7 @@ public class CmdEval implements Command{
 	@Override
 	public String help(String prefix) {
 		return "Command to evaluate Code\n"
-				+ "**CAN ONLY BE USED BY *Daniel Schmid***";
+				+ "**CAN ONLY BE USED BY *the programmer***";
 	}
 	@Override
 	public String getCommandType() {

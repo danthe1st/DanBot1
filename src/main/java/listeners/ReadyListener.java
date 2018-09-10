@@ -22,8 +22,11 @@ public class ReadyListener extends ListenerAdapter {
 //			} catch (Exception e) {}
 		}
 		//preload Data
+		System.out.println("Loading data...");
+		
 		commands.botdata.CmdAutoChannel.load(event.getJDA());
 		commands.botdata.CmdVote.loadPolls(event.getJDA());
 		STATIC.loadData(event.getJDA());
+		System.out.println("loaded");
 	}
 }

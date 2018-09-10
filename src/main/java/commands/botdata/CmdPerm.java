@@ -5,6 +5,7 @@ import java.awt.Color;
 import commands.Command;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
@@ -33,14 +34,14 @@ public class CmdPerm implements Command{
 			EmbedBuilder msg=new EmbedBuilder()
 					.setColor(Color.GREEN)
 					.setDescription("**Permissions of Server "+event.getGuild().getName()+":**\n");
-			for (String perm : STATIC.getPerms(event.getGuild()).keySet()) {
+			for (String perm : PermsCore.getPerms(event.getGuild()).keySet()) {
 				msg.appendDescription("**"+perm+"**:\t");
 				boolean hasElementsBefore=false;
-				for (String string : STATIC.getPerm(event.getGuild(), perm)) {
+				for (String string : PermsCore.getPerm(event.getGuild(), perm)) {
 					if (hasElementsBefore) {
 						msg.appendDescription("| ");
 					}
-					msg.appendDescription(string+" ");
+					msg.appendDescription(getNameFromRoleId(event.getGuild(), string)+" ");
 					hasElementsBefore=true;
 				}
 				
@@ -62,7 +63,7 @@ public class CmdPerm implements Command{
 			for (int i = 2; i < args.length; i++) {
 				groups[i-2] = args[i];
 			}
-			STATIC.setPerm(event.getGuild(), args[1], groups);
+			PermsCore.setPerm(event.getGuild(), args[1], PermsCore.getRolesFromNames(groups, event.getGuild()));
 			break;
 		}
 		case "add":{
@@ -73,19 +74,19 @@ public class CmdPerm implements Command{
 				STATIC.errmsg(event.getTextChannel(), "not enough arguments");
 				return;
 			}
-			if (STATIC.getPerm(event.getGuild(), args[1])==null) {
+			if (PermsCore.getPerm(event.getGuild(), args[1])==null) {
 				STATIC.errmsg(event.getTextChannel(), "perm "+args[1]+" not found");
 				return;
 			}
-			String[] groups = new String[args.length-2+STATIC.getPerm(event.getGuild(), args[1]).length];
+			String[] groups = new String[args.length-2+PermsCore.getPerm(event.getGuild(), args[1]).length];
 			int i=0;
-			for (i = 0; i < STATIC.getPerm(event.getGuild(), args[1]).length; i++) {
-				groups[i] = STATIC.getPerm(event.getGuild(), args[1])[i];
+			for (i = 0; i < PermsCore.getPerm(event.getGuild(), args[1]).length; i++) {
+				groups[i] = PermsCore.getPerm(event.getGuild(), args[1])[i];
 			}
 			for (int j=0; i < args.length-1; i++,j++) {
-				groups[i] = args[j+2];
+				groups[i] = PermsCore.getRoleFromName(args[j+2], event.getGuild());
 			}
-			STATIC.setPerm(event.getGuild(), args[1], groups);
+			PermsCore.setPerm(event.getGuild(), args[1], groups);
 			break;
 		}
 		case "remove":
@@ -94,8 +95,8 @@ public class CmdPerm implements Command{
 				return;
 			}
 			if (args.length==2) {
-				if (STATIC.getPerms(event.getGuild()).containsKey(args[1])) {
-					if (STATIC.removePerm(event.getGuild(), args[1])) {
+				if (PermsCore.getPerms(event.getGuild()).containsKey(args[1])) {
+					if (PermsCore.removePerm(event.getGuild(), args[1])) {
 						STATIC.msg(event.getTextChannel(), "removed Permission "+args[1]);
 						
 						return;
@@ -109,21 +110,21 @@ public class CmdPerm implements Command{
 				STATIC.errmsg(event.getTextChannel(), "not enough arguments");
 				return;
 			}
-			String[] groups = new String[STATIC.getPerm(event.getGuild(), args[1]).length];
+			String[] groups = new String[PermsCore.getPerm(event.getGuild(), args[1]).length];
 			
-			for (int i = 0; i < STATIC.getPerm(event.getGuild(), args[1]).length; i++) {
-				groups[i] = STATIC.getPerm(event.getGuild(), args[1])[i];
+			for (int i = 0; i < PermsCore.getPerm(event.getGuild(), args[1]).length; i++) {
+				groups[i] = PermsCore.getPerm(event.getGuild(), args[1])[i];
 			}
 			for (int i = 0; i < groups.length; i++) {
-				for (String group : args) {
-					if (groups[i].equals(group)) {
+				for (int j = 3; j < args.length; j++) {
+					if (groups[i].equals(PermsCore.getRoleFromName(args[j], event.getGuild()))) {
 						groups[i]=null;
 						break;
 					}
 				}
 				
 			}
-			STATIC.setPerm(event.getGuild(), args[1], groups);
+			PermsCore.setPerm(event.getGuild(), args[1], groups);
 			break;
 		}
 		case "chrole":
@@ -140,7 +141,7 @@ public class CmdPerm implements Command{
 			String oldRoleTmp=args[1];
 			String oldRole=oldRoleTmp;
 			loop:for (int i = 1; i < args.length-1; i++) {
-				for (String[] perms : STATIC.getPerms(event.getGuild()).values()) {
+				for (String[] perms : PermsCore.getPerms(event.getGuild()).values()) {
 					for (int j = 0; j < perms.length; j++) {
 						if (perms[j].equals(oldRoleTmp)) {
 							oldRole=oldRoleTmp;
@@ -156,27 +157,35 @@ public class CmdPerm implements Command{
 			for (int i = newRoleStart+1; i < args.length; i++) {
 				newRole+=" "+args[i];
 			}
-			STATIC.chRole(event.getGuild(), oldRole, newRole);
+			PermsCore.chRole(event.getGuild(), oldRole, newRole);
 			break;
 		}
 		case "reset":{
 			if(!PermsCore.check(event, "perm.change")) {
 				return;
 			}
-			STATIC.resetPerms(event.getGuild());
+			PermsCore.resetPerms(event.getGuild());
 			break;
 		}
 		case "reload":{
 			if(!PermsCore.check(event, "perm.change")) {
 				return;
 			}
-			STATIC.reloadPerms(event.getGuild());
+			PermsCore.reloadPerms(event.getGuild());
 			break;
 		}
 		default:
 			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(event.getGuild())));
 			return;
 		}
+	}
+	private String getNameFromRoleId(Guild g,String id) {
+		try {
+			return g.getRoleById(id).getName();
+		} catch (Exception e) {
+			return id;
+		}
+		
 	}
 	@Override
 	public String help(String prefix) {
