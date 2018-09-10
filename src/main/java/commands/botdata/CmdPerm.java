@@ -1,11 +1,13 @@
 package commands.botdata;
 
 import java.awt.Color;
+import java.util.List;
 
 import commands.Command;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
@@ -59,11 +61,16 @@ public class CmdPerm implements Command{
 				STATIC.errmsg(event.getTextChannel(), "not enough arguments");
 				return;
 			}
-			String[] groups = new String[args.length-2];
-			for (int i = 2; i < args.length; i++) {
-				groups[i-2] = args[i];
+//			String[] groups = new String[args.length-2];
+			List<Role> roles=STATIC.getRolesFromMsg(event.getMessage());
+			String[] groups=new String[roles.size()];
+			for (int i = 0; i < groups.length; i++) {
+				groups[i]=roles.get(i).getId();
 			}
-			PermsCore.setPerm(event.getGuild(), args[1], PermsCore.getRolesFromNames(groups, event.getGuild()));
+//			for (int i = 2; i < args.length; i++) {
+//				groups[i-2] = args[i];
+//			}
+			PermsCore.setPerm(event.getGuild(), args[1],groups);
 			break;
 		}
 		case "add":{
