@@ -40,53 +40,16 @@ public final class STATIC {
 	private static final String PREFIX="--";
 	
 	public static final String VERSION="v2.living";
-	private static final HashMap<String, String[]> PERMS =new HashMap<String, String[]>();
 	private static final String SETTINGS_DIR="./SERVER_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;
 	private static final String STD_CMD_LOGGER_NAME="cmdLog";
 	private static HashMap<String, String> cmdLoggerNames =new HashMap<String, String>();
-	private static final HashMap<Guild, HashMap<String, String[]>> permsLocal=new HashMap<Guild, HashMap<String, String[]>>();
 	private static final Map<String, String> markupEscapeMap=new HashMap<>();
 	/**
 	 * initialize permissions and markup escapes
 	 */
 	static {
-		PERMS.put("ping", new String[] {"*"});
-		PERMS.put("motd", new String[] {"*"});
-		PERMS.put("motd.change", new String[] {"*"});
-		PERMS.put("say", new String[] {"*"});
-		PERMS.put("clearChat", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
-		PERMS.put("playMusic", new String[] {"*"});
-		PERMS.put("vote", new String[] {"*"});
-		PERMS.put("vote.create", new String[] {"*"});
-		PERMS.put("vote.vote", new String[] {"*"});
-		PERMS.put("vote.close", PERMS.get("vote.create"));
-		PERMS.put("vote.stats", PERMS.get("vote.vote"));
-		PERMS.put("prefix", new String[] {"*"});
-		PERMS.put("prefix.set", new String[] {"Owner", "Admin"});
-		PERMS.put("prefix.show", new String[] {"*"});
-		PERMS.put("autoChannel", new String[] {"Owner", "Admin"});
-		PERMS.put("stop", new String[] {"Owner", "Admin"});
-		PERMS.put("restart", new String[] {"Owner", "Admin"});
-		PERMS.put("perm", new String[] {"*"});
-		PERMS.put("perm.get", PERMS.get("perm"));
-		PERMS.put("perm.change", new String[] {"Owner"});
-		PERMS.put("kick", new String[] {"Owner"});
-		PERMS.put("ban", new String[] {"Owner"});
-		PERMS.put("role", new String[] {"Owner"});
-		PERMS.put("spam", new String[] {"Owner"});
-		PERMS.put("logger", new String[] {"*"});
-		PERMS.put("logger.show", new String[] {"*"});
-		PERMS.put("logger.set", new String[] {"Owner", "Admin"});
-		PERMS.put("userinfo", new String[] {"*"});
-		PERMS.put("autorole", new String[] {"Owner", "Admin"});
-		PERMS.put("unnick.others", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
-		PERMS.put("unnick", new String[] {"*"});
-		PERMS.put("multicolor.set", new String[] {"Owner", "Admin"});
-		PERMS.put("dice", new String[] {"*"});
-		PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
-		
 		markupEscapeMap.put("\\*", "\\*");//fett/kursiv
 		markupEscapeMap.put("_", "\\_");//unterstrichen
 		markupEscapeMap.put("~", "\\~");//durchgestrichen
@@ -168,9 +131,9 @@ public final class STATIC {
 		return unescaped;
 	}
 	/**
-	 * sucht {@link Role}s in einer {@link Message}
-	 * @param msg die zu durchsuchende Nachricht
-	 * @return die Rollen
+	 * gets all {@link Role}s in a {@link Message}
+	 * @param msg the Message to search
+	 * @return the roles
 	 */
 	public static List<Role> getRolesFromMsg(Message msg){
 		String[] args=msg.getContentRaw().split(" ");
@@ -254,142 +217,6 @@ public final class STATIC {
 	public static String getPrefixExcaped(final Guild g) {
 		return escapeDiscordMarkup(getPrefix(g));
 	}
-//	/**
-//	 * gets guild-local Permission info using a specified permission name
-//	 * @param g The {@link Guild} from the Permission
-//	 * @param permName The name of the Permission
-//	 * @return A String[] of the Role names which have the Permission
-//	 */
-//	public static String[] getPerm(Guild g, String permName) {
-//		
-//		try {
-//			//loadPerms(g);
-//			if(permsLocal.get(g)!=null) {
-//				if (permsLocal.get(g).get(permName)==null) {
-//					permsLocal.get(g).put(permName, new String[] {""});
-//				}
-//				return permsLocal.get(g).get(permName);
-//			}
-//		} catch (Exception e) {
-//		}
-//		
-//		return PERMS.get(permName);
-//	}
-//	/**
-//	 * gets the Permissions of a {@link Guild}
-//	 * @param g The Guild(Discord-Server)
-//	 * @return A {@link Map} of the Permissions
-//	 */
-	public static Map<String, String[]> getOldPerms(Guild g) {
-		
-		try {
-			//loadPerms(g);
-			if(permsLocal.get(g)!=null) {
-				return permsLocal.get(g);
-			}
-		} catch (Exception e) {}
-		
-		return PERMS;
-	}
-//	/**
-//	 * resets the Permissions for a Guild
-//	 * @param g The Guild(Discord-Server)
-//	 */
-//	public static void resetPerms(Guild g) {
-//		permsLocal.put(g, PERMS);
-//		savePerms(g);
-//	}
-//	/**
-//	 * deletes a <b>userdefined</b> Permission in a {@link Guild}
-//	 * @param g The Guild(Discord-Server)
-//	 * @param permName The name of the Permission which should be deleted
-//	 * @return true if something changed
-//	 */
-//	public static boolean removePerm(Guild g, String permName) {
-//		if (permsLocal.get(g).containsKey(permName)) {
-//			if (PERMS.containsKey(permName)) {
-//				return false;
-//			}
-//			permsLocal.get(g).remove(permName);
-//			savePerms(g);
-//			return true;
-//		}
-//		return false;
-//	}
-//	/**
-//	 * replaces all occurencies of a Role to an another Role in a specified {@link Guild}
-//	 * @param g The Guild(Discord-Server)
-//	 * @param roleToChange The name of the Role should be replaced
-//	 * @param newRole The name of the Role to Replace with
-//	 */
-//	public static void chRole(Guild g, String roleToChange, String newRole) {
-//		//loadPerms(g);
-//		for (String[] perm : permsLocal.get(g).values()) {
-//			for (int i = 0; i < perm.length; i++) {
-//				if (perm[i].equals(roleToChange)) {
-//					perm[i]=newRole;
-//				}
-//			}
-//		}
-//		savePerms(g);
-//	}
-//	/**
-//	 * reloads new Permissions(came with a Bot Update)
-//	 * @param g the {@link Guild} to Reload
-//	 */
-//	public static void reloadPerms(Guild g) {
-//		loadPerms(g);
-//		HashMap<String, String[]> perms=permsLocal.get(g);
-//		if (perms==null) {
-//			permsLocal.put(g, PERMS);
-//			return;
-//		}
-//		for (String permName : PERMS.keySet()) {
-//			if (!(perms.containsKey(permName))) {
-//				perms.put(permName, PERMS.get(permName));
-//			}
-//		}
-//		savePerms(g);
-//	}
-//	/**
-//	 * sets a Permission in a {@link Guild}
-//	 * @param g The Guild(Discord-Server)
-//	 * @param permName The Name of the Permission
-//	 * @param perm The names of the Roles who should have the Permission
-//	 */
-//	public static void setPerm(Guild g, String permName, String[] perm) {
-//		
-//		try {
-//			//loadPerms(g);
-//			if(g!=null) {
-//				
-//				if (!permsLocal.containsKey(g)) {
-//					permsLocal.put(g, PERMS);
-//					
-//				}
-//				permsLocal.get(g).put(permName, perm);
-//				
-//				int num=0;
-//				for (String string : permsLocal.get(g).get(permName)) {
-//					if(string!=null) {
-//						num++;
-//					}
-//				}
-//				String[] permsNew=new String[num];
-//				
-//				for (int i = 0,j=0; i < perm.length; i++) {
-//					if (perm[i]!=null) {
-//						permsNew[j]=perm[i];
-//						perm[i]=null;
-//						j++;
-//						continue;
-//					}
-//				}
-//				permsLocal.get(g).put(permName, permsNew);
-//				savePerms(g);
-//			}
-//		} catch (Exception e) {}
-//	}
 	/**
 	 * Loads data of all Guilds
 	 * @param jda The JDA Instance
