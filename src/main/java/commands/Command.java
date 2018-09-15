@@ -66,10 +66,4 @@ public interface Command {
 	 * @return the Command-type
 	 */
 	public CommandType getCommandType();
-	
-	//Command-types
-	public static final String CMD_TYPE_ADMIN="Admin Command - only bot-admin";
-	public static final String CMD_TYPE_BOT_MODERATION="DanBot1 Moderation Command";
-	public static final String CMD_TYPE_USER="User Command";
-	public static final String CMD_TYPE_GUILD_MODERATION="Discord Server Moderation Command";
 }

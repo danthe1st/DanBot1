@@ -112,7 +112,7 @@ public class AutoUnbanner {
 		}
 		saveUnBans();
 	}
-	private static AutoUnbanner getUnbanner(JDA jda) {
+	private static synchronized AutoUnbanner getUnbanner(JDA jda) {
 		
 		if (unbanner==null) {
 			unbanner=new AutoUnbanner(jda);
