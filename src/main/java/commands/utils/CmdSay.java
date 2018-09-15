@@ -1,6 +1,7 @@
 package commands.utils;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -28,7 +29,7 @@ public class CmdSay implements Command {
 				+"*Syntax*: "+prefix+"say <message>";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_USER;
+	public CommandType getCommandType() {
+		return CommandType.USER;
 	}
 }

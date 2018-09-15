@@ -3,6 +3,7 @@ package commands.utils;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -64,8 +65,8 @@ public class CmdClearPMs implements Command {
 	}
 
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_USER;
+	public CommandType getCommandType() {
+		return CommandType.USER;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import commands.Command;
+import commands.CommandType;
 import core.CommandHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -17,7 +18,7 @@ import util.STATIC;
 public class CmdHelp implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		Map<String, Map<String,Command>> commandTypes=new HashMap<>();
+		Map<CommandType, Map<String,Command>> commandTypes=new HashMap<>();
 		CommandHandler.commands.forEach((k,v)->{
 			if (!commandTypes.containsKey(v.getCommandType())) {
 				commandTypes.put(v.getCommandType(), new HashMap<>());
@@ -60,7 +61,7 @@ public class CmdHelp implements Command{
 				+"*Syntax*: "+prefix+"help";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_USER;
+	public CommandType getCommandType() {
+		return CommandType.USER;
 	}
 }

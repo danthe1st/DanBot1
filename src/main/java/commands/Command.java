@@ -65,7 +65,7 @@ public interface Command {
 	 * The Command-Type is used for grouping Commands
 	 * @return the Command-type
 	 */
-	public String getCommandType();
+	public CommandType getCommandType();
 	
 	//Command-types
 	public static final String CMD_TYPE_ADMIN="Admin Command - only bot-admin";

@@ -3,6 +3,7 @@ package commands.utils;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
@@ -69,7 +70,7 @@ public class CmdClear implements Command {
 				+"*Syntax*: "+prefix+"clear <number of messages>";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_GUILD_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.GUILD_MODERATION;
 	}
 }

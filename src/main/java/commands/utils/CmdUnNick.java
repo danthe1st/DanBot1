@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -56,7 +57,7 @@ public class CmdUnNick implements Command{
 				+ "*Syntax*: "+prefix+"unnick (<Player names>)";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_GUILD_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.GUILD_MODERATION;
 	}
 }

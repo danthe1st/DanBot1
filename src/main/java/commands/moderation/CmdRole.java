@@ -3,6 +3,7 @@ package commands.moderation;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -50,7 +51,7 @@ public class CmdRole implements Command{
 				+"*Syntax*: "+prefix+"role <group> [<user>]";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_GUILD_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.GUILD_MODERATION;
 	}
 }

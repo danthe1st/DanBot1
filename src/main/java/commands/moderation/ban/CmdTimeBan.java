@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -142,7 +143,7 @@ public class CmdTimeBan implements Command{
 				+"*Syntax*: "+prefix+"tban <time> <victim> (<reason>)";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_GUILD_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.GUILD_MODERATION;
 	}
 }

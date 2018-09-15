@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -201,7 +202,7 @@ public class CmdPerm implements Command{
 				+"*Syntax*: "+prefix+"perm get/show, reload, reset, set <Permission name> <Permission groups>,remove/rem <Permission name> (<Permission groups), changeRole <old Role> <new Role>";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_BOT_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.BOT_MODERATION;
 	}
 }

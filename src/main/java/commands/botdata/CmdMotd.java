@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -79,7 +80,7 @@ public class CmdMotd implements Command{
 				+"*Syntax*: "+prefix+"motd ((set )<new motd>)";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_USER;
+	public CommandType getCommandType() {
+		return CommandType.USER;
 	}
 }

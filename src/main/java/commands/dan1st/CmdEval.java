@@ -8,6 +8,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 /**
  * Command to Evaluate Code
@@ -60,7 +61,7 @@ public class CmdEval implements Command{
 				+ "**CAN ONLY BE USED BY *the bot-admin***";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_ADMIN;
+	public CommandType getCommandType() {
+		return CommandType.ADMIN;
 	}
 }

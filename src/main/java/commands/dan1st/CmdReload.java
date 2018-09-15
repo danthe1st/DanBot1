@@ -1,6 +1,7 @@
 package commands.dan1st;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -22,8 +23,8 @@ public class CmdReload implements Command {
 	}
 
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_ADMIN;
+	public CommandType getCommandType() {
+		return CommandType.ADMIN;
 	}
 
 }

@@ -1,6 +1,7 @@
 package commands.moderation;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import listeners.AutoRoleListener;
 import net.dv8tion.jda.core.entities.Role;
@@ -75,7 +76,7 @@ public class CmdAutoRole implements Command {
 				+"*Syntax*: "+prefix+"autorole add/remove <name of the role>, list";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_GUILD_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.GUILD_MODERATION;
 	}
 }

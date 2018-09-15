@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -78,7 +79,7 @@ public class CmdUser implements Command{
 				+"*Syntax*: "+prefix+"user <username, nickname or id>";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_USER;
+	public CommandType getCommandType() {
+		return CommandType.USER;
 	}
 }

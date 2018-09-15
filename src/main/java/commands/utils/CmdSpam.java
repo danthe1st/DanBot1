@@ -3,6 +3,7 @@ package commands.utils;
 import java.awt.Color;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -42,7 +43,7 @@ public class CmdSpam implements Command {
 				+"*Syntax*: "+prefix+"spam <number of messages> <message>";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_USER;
+	public CommandType getCommandType() {
+		return CommandType.USER;
 	}
 }

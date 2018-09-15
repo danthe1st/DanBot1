@@ -3,6 +3,7 @@ package commands.moderation.multicolor;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
@@ -97,7 +98,7 @@ public class CmdMultiColor implements Command{
 				+"*Syntax*: "+prefix+"multicolor list, add <Role>, remove <Role>";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_GUILD_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.GUILD_MODERATION;
 	}
 }

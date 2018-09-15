@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -287,7 +288,7 @@ public class CmdVote implements Command, Serializable{
 				+"*Syntax*: "+prefix+"vote create <Poll: Question|answer 1|answer 2|...>, v/vote <number of answer you want to vote>, stats/s, close";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_USER;
+	public CommandType getCommandType() {
+		return CommandType.USER;
 	}
 }

@@ -1,5 +1,6 @@
 package commands.dan1st;
 import commands.Command;
+import commands.CommandType;
 import core.CommandHandler;
 import core.CommandParser;
 import core.PermsCore;
@@ -54,7 +55,7 @@ public class CmdSudo implements Command{
 				+ "**CAN ONLY BE USED BY *the bot-admin***";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_ADMIN;
+	public CommandType getCommandType() {
+		return CommandType.ADMIN;
 	}
 }

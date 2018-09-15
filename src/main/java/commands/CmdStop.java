@@ -32,7 +32,7 @@ public class CmdStop implements Command{
 				+"*Syntax*: "+prefix+"stop";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_BOT_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.BOT_MODERATION;
 	}
 }

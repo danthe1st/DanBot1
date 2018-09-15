@@ -2,6 +2,7 @@ package commands.botdata;
 
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -49,7 +50,7 @@ public class CmdPrefix implements Command{
 				+"*Syntax*: "+prefix+"prefix show, set <new Prefix>";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_BOT_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.BOT_MODERATION;
 	}
 }

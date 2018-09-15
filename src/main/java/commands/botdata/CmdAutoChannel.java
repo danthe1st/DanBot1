@@ -12,6 +12,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import commands.Command;
+import commands.CommandType;
 import core.PermsCore;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -199,7 +200,7 @@ public class CmdAutoChannel implements Command, Serializable {
 				+"*Syntax*: "+prefix+"autochannel set/add <ID of the AutoChannel>, remove/unset/rem/delete/del <ID of the AutoChannel>, list";
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_BOT_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.BOT_MODERATION;
 	}
 }

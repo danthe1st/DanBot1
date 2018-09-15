@@ -2,7 +2,6 @@ package commands;
 
 import java.io.File;
 
-import com.sun.javafx.geom.transform.GeneralTransform3D;
 
 import core.Main;
 import core.PermsCore;
@@ -80,7 +79,7 @@ public class CmdRestart implements Command{
 		return;
 	}
 	@Override
-	public String getCommandType() {
-		return CMD_TYPE_BOT_MODERATION;
+	public CommandType getCommandType() {
+		return CommandType.BOT_MODERATION;
 	}
 }
