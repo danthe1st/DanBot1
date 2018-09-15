@@ -72,74 +72,80 @@ public class Main {
 		Main.args=args;
 		JDA jda = null;
 		for (String arg : args) {
-			switch (arg.toLowerCase()) {
-			case "nostop":
-			case "-nostop":
-				stoppable=false;
-				continue;
-			case "?":
-			case "help":
-			case "-?":
-			case "/help":
-			case "-help":
-				System.out.println("DanBot1 is a Discord Bot by Daniel Schmid\n"
-						+ "See http://wwwmaster.at/daniel/data/DanBot1 for a list of all Commands\n"
-						+ "possible arguments:\n"
-						+ "\t?\tshow this help\n"
-//							+ "noStop\tsets the Bot unstoppable\n"
-						+ "\tgame=<name>\tSets a game name\n"
-						+ "\tnickname=<name>\tsets a nickname in all Servers\n"
-						+ "\ttoken=<Discord Bot token> Sets the token of the Bot (you will be asked if it is not set)\n"
-						+ "\tstatus=<status>\tSets a Discord-Status for the Bot\n"
-						+ 	"\t\tdo_not_disturb, idle, invisible, online, offline, unknown");
-				
-				
-				return;
-			default:
-				if (arg.toLowerCase().startsWith("game=")) {
-					game=arg.replaceAll("_", " ").substring(5);
-					if (game.equals("")) {
-						game="with you";
-					}
-					break;
-				}
-				else if (arg.toLowerCase().startsWith("token=")) {
-					token=arg.substring(6);
-				}
-				else if (arg.toLowerCase().startsWith("admin=")) {
-					adminId=arg.substring(6);
-					if (adminId.equals("")) {
-						adminId="358291050957111296";
-					}
-				}
-				else if (arg.toLowerCase().startsWith("status=")) {
-					String statusStr=arg.substring(7);
-					switch (statusStr.toLowerCase()) {
-					case "donotdisturb"://status=donotdisturb
-					case "do_not_disturb":
-						status=OnlineStatus.DO_NOT_DISTURB;
-						break;
-					case "idle":
-						status=OnlineStatus.IDLE;
-						break;
-					case "invisible":
-						status=OnlineStatus.INVISIBLE;
-						break;
-					case "online":
-						status=OnlineStatus.ONLINE;
-						break;
-					case "offline":
-						status=OnlineStatus.OFFLINE;
-						break;
-					case "?":
-					case "unknown":
-						status=OnlineStatus.UNKNOWN;
-						break;
-					default:
+			try {
+				switch (arg.toLowerCase()) {
+				case "nostop":
+				case "-nostop":
+					stoppable=false;
+					continue;
+				case "?":
+				case "help":
+				case "-?":
+				case "/help":
+				case "-help":
+					System.out.println("DanBot1 is a Discord Bot by Daniel Schmid\n"
+							+ "See http://wwwmaster.at/daniel/data/DanBot1 for a list of all Commands\n"
+							+ "possible arguments:\n"
+							+ "\t?\tshow this help\n"
+							+ "noStop\tsets the Bot unstoppable\n"
+							+ "\tgame=<name>\tSets a game name\n"
+							+ "\ttoken=<Discord Bot token> Sets the token of the Bot (you will be asked if it is not set)\n"
+							+ "\tstatus=<status>\tSets a Discord-Status for the Bot\n"
+							+ 	"\t\tdo_not_disturb, idle, invisible, online, offline, unknown\n"
+							+ "\tadmin=<id> sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)");
+					return;
+				default:
+					if (arg.toLowerCase().startsWith("game=")) {
+						game=arg.replaceAll("_", " ").substring(5);
+						if (game.equals("")) {
+							game="with you";
+						}
 						break;
 					}
-					break;
+					else if (arg.toLowerCase().startsWith("token=")) {
+						token=arg.substring(6);
+					}
+					else if (arg.toLowerCase().startsWith("admin=")) {
+						adminId=arg.substring(6);
+						if (adminId.equals("")) {
+							adminId="358291050957111296";
+						}
+						try {
+							Integer.parseInt(adminId);
+						} catch (NumberFormatException e) {
+							adminId="358291050957111296";
+						}
+					}
+					else if (arg.toLowerCase().startsWith("status=")) {
+						String statusStr=arg.substring(7);
+						switch (statusStr.toLowerCase()) {
+						case "donotdisturb"://status=donotdisturb
+						case "do_not_disturb":
+							status=OnlineStatus.DO_NOT_DISTURB;
+							break;
+						case "idle":
+							status=OnlineStatus.IDLE;
+							break;
+						case "invisible":
+							status=OnlineStatus.INVISIBLE;
+							break;
+						case "online":
+							status=OnlineStatus.ONLINE;
+							break;
+						case "offline":
+							status=OnlineStatus.OFFLINE;
+							break;
+						case "?":
+						case "unknown":
+							status=OnlineStatus.UNKNOWN;
+							break;
+						default:
+							break;
+						}
+						break;
+					}
 				}
+			} catch (IndexOutOfBoundsException e) {
 			}
 		}
 		System.out.println("DanBot1 by Daniel Schmid");

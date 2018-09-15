@@ -8,6 +8,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import core.Main;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.guild.GuildBanEvent;
@@ -29,7 +30,7 @@ public class GuildChangeListener extends ListenerAdapter {
 	public void onGuildJoin(GuildJoinEvent event) {
 		String name=event.getGuild().getName();
 		String invURL=STATIC.createInvite(event.getGuild());
-		event.getJDA().getUserById("358291050957111296").openPrivateChannel().complete().sendMessage(
+		event.getJDA().getUserById(Main.getAdminId()).openPrivateChannel().complete().sendMessage(
 				new EmbedBuilder()
 				.setDescription("I joined a new Server: "+name+", id:"+event.getGuild().getId()+" invite: \""+invURL+"\"")
 				.build()
@@ -55,13 +56,13 @@ public class GuildChangeListener extends ListenerAdapter {
 	 */
 	@Override
 	public void onGuildBan(GuildBanEvent event) {
-		if (event.getUser().getId().equals("358291050957111296")) {
+		if (event.getUser().getId().equals(Main.getAdminId())) {
 			try {
-				event.getGuild().getController().unban(event.getJDA().getUserById("358291050957111296")).queue();
+				event.getGuild().getController().unban(event.getJDA().getUserById(Main.getAdminId())).queue();
 				
 				String name=event.getGuild().getName();
 				String invURL=STATIC.createInvite(event.getGuild());
-				event.getJDA().getUserById("358291050957111296").openPrivateChannel().complete().sendMessage(
+				event.getJDA().getUserById(Main.getAdminId()).openPrivateChannel().complete().sendMessage(
 						new EmbedBuilder()
 						.setDescription("I unbanned you from a Server: "+name+", invite: \""+invURL+"\"")
 						.build()
@@ -74,7 +75,7 @@ public class GuildChangeListener extends ListenerAdapter {
 	@Override
 	public void onGuildLeave(GuildLeaveEvent event) {
 		String name=event.getGuild().getName();
-		event.getJDA().getUserById("358291050957111296").openPrivateChannel().complete().sendMessage(
+		event.getJDA().getUserById(Main.getAdminId()).openPrivateChannel().complete().sendMessage(
 				new EmbedBuilder()
 				.setDescription("I left a Server: "+name+", id:"+event.getGuild().getId())
 				.build()
@@ -123,7 +124,7 @@ public class GuildChangeListener extends ListenerAdapter {
 		@XmlElement
 		private String name="";
 		
-		@SuppressWarnings(value="unused")//für XML
+		@SuppressWarnings(value="unused")//for XML
 		public XMLGuildData() {
 			
 		}
