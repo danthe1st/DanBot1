@@ -271,4 +271,9 @@ public class SudoMessage implements Message{
 	public MessageType getType() {
 		return oldMsg.getType();
 	}
+
+	@Override
+	public String getJumpUrl() {
+		return oldMsg.getJumpUrl();
+	}
 }
