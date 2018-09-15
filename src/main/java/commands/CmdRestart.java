@@ -2,6 +2,8 @@ package commands;
 
 import java.io.File;
 
+import com.sun.javafx.geom.transform.GeneralTransform3D;
+
 import core.Main;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -34,7 +36,7 @@ public class CmdRestart implements Command{
 		}
 		
 		System.out.println("restarting manually");
-		Main.main(new String[0]);
+		Main.main(Main.getArgs());
 		return;
 	}
 	private String getRestartCommand() {

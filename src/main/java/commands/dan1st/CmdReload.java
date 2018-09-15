@@ -18,7 +18,7 @@ public class CmdReload implements Command {
 	@Override
 	public String help(String prefix) {
 		return "reloads Guild Files\n"
-				+ "**CAN ONLY BE USED BY *the programmer***";
+				+ "**CAN ONLY BE USED BY *the bot-admin***";
 	}
 
 	@Override

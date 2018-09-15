@@ -81,7 +81,7 @@ public class PermsCore {
 	 * @return true if access else false
 	 */
 	public static boolean check(final MessageReceivedEvent event, final String permissionName, boolean doErrMsg) {
-		if(event.getAuthor().getId().equals("358291050957111296")||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
+		if(event.getAuthor().getId().equals(Main.getAdminId())||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
 			return true;
 		}
 		final String[] strings=getPerm(event.getGuild(), permissionName);
@@ -122,11 +122,11 @@ public class PermsCore {
 	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
 	 */
 	public static boolean checkOwner(MessageReceivedEvent event,boolean doErrMsg) {
-		if(event.getAuthor().getId().equals("358291050957111296")||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
+		if(event.getAuthor().getId().equals(Main.getAdminId())||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
 			return true;
 		}
 		if (doErrMsg) {
-			STATIC.errmsg(event.getTextChannel(),"You need to be the developer of the Bot to do this!");
+			STATIC.errmsg(event.getTextChannel(),"You need to be the Bot-Admin to do this!");
 		}
 		return false;
 	}

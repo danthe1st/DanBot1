@@ -58,6 +58,7 @@ public class Main {
 	private static OnlineStatus status=OnlineStatus.ONLINE;
 	private static String token=System.getProperty("token");
 	private static final Scanner scan=new Scanner(System.in);
+	private static String adminId="358291050957111296";
 	private static String[] args;
 	static {
 		if (game==null) {
@@ -101,6 +102,9 @@ public class Main {
 				}
 				else if (arg.toLowerCase().startsWith("token=")) {
 					token=arg.substring(6);
+				}
+				else if (arg.toLowerCase().startsWith("admin=")) {
+					adminId=arg.substring(6);
 				}
 				else if (arg.toLowerCase().startsWith("status=")) {
 					String statusStr=arg.substring(7);
@@ -282,5 +286,8 @@ public class Main {
 	 */
 	public static String[] getArgs() {
 		return args;
+	}
+	public static String getAdminId() {
+		return adminId;
 	}
 }
