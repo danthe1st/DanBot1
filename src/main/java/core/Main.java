@@ -98,13 +98,19 @@ public class Main {
 			default:
 				if (arg.toLowerCase().startsWith("game=")) {
 					game=arg.replaceAll("_", " ").substring(5);
-					continue;
+					if (game.equals("")) {
+						game="with you";
+					}
+					break;
 				}
 				else if (arg.toLowerCase().startsWith("token=")) {
 					token=arg.substring(6);
 				}
 				else if (arg.toLowerCase().startsWith("admin=")) {
 					adminId=arg.substring(6);
+					if (adminId.equals("")) {
+						adminId="358291050957111296";
+					}
 				}
 				else if (arg.toLowerCase().startsWith("status=")) {
 					String statusStr=arg.substring(7);
@@ -132,11 +138,9 @@ public class Main {
 					default:
 						break;
 					}
-					continue;
+					break;
 				}
-				continue;
 			}
-			
 		}
 		System.out.println("DanBot1 by Daniel Schmid");
 			boolean alreadyDone=false;
@@ -152,6 +156,9 @@ public class Main {
 				builder.setToken(token);	
 				builder.setAutoReconnect(true);
 				builder.setStatus(status);
+				if (game==null) {
+					game="with you";
+				}
 				builder.setGame(Game.playing(game));
 				
 				builder.setRequestTimeoutRetry(true);
@@ -179,11 +186,6 @@ public class Main {
 				}
 				break;
 			}
-			
-			
-			
-			
-		
 	}
 	/**
 	 * adds Commands to the Command-Map
