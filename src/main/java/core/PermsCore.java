@@ -122,7 +122,7 @@ public class PermsCore {
 	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
 	 */
 	public static boolean checkOwner(MessageReceivedEvent event,boolean doErrMsg) {
-		if(event.getAuthor().getId().equals(Main.getAdminId())||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
+		if(event.getAuthor().getId().equals(Main.getAdminId())) {
 			return true;
 		}
 		if (doErrMsg) {
