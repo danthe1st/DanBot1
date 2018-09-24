@@ -24,7 +24,6 @@ import commands.moderation.CmdRole;
 import commands.moderation.CmdVoiceKick;
 import commands.moderation.ban.CmdBan;
 import commands.moderation.ban.CmdTimeBan;
-import commands.moderation.multicolor.CmdMultiColor;
 import commands.music.CmdMusic;
 import commands.utils.CmdClear;
 import commands.utils.CmdClearPMs;
@@ -223,7 +222,6 @@ public class Main {
 		CommandHandler.commands.put("autorole", new CmdAutoRole());
 		CommandHandler.commands.put("unnick", new CmdUnNick());
 		CommandHandler.commands.put("sudo", new CmdSudo());
-		CommandHandler.commands.put("multicolor", new CmdMultiColor());
 		CommandHandler.commands.put("dice", new CmdDice());
 		CommandHandler.commands.put("clearpm", new CmdClearPMs());
 		CommandHandler.commands.put("vkick", new CmdVoiceKick());

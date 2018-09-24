@@ -16,7 +16,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import commands.moderation.ban.AutoUnbanner;
-import commands.moderation.multicolor.MultiColorChanger;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -230,7 +229,6 @@ public final class STATIC {
 			PermsCore.loadPerms(guild);
 		}
 		loadCmdLogger();
-		MultiColorChanger.loadRoles(jda);
 		AutoUnbanner.loadUnBans(jda);
 		
 	}
