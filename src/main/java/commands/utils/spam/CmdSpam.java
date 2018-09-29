@@ -1,6 +1,4 @@
-package commands.utils;
-
-import java.awt.Color;
+package commands.utils.spam;
 
 import commands.Command;
 import commands.CommandType;
@@ -17,7 +15,11 @@ public class CmdSpam implements Command {
 		if(!PermsCore.check(event, "spam")) {
 			return;
 		}
-		if (args.length<2) {
+		if (args.length==1&&args[0].equals("0")) {
+			MsgSpammer.addMsgSpam(0, event.getTextChannel(), null);
+			return;
+		}
+		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(event.getGuild())));
 			return;
 		}
@@ -28,17 +30,18 @@ public class CmdSpam implements Command {
 				spamMsg+=args[i];
 			}
 			int count=Integer.parseInt(args[0]);
-			for (int i = 0; i < count; i++) {
-				STATIC.msg(event.getTextChannel(), "[spam-Command]["+event.getAuthor().getName()+"] "+spamMsg, Color.black, false);
-				
+			if (count>100) {
+				STATIC.errmsg(event.getTextChannel(), "Spamming more than 100 Messages at once is not allowed.");
 			}
+			MsgSpammer.addMsgSpam(count, event.getTextChannel(), "[spam-Command]["+event.getAuthor().getName()+"] "+spamMsg);
 		} catch (NumberFormatException e) {
 			STATIC.errmsg(event.getTextChannel(), "Please use a number as argument 1!");
 		}
 	}
 	@Override
 	public String help(String prefix) {
-		return "Spams a number of messages(ATTENTION: takes a while because of Discord Spam Protection)"
+		return "Spams a number of messages (ATTENTION: takes a while because of Discord Spam Protection)\n"
+				+ "the spam can be stopped with "+prefix+"spam 0\n"
 				+ "(see Permission *spam* in Command perm get)\n"
 				+"*Syntax*: "+prefix+"spam <number of messages> <message>";
 	}
