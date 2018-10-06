@@ -16,7 +16,7 @@ public class CmdSpam implements Command {
 			return;
 		}
 		if (args.length==1&&args[0].equals("0")) {
-			MsgSpammer.addMsgSpam(0, event.getTextChannel(), null);
+			MsgSpammer.addMsgSpam(0, event.getTextChannel(), null,null);
 			return;
 		}
 		if (args.length<1) {
@@ -33,7 +33,7 @@ public class CmdSpam implements Command {
 			if (count>100) {
 				STATIC.errmsg(event.getTextChannel(), "Spamming more than 100 Messages at once is not allowed.");
 			}
-			MsgSpammer.addMsgSpam(count, event.getTextChannel(), "[spam-Command]["+event.getAuthor().getName()+"] "+spamMsg);
+			MsgSpammer.addMsgSpam(count, event.getTextChannel(), spamMsg,event.getAuthor());
 		} catch (NumberFormatException e) {
 			STATIC.errmsg(event.getTextChannel(), "Please use a number as argument 1!");
 		}

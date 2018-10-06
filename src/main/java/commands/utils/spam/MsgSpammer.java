@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import util.STATIC;
 
 public class MsgSpammer implements Runnable{
@@ -25,23 +27,33 @@ public class MsgSpammer implements Runnable{
 	@Override
 	public void run() {
 		while (!spams.isEmpty()) {
-			Set<Guild> toRemove=new HashSet<>();
-			spams.forEach((k,v)->{
-				STATIC.msg(v.channel, v.msg, Color.black, false);
-				v.count--;
-				if (v.count<=0) {
-					toRemove.add(k);
+			try {
+				Set<Guild> toRemove=new HashSet<>();
+				spams.forEach((k,v)->{
+					
+					STATIC.msg(v.channel, new EmbedBuilder()
+							.setDescription(v.msg)
+							.setFooter("spam-command -> "+v.commander.getName(), v.commander.getAvatarUrl())
+							.setColor(Color.BLACK)
+							.build() , false);
+					v.count--;
+					if (v.count<=0) {
+						toRemove.add(k);
+					}
+				});
+				for (Guild rem : toRemove) {
+					spams.remove(rem);
 				}
-			});
-			for (Guild rem : toRemove) {
-				spams.remove(rem);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			
 		}
 		spammerThread=null;
 	}
 
-	public static void addMsgSpam(int count,TextChannel channel,String msg) {
-		SpamWrapper wrapper=new SpamWrapper(count, channel, msg);
+	public static void addMsgSpam(int count,TextChannel channel,String msg,User commander) {
+		SpamWrapper wrapper=new SpamWrapper(count, channel, msg,commander);
 		spammer.spams.put(channel.getGuild(), wrapper);
 		
 		if (spammer.spammerThread==null) {
@@ -54,10 +66,12 @@ public class MsgSpammer implements Runnable{
 		private int count;
 		private TextChannel channel;
 		private String msg;
-		public SpamWrapper(int count, TextChannel channel, String msg) {
+		private User commander;
+		public SpamWrapper(int count, TextChannel channel, String msg,User commander) {
 			this.count = count;
 			this.channel = channel;
 			this.msg = msg;
+			this.commander=commander;
 		}
 		
 	}

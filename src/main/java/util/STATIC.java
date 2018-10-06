@@ -26,6 +26,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Invite;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -89,6 +90,7 @@ public final class STATIC {
 	public static void msg(TextChannel channel, String text,boolean timeout) {
 		msg(channel, text, Color.GREEN, timeout);
 	}
+	
 	/**
 	 * send a Message
 	 * @param channel The {@link TextChannel} where the Message should be sent
@@ -97,12 +99,21 @@ public final class STATIC {
 	 * @param timeout should the Message be deleted automatically
 	 */
 	public static void msg(TextChannel channel, String text,Color color,boolean timeout) {
-		try {
-			Message msg=channel.sendMessage(
-					new EmbedBuilder()
+		msg(channel, new EmbedBuilder()
 					.setColor(color)
 					.setDescription(text)
-					.build()).complete();
+					.build(), timeout);
+	}
+	/**
+	 * send a Message
+	 * @param channel The {@link TextChannel} where the Message should be sent
+	 * @param text The content of the Message as {@link MessageEmbed}
+	 * @param timeout should the Message be deleted automatically
+	 */
+	public static void msg(TextChannel channel, MessageEmbed message,boolean timeout) {
+		try {
+			Message msg=channel.sendMessage(
+					message).complete();
 			if (timeout) {
 				new Timer().schedule(new TimerTask() {
 					@Override
@@ -110,7 +121,6 @@ public final class STATIC {
 						try {
 							msg.delete().queue();
 						} catch (IllegalArgumentException e) {
-							//wenn JDA bereits heruntergefahren
 						}
 						
 						
@@ -118,7 +128,7 @@ public final class STATIC {
 				}, STATIC.INFO_TIMEOUT);
 			}
 		} catch (Exception e) {
-			System.err.println("Cannot send Message \""+text+"\" in channel "+channel.getName()+"["+channel.getGuild().getName()+"]");
+			System.err.println("Cannot send Message \""+message.getDescription()+"\" in channel "+channel.getName()+"["+channel.getGuild().getName()+"]");
 		}
 	}
 	/**
