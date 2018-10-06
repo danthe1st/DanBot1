@@ -3,6 +3,7 @@ package core;
 import java.util.HashMap;
 
 import commands.Command;
+import commands.dan1st.CmdBlacklist;
 import core.CommandParser.CommandContainer;
 import util.STATIC;
 /**
@@ -18,7 +19,11 @@ public class CommandHandler {
 	 */
 	public static void handleCommand(final CommandParser.CommandContainer cmd) {
 		if(commands.containsKey(cmd.invoke.toLowerCase())) {
-			boolean save=commands.get(cmd.invoke.toLowerCase()).allowExecute(cmd.args, cmd.event);//nicht wichtig
+			boolean blacklisted=CmdBlacklist.isBlacklisted(cmd.event.getAuthor().getId());
+			if (blacklisted) {
+				STATIC.errmsg(cmd.event.getTextChannel(), "You are not allowed to use this Bot!");
+			}
+			boolean save=(!blacklisted)&&commands.get(cmd.invoke.toLowerCase()).allowExecute(cmd.args, cmd.event);
 			
 			if(save) {
 				try {
@@ -26,12 +31,10 @@ public class CommandHandler {
 				} catch (Exception e) {
 					save=false;
 				}
-					commands.get(cmd.invoke.toLowerCase()).executed(save, cmd.event);
+				
 				
 			}
-			else {
-				commands.get(cmd.invoke.toLowerCase()).executed(save, cmd.event);
-			}
+			commands.get(cmd.invoke.toLowerCase()).executed(save, cmd.event);
 		}
 		else{
 			STATIC.errmsg(cmd.event.getTextChannel(), "That Command is not not known.");

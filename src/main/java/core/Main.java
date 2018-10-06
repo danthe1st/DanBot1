@@ -14,6 +14,7 @@ import commands.botdata.CmdMotd;
 import commands.botdata.CmdPerm;
 import commands.botdata.CmdPrefix;
 import commands.botdata.CmdVote;
+import commands.dan1st.CmdBlacklist;
 import commands.dan1st.CmdEval;
 import commands.dan1st.CmdReload;
 import commands.dan1st.CmdSudo;
@@ -228,6 +229,7 @@ public class Main {
 		CommandHandler.commands.put("reload", new CmdReload());
 		CommandHandler.commands.put("tban", new CmdTimeBan());
 		CommandHandler.commands.put("timeban", new CmdTimeBan());
+		CommandHandler.commands.put("blacklist", new CmdBlacklist());
 	}
 	/**
 	 * should load a RichPresence, but unfortunatly this doesn't work.

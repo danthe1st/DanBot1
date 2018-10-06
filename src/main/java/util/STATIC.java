@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import commands.botdata.CmdAutoChannel;
+import commands.botdata.CmdVote;
+import commands.dan1st.CmdBlacklist;
 import commands.moderation.ban.AutoUnbanner;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -221,6 +224,9 @@ public final class STATIC {
 	 * @param jda The JDA Instance
 	 */
 	public static void loadData(JDA jda) {
+		CmdAutoChannel.load(jda);
+		CmdVote.loadPolls(jda);
+		CmdBlacklist.loadBlacklist(jda);
 		for (Guild guild : jda.getGuilds()) {
 			loadPrefix(guild);
 //			System.out.println("loading Permissions for Guild "+guild.getName()+"...");
