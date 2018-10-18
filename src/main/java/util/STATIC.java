@@ -42,7 +42,7 @@ public final class STATIC {
 	private static HashMap<Guild, String> prefixe=new HashMap<>();
 	private static final String PREFIX="--";
 	
-	public static final String VERSION="v2.living";
+	public static final String VERSION="v3.0";
 	private static final String SETTINGS_DIR="./SERVER_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;
