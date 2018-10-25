@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 import commands.botdata.CmdAutoChannel;
 import commands.botdata.CmdVote;
-import commands.dan1st.CmdBlacklist;
+import commands.admin.CmdBlacklist;
 import commands.moderation.ban.AutoUnbanner;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -42,7 +42,7 @@ public final class STATIC {
 	private static HashMap<Guild, String> prefixe=new HashMap<>();
 	private static final String PREFIX="--";
 	
-	public static final String VERSION="v3.0";
+	public static final String VERSION="v3.0 - Living";
 	private static final String SETTINGS_DIR="./SERVER_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;

@@ -1,4 +1,4 @@
-package commands.dan1st;
+package commands.admin;
 
 import java.time.OffsetDateTime;
 import java.util.Formatter;

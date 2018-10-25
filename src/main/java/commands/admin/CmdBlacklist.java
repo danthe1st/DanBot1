@@ -1,4 +1,4 @@
-package commands.dan1st;
+package commands.admin;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;

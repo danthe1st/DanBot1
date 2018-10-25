@@ -3,7 +3,7 @@ package core;
 import java.util.HashMap;
 
 import commands.Command;
-import commands.dan1st.CmdBlacklist;
+import commands.admin.CmdBlacklist;
 import core.CommandParser.CommandContainer;
 import util.STATIC;
 /**

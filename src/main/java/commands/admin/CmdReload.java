@@ -1,4 +1,4 @@
-package commands.dan1st;
+package commands.admin;
 
 import commands.Command;
 import commands.CommandType;
