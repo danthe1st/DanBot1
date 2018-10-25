@@ -25,6 +25,7 @@ import commands.moderation.CmdRole;
 import commands.moderation.CmdVoiceKick;
 import commands.moderation.ban.CmdBan;
 import commands.moderation.ban.CmdTimeBan;
+import commands.moderation.nospam.CmdNoSpam;
 import commands.music.CmdMusic;
 import commands.utils.CmdClear;
 import commands.utils.CmdClearPMs;
@@ -39,6 +40,7 @@ import listeners.AutoRoleListener;
 import listeners.CommandListener;
 import listeners.GuildChangeListener;
 import listeners.ReadyListener;
+import listeners.SpamProtectListener;
 import listeners.VoiceListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -230,6 +232,7 @@ public class Main {
 		CommandHandler.commands.put("tban", new CmdTimeBan());
 		CommandHandler.commands.put("timeban", new CmdTimeBan());
 		CommandHandler.commands.put("blacklist", new CmdBlacklist());
+		CommandHandler.commands.put("nospam", new CmdNoSpam());
 	}
 	/**
 	 * should load a RichPresence, but unfortunatly this doesn't work.
@@ -279,7 +282,12 @@ public class Main {
 	 * @param builder der JDABuilder
 	 */
 	private static void initListeners(final JDABuilder builder) {
-		builder.addEventListener(new ReadyListener(),new VoiceListener(),new CommandListener(),new AutoChannelHandler(),new GuildChangeListener());
+		builder.addEventListener(new ReadyListener(),
+				new VoiceListener(),
+				new CommandListener(),
+				new AutoChannelHandler(),
+				new GuildChangeListener(),
+				new SpamProtectListener());
 	}
 	/**
 	 * tests if the Bot is stoppable

@@ -57,6 +57,8 @@ public class PermsCore {
 		STD_PERMS.put("multicolor.set", new String[] {"Owner", "Admin"});
 		STD_PERMS.put("dice", new String[] {"*"});
 		STD_PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
+		STD_PERMS.put("nospam.see", new String[] {"*"});
+		STD_PERMS.put("nospam.change", new String[] {"Owner", "Admin"});
 	}
 	
 	
