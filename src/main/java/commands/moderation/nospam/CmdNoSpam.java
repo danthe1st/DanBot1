@@ -7,8 +7,6 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
  * Command-Class for the spam-protection
- * WORK IN PROCESS
- * TODO: UI, Storage
  * @author Daniel Schmid
  */
 public class CmdNoSpam implements Command{
@@ -26,7 +24,7 @@ public class CmdNoSpam implements Command{
 			SpamProtectionContainer container=SpamProtectionContainer.getSpamContainer(event.getGuild());
 			
 			STATIC.msg(event.getTextChannel(), "action: "+container.getType()+"\n"
-					+"tries: "+(container.getTries()-1)+"\n"
+					+"tries: "+(container.getTries()+1)+"\n"
 							+ "time: "+container.getTime()/1000+"s");
 			return;
 		}
