@@ -26,7 +26,7 @@ public class CmdNoSpam implements Command{
 			SpamProtectionContainer container=SpamProtectionContainer.getSpamContainer(event.getGuild());
 			
 			STATIC.msg(event.getTextChannel(), "action: "+container.getType()+"\n"
-					+"tries: "+container.getTries()+"\n"
+					+"tries: "+(container.getTries()-1)+"\n"
 							+ "time: "+container.getTime()/1000+"s");
 			return;
 		}
