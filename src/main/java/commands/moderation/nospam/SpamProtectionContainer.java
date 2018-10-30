@@ -1,5 +1,7 @@
 package commands.moderation.nospam;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +11,21 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import util.MapWrapper;
+import util.STATIC;
 
 @XmlRootElement
-public class SpamProtectionContainer {//TODO timing(Threads)
-
+public class SpamProtectionContainer {
+	
 	private static Map<String, SpamProtectionContainer> protectors=new HashMap<>();
 	
 	private SpamProtectType type;
@@ -27,33 +35,43 @@ public class SpamProtectionContainer {//TODO timing(Threads)
 	private SortedMap<Long, String[]> timeSpamMap=new TreeMap<>();
 	private Timer timer;
 	
+	public SpamProtectionContainer() {
+	}
 	private SpamProtectionContainer(SpamProtectType type,int tries, int time) {
 		this.type=type;
 		this.time=time;
 		this.tries=tries;
 	}
-	
 	public SpamProtectType getType() {
 		return type;
 	}
-
+	public void setType(SpamProtectType type) {
+		this.type = type;
+	}
 	public int getTime() {
 		return time;
 	}
-
+	public void setTime(int time) {
+		this.time = time;
+	}
 	public int getTries() {
 		return tries;
 	}
-
+	public void setTries(int tries) {
+		this.tries = tries;
+	}
 	public static void addSpamContainer(Guild g,SpamProtectType type,int tries, int time) {
 		protectors.put(g.getId(), new SpamProtectionContainer(type, tries, time));
+		save();
 	}
 	public static void removeSpamContainer(Guild g) {
 		protectors.remove(g.getId());
+		save();
 	}
 	public static SpamProtectionContainer getSpamContainer(Guild g) {
 		return protectors.get(g.getId());
 	}
+	
 	public static boolean isGuildProtected(Guild g) {
 		return protectors.containsKey(g.getId());
 	}
@@ -96,6 +114,10 @@ public class SpamProtectionContainer {//TODO timing(Threads)
 		}
 	}
 	private void doAction(Message msg) {
+		if (msg.getAuthor().getId().equals(msg.getJDA().getSelfUser().getId())) {
+			return;
+		}
+		System.out.println("\""+msg.getAuthor().getName()+"\" spammed the message \""+msg.getContentDisplay()+"\" in Guild \""+msg.getGuild().getName()+"\", Action: "+type.getName());
 		try {
 			switch (type) {
 			case ban:
@@ -121,14 +143,7 @@ public class SpamProtectionContainer {//TODO timing(Threads)
 		public UserStorage(int tries) {
 			this.tries=tries;
 		}
-		
 	}
-	
-	
-	
-	
-	
-	
 	private void reloadTimer() {
 		List<Long> toRemove=new ArrayList<>();
 		synchronized (timeSpamMap) {
@@ -152,9 +167,7 @@ public class SpamProtectionContainer {//TODO timing(Threads)
 					changed=true;
 				}
 			}
-			if (changed) {
-				//TODO save
-			}
+			
 			if (timeSpamMap.isEmpty()) {
 				return;
 			}
@@ -183,11 +196,52 @@ public class SpamProtectionContainer {//TODO timing(Threads)
 						}
 						
 					}
-					timeSpamMap.remove(time);
-					//TODO save
-					
+					timeSpamMap.remove(time);					
 				}
 			},delay);
+		}
+	}
+	
+	public static void save() {
+		Map<String, SpamProtectType> data=new HashMap<>();
+		protectors.forEach((k,v)->{
+			data.put(k, v.type);
+		});
+		File file=new File(STATIC.getSettingsDir()+"/spamProtections.xml");
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				System.err.println("cannot create File spamProtections.xml");
+				return;
+			}
+		}
+		try {
+			JAXBContext context = JAXBContext
+			        .newInstance(MapWrapper.class,SpamProtectionContainer.class);
+			Marshaller m = context.createMarshaller();
+	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+	        m.marshal(new MapWrapper<>(protectors), file);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public static void load() {
+		try {
+			final File file=new File(STATIC.getSettingsDir()+"/spamProtections.xml");
+			if (!file.exists()) {
+				return;
+			}
+			JAXBContext context=JAXBContext.newInstance(MapWrapper.class,SpamProtectionContainer.class);
+			Unmarshaller um = context.createUnmarshaller();
+
+		        // Reading XML from the file and unmarshalling.
+			
+			protectors = ((MapWrapper<String, SpamProtectionContainer>) um.unmarshal(file)).getData();
+			
+		} catch (JAXBException e) {
 		}
 	}
 }

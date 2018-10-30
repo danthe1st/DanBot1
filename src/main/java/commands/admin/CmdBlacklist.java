@@ -45,8 +45,6 @@ public class CmdBlacklist implements Command{
 			STATIC.msg(event.getTextChannel(), sb.toString());
 			return;
 		}
-        //TODO
-        
         List<User> toAdd=new ArrayList<>();
         List<User> toRemove=new ArrayList<>();
         for (String string : args) {
@@ -119,7 +117,7 @@ public class CmdBlacklist implements Command{
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				System.out.println("cannot create File unbans.xml");
+				System.out.println("cannot create File blacklist.xml");
 				return;
 			}
 		}

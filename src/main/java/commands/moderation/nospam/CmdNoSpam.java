@@ -19,8 +19,6 @@ public class CmdNoSpam implements Command{
 			if (!PermsCore.check(event, "nospam.see")) {
 				return;
 			}
-			//TODO show spam protection
-			
 			if (!SpamProtectionContainer.isGuildProtected(event.getGuild())) {
 				STATIC.msg(event.getTextChannel(), "This Guild has no spam-protection.");
 				return;
@@ -29,7 +27,7 @@ public class CmdNoSpam implements Command{
 			
 			STATIC.msg(event.getTextChannel(), "action: "+container.getType()+"\n"
 					+"tries: "+container.getTries()+"\n"
-							+ "time: "+container.getTime());
+							+ "time: "+container.getTime()/1000+"s");
 			return;
 		}
 		switch (args[0].toLowerCase()) {
@@ -68,13 +66,12 @@ public class CmdNoSpam implements Command{
 			} catch (Exception e) {
 				STATIC.errmsg(event.getTextChannel(), "Incorrect argument: "+args[3]+"\n This has to be a number!");
 			}
-			
-			//TODO testing
 			SpamProtectionContainer.addSpamContainer(event.getGuild(), punishType, tries-1, time*1000);
 			break;
 		case "rem":
 		case "remove":
 		case "delete":
+		case "-":
 			SpamProtectionContainer.removeSpamContainer(event.getGuild());
 			break;
 		default:
@@ -86,12 +83,16 @@ public class CmdNoSpam implements Command{
 	@Override
 	public String help(String prefix) {
 		return "controls the spam protection\n"
-				+ "***WORK IN PROCESS***";
+				+ "setup/change spam protection: add\n"
+				+ "\taction can be delete(only delete messages), kick(kicks the Spammer) or ban(bans the spammer)\n"
+				+ "delete spam protection: remove\n"
+				+ "(see Permission *nospam.see* and *nospam.change* in Command perm get)\n"
+				+ "*Syntax*: \"+nospam+\"[add <action> <tries> <time>, remove]";
 	}
 
 	@Override
 	public CommandType getCommandType() {
-		return CommandType.BOT_MODERATION;
+		return CommandType.GUILD_MODERATION;
 	}
 	
 }
