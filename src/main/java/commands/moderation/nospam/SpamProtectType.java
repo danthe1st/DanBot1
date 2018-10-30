@@ -1,9 +1,15 @@
 package commands.moderation.nospam;
+
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * enum for the type of punishment for spam
  * @author Daniel Schmid
  *
  */
+@XmlType(name = "myEnum")
+@XmlEnum
 public enum SpamProtectType {
 	/**
 	 * only delete the messages

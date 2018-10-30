@@ -19,6 +19,7 @@ import commands.botdata.CmdAutoChannel;
 import commands.botdata.CmdVote;
 import commands.admin.CmdBlacklist;
 import commands.moderation.ban.AutoUnbanner;
+import commands.moderation.nospam.SpamProtectionContainer;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -246,7 +247,7 @@ public final class STATIC {
 		}
 		loadCmdLogger();
 		AutoUnbanner.loadUnBans(jda);
-		
+		SpamProtectionContainer.load();
 	}
 	/**
 	 * sets the Bot prefix for a Guild
