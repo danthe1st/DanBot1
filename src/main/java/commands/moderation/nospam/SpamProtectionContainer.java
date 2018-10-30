@@ -83,6 +83,9 @@ public class SpamProtectionContainer {
 		return true;
 	}
 	private boolean addMsg(Message msg) {
+		if (msg.getChannel().getName().toLowerCase().contains("spam")) {
+			return true;
+		}
 		synchronized (userSpamMap) {
 			UserStorage storage=new UserStorage(tries);
 			if (userSpamMap.containsKey(msg.getAuthor().getId())) {
