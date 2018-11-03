@@ -25,7 +25,7 @@ public class MsgSpammer implements Runnable{
 	}
 	
 	@Override
-	public void run() {
+	public synchronized void run() {
 		while (!spams.isEmpty()) {
 			try {
 				Set<Guild> toRemove=new HashSet<>();
@@ -52,7 +52,11 @@ public class MsgSpammer implements Runnable{
 		spammerThread=null;
 	}
 
-	public static void addMsgSpam(int count,TextChannel channel,String msg,User commander) {
+	public synchronized static void addMsgSpam(int count,TextChannel channel,String msg,User commander) {
+		if (count==0) {
+			spammer.spams.remove(channel.getGuild());
+			return;
+		}
 		SpamWrapper wrapper=new SpamWrapper(count, channel, msg,commander);
 		spammer.spams.put(channel.getGuild(), wrapper);
 		
