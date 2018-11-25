@@ -2,6 +2,7 @@ package commands.moderation;
 
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -13,6 +14,7 @@ import util.STATIC;
  * Command to Change Guild-Roles
  * @author Daniel Schmid
  */
+@BotCommand(alias = "role")
 public class CmdRole implements Command{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if (args.length==1) {

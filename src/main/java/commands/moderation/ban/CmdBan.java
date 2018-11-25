@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.entities.Member;
 
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -14,6 +15,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
+@BotCommand(alias = "ban")
 public class CmdBan implements Command{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ban")) {

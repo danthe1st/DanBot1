@@ -10,7 +10,8 @@ import util.STATIC;
  * Command to stop the Bot
  * @author Daniel Schmid
  */
-public class CmdStop implements Command{
+@BotCommand(alias = "stop")
+public class CmdStop implements Command{//TODO make it only possible for specified Guilds
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "stop")) {

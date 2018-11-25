@@ -1,5 +1,6 @@
 package commands.utils.spam;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -9,6 +10,7 @@ import util.STATIC;
  * Command to spam a Message
  * @author Daniel Schmid
  */
+@BotCommand(alias = "spam")
 public class CmdSpam implements Command {
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {

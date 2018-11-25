@@ -3,6 +3,7 @@ package commands.utils;
 import java.awt.Color;
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -14,6 +15,7 @@ import util.STATIC;
  * Command to echo userinfo
  * @author Daniel Schmid
  */
+@BotCommand(alias = "user")
 public class CmdUser implements Command{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "userinfo")) {

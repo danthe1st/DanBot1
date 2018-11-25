@@ -3,6 +3,7 @@ package commands.botdata;
 import java.util.HashMap;
 import java.util.Map;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -14,6 +15,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
+@BotCommand(alias = "motd")
 public class CmdMotd implements Command{
 
 	private static Map<Guild, String> motd=new HashMap<Guild, String>();

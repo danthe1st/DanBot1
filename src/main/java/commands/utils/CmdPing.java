@@ -1,6 +1,7 @@
 package commands.utils;
 
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -10,6 +11,7 @@ import util.STATIC;
  * Ping Command(echos "Pong!" and the current Bot ping)
  * @author Daniel Schmid
  */
+@BotCommand(alias = "ping")
 public class CmdPing implements Command{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ping")) {

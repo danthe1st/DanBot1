@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.CommandHandler;
@@ -15,6 +16,7 @@ import util.STATIC;
  * prints help for all Commands
  * @author Daniel Schmid
  */
+@BotCommand(alias = "help")
 public class CmdHelp implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {

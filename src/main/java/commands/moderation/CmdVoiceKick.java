@@ -2,6 +2,7 @@ package commands.moderation;
 
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -15,6 +16,8 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
+@BotCommand(alias = "vkick")
+@BotCommand(alias = "voicekick")
 public class CmdVoiceKick implements Command{
 
 	@Override

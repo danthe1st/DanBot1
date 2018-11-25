@@ -3,6 +3,7 @@ package commands.fun;
 import java.awt.Color;
 import java.util.Random;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -13,6 +14,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
+@BotCommand(alias = "dice")
 public class CmdDice implements Command{
 	private static Random rand=new Random();
 	@Override

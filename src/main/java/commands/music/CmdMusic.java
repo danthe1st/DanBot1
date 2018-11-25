@@ -18,6 +18,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -31,6 +32,8 @@ import util.STATIC;
  * The music Command
  * @author Daniel Schmid
  */
+@BotCommand(alias = "music")
+@BotCommand(alias = "m")
 public class CmdMusic implements Command{
 
 	private static Guild guild;
