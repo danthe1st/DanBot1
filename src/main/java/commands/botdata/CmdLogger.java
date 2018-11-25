@@ -1,5 +1,6 @@
 package commands.botdata;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -10,6 +11,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
+@BotCommand(alias = "cmdlogger")
 public class CmdLogger implements Command{
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {

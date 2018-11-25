@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -26,6 +27,8 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
+@BotCommand(alias = "autochannel")
+@BotCommand(alias = "autoc")
 public class CmdAutoChannel implements Command, Serializable {
 	private static final long serialVersionUID = 1L;
 	

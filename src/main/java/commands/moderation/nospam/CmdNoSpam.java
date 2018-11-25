@@ -1,5 +1,6 @@
 package commands.moderation.nospam;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -9,6 +10,7 @@ import util.STATIC;
  * Command-Class for the spam-protection
  * @author Daniel Schmid
  */
+@BotCommand(alias = "nospam")
 public class CmdNoSpam implements Command{
 
 	@Override

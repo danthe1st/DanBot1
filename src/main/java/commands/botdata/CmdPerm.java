@@ -3,6 +3,7 @@ package commands.botdata;
 import java.awt.Color;
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -16,6 +17,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
+@BotCommand(alias = "perm")
 public class CmdPerm implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {

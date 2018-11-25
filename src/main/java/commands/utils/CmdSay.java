@@ -1,5 +1,6 @@
 package commands.utils;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -9,6 +10,7 @@ import util.STATIC;
  * Command to echo a Message
  * @author Daniel Schmid
  */
+@BotCommand(alias = "say")
 public class CmdSay implements Command {
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "say")) {

@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -15,6 +16,8 @@ import util.STATIC;
  * Command to ban a {@link Member} until a specified time expires
  * @author Daniel Schmid
  */
+@BotCommand(alias = "tban")
+@BotCommand(alias = "timeban")
 public class CmdTimeBan implements Command{
 	private long getBanTime(String time) {
 		int d=0;

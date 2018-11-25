@@ -2,6 +2,7 @@ package commands.utils;
 
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -13,6 +14,8 @@ import util.STATIC;
  * Command to delete the Chat-History (min 2, max 100 Messages)
  * @author Daniel Schmid 
  */
+@BotCommand(alias = "clear")
+@BotCommand(alias="cls")
 public class CmdClear implements Command {
 
 	

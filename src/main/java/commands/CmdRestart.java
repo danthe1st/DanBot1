@@ -11,6 +11,7 @@ import util.STATIC;
  * Command to restart the Bot
  * @author Daniel Schmid
  */
+@BotCommand(alias = "restart")
 public class CmdRestart implements Command{
 	private static String[] startfiles=new String[] {"DanBot1.bat","DanBot1.sh"};
 	@Override

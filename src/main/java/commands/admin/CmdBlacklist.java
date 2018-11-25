@@ -16,6 +16,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
@@ -23,6 +24,7 @@ import core.PermsCore;
  * Command to Evaluate Code
  * @author Daniel Schmid
  */
+@BotCommand(alias = "blacklist")
 public class CmdBlacklist implements Command{
 	private static List<String> blacklist=new ArrayList<>();
 	@Override

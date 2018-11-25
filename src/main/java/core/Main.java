@@ -5,36 +5,11 @@ import java.util.Scanner;
 import javax.security.auth.login.LoginException;
 
 import org.json.JSONObject;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
 
-import commands.CmdStop;
-import commands.CmdRestart;
-import commands.botdata.CmdAutoChannel;
-import commands.botdata.CmdLogger;
-import commands.botdata.CmdMotd;
-import commands.botdata.CmdPerm;
-import commands.botdata.CmdPrefix;
-import commands.botdata.CmdVote;
-import commands.admin.CmdBlacklist;
-import commands.admin.CmdEval;
-import commands.admin.CmdReload;
-import commands.admin.CmdSudo;
-import commands.fun.CmdDice;
-import commands.moderation.CmdAutoRole;
-import commands.moderation.CmdKick;
-import commands.moderation.CmdRole;
-import commands.moderation.CmdVoiceKick;
-import commands.moderation.ban.CmdBan;
-import commands.moderation.ban.CmdTimeBan;
-import commands.moderation.nospam.CmdNoSpam;
-import commands.music.CmdMusic;
-import commands.utils.CmdClear;
-import commands.utils.CmdClearPMs;
-import commands.utils.CmdHelp;
-import commands.utils.CmdPing;
-import commands.utils.CmdSay;
-import commands.utils.CmdUnNick;
-import commands.utils.CmdUser;
-import commands.utils.spam.CmdSpam;
+import commands.BotCommand;
+import commands.Command;
 import listeners.AutoChannelHandler;
 import listeners.AutoRoleListener;
 import listeners.CommandListener;
@@ -70,7 +45,6 @@ public class Main {
 	}
 	
 	public static void main(final String[] args) {
-		
 		Main.args=args;
 		JDA jda = null;
 		for (String arg : args) {
@@ -199,40 +173,29 @@ public class Main {
 	 * adds Commands to the Command-Map
 	 */
 	private static void addCommands() {
-		CommandHandler.commands.put("ping", new CmdPing());
-		CommandHandler.commands.put("say", new CmdSay());
-		CommandHandler.commands.put("clear", new CmdClear());
-		CommandHandler.commands.put("cls", CommandHandler.commands.get("clear"));
-		CommandHandler.commands.put("m", new CmdMusic());
-		CommandHandler.commands.put("music", CommandHandler.commands.get("m"));
-		CommandHandler.commands.put("vote", new CmdVote());
-		CommandHandler.commands.put("v", CommandHandler.commands.get("vote"));
-		CommandHandler.commands.put("autochannel", new CmdAutoChannel());
-		CommandHandler.commands.put("autoc", CommandHandler.commands.get("autochannel"));
-		CommandHandler.commands.put("prefix", new CmdPrefix());
-		CommandHandler.commands.put("stop", new CmdStop());
-		CommandHandler.commands.put("help", new CmdHelp());
-		CommandHandler.commands.put("perm", new CmdPerm());
-		CommandHandler.commands.put("spam", new CmdSpam());
-		CommandHandler.commands.put("kick", new CmdKick());
-		CommandHandler.commands.put("ban", new CmdBan());
-		CommandHandler.commands.put("role", new CmdRole());
-		CommandHandler.commands.put("motd", new CmdMotd());
-		CommandHandler.commands.put("cmdlogger", new CmdLogger());
-		CommandHandler.commands.put("user", new CmdUser());
-		CommandHandler.commands.put("restart", new CmdRestart());
-		CommandHandler.commands.put("eval", new CmdEval());
-		CommandHandler.commands.put("autorole", new CmdAutoRole());
-		CommandHandler.commands.put("unnick", new CmdUnNick());
-		CommandHandler.commands.put("sudo", new CmdSudo());
-		CommandHandler.commands.put("dice", new CmdDice());
-		CommandHandler.commands.put("clearpm", new CmdClearPMs());
-		CommandHandler.commands.put("vkick", new CmdVoiceKick());
-		CommandHandler.commands.put("reload", new CmdReload());
-		CommandHandler.commands.put("tban", new CmdTimeBan());
-		CommandHandler.commands.put("timeban", new CmdTimeBan());
-		CommandHandler.commands.put("blacklist", new CmdBlacklist());
-		CommandHandler.commands.put("nospam", new CmdNoSpam());
+		System.out.println("Scanning using Reflections:");
+		 
+        Reflections ref = new Reflections(ConfigurationBuilder.build());
+        for (Class<?> cl : ref.getTypesAnnotatedWith(BotCommand.class)) {
+            try {
+				Object cmdAsObject=cl.newInstance();
+				
+				BotCommand cmdAsAnnotation = cl.getAnnotation(BotCommand.class);
+				if (cmdAsObject instanceof Command) {
+					Command cmd=(Command) cmdAsObject;
+					CommandHandler.commands.put(cmdAsAnnotation.alias().toLowerCase(), cmd);
+				}else {
+					System.err.println(cl.getName()+" is annotated with @BotCommand but does not implement "+Command.class.getName());
+				}
+			} catch (InstantiationException e) {
+				System.err.println(cl.getName()+" is annotated with @BotCommand but has no no-args-constructor or cannot be instanciated");
+			} catch (IllegalAccessException e) {
+				System.err.println(cl.getName()+" is annotated with @BotCommand but the no-args constructor is not visible");
+			} catch (Throwable e) {
+				System.err.println(cl.getName()+" is annotated with @BotCommand but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
+
+			}
+        }
 	}
 	/**
 	 * should load a RichPresence, but unfortunatly this doesn't work.
