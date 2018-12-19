@@ -5,11 +5,7 @@ import java.util.Scanner;
 import javax.security.auth.login.LoginException;
 
 import org.json.JSONObject;
-import org.reflections.Reflections;
-import org.reflections.util.ConfigurationBuilder;
 
-import commands.BotCommand;
-import commands.Command;
 import listeners.AutoChannelHandler;
 import listeners.AutoRoleListener;
 import listeners.CommandListener;
@@ -181,11 +177,14 @@ public class Main {
 				
 				try {
 					jda=builder.build();
+					
 					addCommands();
 					jda.awaitReady();
 					jda.addEventListener(new AutoRoleListener(jda));
+					jda.addEventListener(new SpamProtectListener());
 					loadRichPresence((JDAImpl) jda);
 					Console.runConsole(scan, jda);
+					((JDAImpl) jda).getGuildSetupController().clearCache();
 				} catch (final LoginException e) {
 					System.err.println("The entered token is not valid!");
 					token=null;
@@ -203,7 +202,7 @@ public class Main {
 	/**
 	 * adds Commands to the Command-Map
 	 */
-	private static void addCommands() {
+	private static void addCommands() {//TODO
 //		System.out.println("Scanning using Reflections:");
 //		 
 //        Reflections ref = new Reflections("commands");
@@ -313,12 +312,13 @@ public class Main {
 	 * @param builder der JDABuilder
 	 */
 	private static void initListeners(final JDABuilder builder) {
-		builder.addEventListener(new ReadyListener(),
+		builder.addEventListener(
+				new ReadyListener(),
 				new VoiceListener(),
 				new CommandListener(),
 				new AutoChannelHandler(),
-				new GuildChangeListener(),
-				new SpamProtectListener());
+				new GuildChangeListener());
+				
 	}
 	/**
 	 * tests if the Bot is stoppable

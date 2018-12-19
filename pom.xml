@@ -66,8 +66,13 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.5</version>
+            <version>LATEST</version>
         </dependency>
+        <dependency>
+	       <groupId>org.slf4j</groupId>
+	       <artifactId>slf4j-api</artifactId>
+	       <version>LATEST</version>
+	   </dependency>
         <!-- JAXB in J10
         <dependency>
 		    <groupId>javax.xml.bind</groupId>
