@@ -1,8 +1,8 @@
 package commands.moderation.nospam;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -10,7 +10,7 @@ import util.STATIC;
  * Command-Class for the spam-protection
  * @author Daniel Schmid
  */
-@BotCommand(alias = "nospam")
+@BotCommand(aliases = "nospam")
 public class CmdNoSpam implements Command{
 
 	@Override

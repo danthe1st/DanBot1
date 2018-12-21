@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -29,8 +29,7 @@ import util.STATIC;
  * Command for Polls in a Guild
  * @author Daniel Schmid
  */
-@BotCommand(alias = "vote")
-@BotCommand(alias = "v")
+@BotCommand(aliases = {"v","vote"})
 public class CmdVote implements Command, Serializable{
 
 

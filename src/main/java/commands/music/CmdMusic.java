@@ -18,9 +18,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -32,8 +32,7 @@ import util.STATIC;
  * The music Command
  * @author Daniel Schmid
  */
-@BotCommand(alias = "music")
-@BotCommand(alias = "m")
+@BotCommand(aliases = {"m","music"})
 public class CmdMusic implements Command{
 
 	private static Guild guild;

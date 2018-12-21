@@ -1,8 +1,8 @@
 package commands.utils.spam;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -10,7 +10,7 @@ import util.STATIC;
  * Command to spam a Message
  * @author Daniel Schmid
  */
-@BotCommand(alias = "spam")
+@BotCommand(aliases = "spam")
 public class CmdSpam implements Command {
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {

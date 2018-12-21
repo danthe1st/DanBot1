@@ -3,9 +3,9 @@ package commands.botdata;
 import java.util.HashMap;
 import java.util.Map;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -15,7 +15,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
-@BotCommand(alias = "motd")
+@BotCommand(aliases = "motd")
 public class CmdMotd implements Command{
 
 	private static Map<Guild, String> motd=new HashMap<Guild, String>();

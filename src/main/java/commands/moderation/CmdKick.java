@@ -4,9 +4,9 @@ import net.dv8tion.jda.core.entities.Member;
 
 import java.util.List;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -14,7 +14,7 @@ import util.STATIC;
  * Command to kick a {@link Member}
  * @author Daniel Schmid
  */
-@BotCommand(alias = "kick")
+@BotCommand(aliases = "kick")
 public class CmdKick implements Command{
 	
 	public void action(final String[] args, final MessageReceivedEvent event) {

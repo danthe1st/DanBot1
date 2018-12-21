@@ -2,6 +2,7 @@ package commands;
 
 import java.awt.Color;
 
+import core.BotCommand;
 import core.Main;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -10,7 +11,7 @@ import util.STATIC;
  * Command to stop the Bot
  * @author Daniel Schmid
  */
-@BotCommand(alias = "stop")
+@BotCommand(aliases = "stop")
 public class CmdStop implements Command{//TODO make it only possible for specified Guilds
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {

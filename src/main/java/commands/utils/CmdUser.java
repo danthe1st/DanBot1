@@ -3,9 +3,9 @@ package commands.utils;
 import java.awt.Color;
 import java.util.List;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -15,7 +15,7 @@ import util.STATIC;
  * Command to echo userinfo
  * @author Daniel Schmid
  */
-@BotCommand(alias = "user")
+@BotCommand(aliases = "user")
 public class CmdUser implements Command{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "userinfo")) {

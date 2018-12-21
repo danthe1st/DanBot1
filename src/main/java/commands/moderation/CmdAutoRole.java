@@ -1,8 +1,8 @@
 package commands.moderation;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import listeners.AutoRoleListener;
 import net.dv8tion.jda.core.entities.Role;
@@ -13,7 +13,7 @@ import util.STATIC;
  * An autorole is a role which is given to a user when joining the Guild (Discord Server)
  * @author Daniel Schmid
  */
-@BotCommand(alias = "autorole")
+@BotCommand(aliases = "autorole")
 public class CmdAutoRole implements Command {
 
 	@Override

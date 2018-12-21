@@ -3,9 +3,9 @@ package commands.botdata;
 import java.awt.Color;
 import java.util.List;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -17,7 +17,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
-@BotCommand(alias = "perm")
+@BotCommand(aliases = "perm")
 public class CmdPerm implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {

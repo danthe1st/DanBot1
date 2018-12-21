@@ -4,9 +4,9 @@ package commands.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -16,7 +16,7 @@ import util.STATIC;
  * Command to unnick a {@link Member}
  * @author Daniel Schmid
  */
-@BotCommand(alias = "unnick")
+@BotCommand(aliases = "unnick")
 public class CmdUnNick implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
