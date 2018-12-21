@@ -1,7 +1,7 @@
 package commands.admin;
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.CommandHandler;
 import core.CommandParser;
 import core.PermsCore;
@@ -12,7 +12,7 @@ import util.STATIC;
  * Command for executing Commands as another user
  * @author Daniel Schmid
  */
-@BotCommand(alias = "sudo")
+@BotCommand(aliases = "sudo")
 public class CmdSudo implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

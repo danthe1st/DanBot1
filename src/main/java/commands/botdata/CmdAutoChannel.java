@@ -11,9 +11,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -27,8 +27,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
-@BotCommand(alias = "autochannel")
-@BotCommand(alias = "autoc")
+@BotCommand(aliases = {"autoc","autochannel"})
 public class CmdAutoChannel implements Command, Serializable {
 	private static final long serialVersionUID = 1L;
 	

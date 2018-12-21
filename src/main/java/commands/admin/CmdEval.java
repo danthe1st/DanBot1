@@ -7,15 +7,15 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 /**
  * Command to Evaluate Code
  * @author Daniel Schmid
  */
-@BotCommand(alias = "eval")
+@BotCommand(aliases = "eval")
 public class CmdEval implements Command{
 	private ScriptEngine se;
 	

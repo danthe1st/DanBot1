@@ -2,9 +2,9 @@ package commands.moderation;
 
 import java.util.List;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -16,8 +16,7 @@ import util.STATIC;
  * @author Daniel Schmid
  *
  */
-@BotCommand(alias = "vkick")
-@BotCommand(alias = "voicekick")
+@BotCommand(aliases = {"vkick"})
 public class CmdVoiceKick implements Command{
 
 	@Override

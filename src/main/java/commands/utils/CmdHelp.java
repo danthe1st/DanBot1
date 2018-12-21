@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.CommandHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -16,7 +16,7 @@ import util.STATIC;
  * prints help for all Commands
  * @author Daniel Schmid
  */
-@BotCommand(alias = "help")
+@BotCommand(aliases = "help")
 public class CmdHelp implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {

@@ -1,9 +1,9 @@
 package commands.utils;
 
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -11,7 +11,7 @@ import util.STATIC;
  * Ping Command(echos "Pong!" and the current Bot ping)
  * @author Daniel Schmid
  */
-@BotCommand(alias = "ping")
+@BotCommand(aliases = "ping")
 public class CmdPing implements Command{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ping")) {

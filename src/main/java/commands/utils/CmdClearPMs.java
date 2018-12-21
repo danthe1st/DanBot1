@@ -2,9 +2,9 @@ package commands.utils;
 
 import java.util.List;
 
-import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import core.BotCommand;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -13,7 +13,7 @@ import util.STATIC;
  * Clears history of private Messages (min 2, max 100 Messages)
  * @author Daniel Schmid
  */
-@BotCommand(alias = "clearpm")
+@BotCommand(aliases = "clearpm")
 public class CmdClearPMs implements Command {
 	private int getInt(final String str) {
 		try {

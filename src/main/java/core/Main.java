@@ -1,5 +1,7 @@
 package core;
 
+import java.lang.reflect.Constructor;
+import java.util.EventListener;
 import java.util.Scanner;
 
 import javax.security.auth.login.LoginException;
@@ -21,39 +23,8 @@ import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.WebSocketCode;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.JDAImpl;
-
-
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import commands.Command;
-import commands.BotCommand;
-//import commands.CmdStop;
-//import commands.CmdRestart;
-//import commands.botdata.CmdAutoChannel;
-//import commands.botdata.CmdLogger;
-//import commands.botdata.CmdMotd;
-//import commands.botdata.CmdPerm;
-//import commands.botdata.CmdPrefix;
-//import commands.botdata.CmdVote;
-//import commands.admin.CmdBlacklist;
-//import commands.admin.CmdEval;
-//import commands.admin.CmdReload;
-//import commands.admin.CmdSudo;
-//import commands.fun.CmdDice;
-//import commands.moderation.CmdAutoRole;
-//import commands.moderation.CmdKick;
-//import commands.moderation.CmdRole;
-//import commands.moderation.CmdVoiceKick;
-//import commands.moderation.ban.CmdBan;
-//import commands.moderation.ban.CmdTimeBan;
-//import commands.moderation.nospam.CmdNoSpam;
-//import commands.music.CmdMusic;
-//import commands.utils.CmdClear;
-//import commands.utils.CmdClearPMs;
-//import commands.utils.CmdHelp;
-//import commands.utils.CmdPing;
-//import commands.utils.CmdSay;
-//import commands.utils.CmdUnNick;
-//import commands.utils.CmdUser;
-//import commands.utils.spam.CmdSpam;
 
 /**
  * <b>Main-Class</b><br>
@@ -182,8 +153,9 @@ public class Main {
 				try {
 					jda=builder.build();
 					
-					addCommands();
+					
 					jda.awaitReady();
+					addCommands(jda);
 					jda.addEventListener(new AutoRoleListener(jda));
 					jda.addEventListener(new SpamProtectListener());
 					loadRichPresence((JDAImpl) jda);
@@ -206,25 +178,40 @@ public class Main {
 	/**
 	 * adds Commands to the Command-Map
 	 */
-	private static void addCommands() {//TODO
+	private static void addCommands(JDA jda) {//TODO
 		System.out.println("Started loading Commands...");
 		 
         Reflections ref = new Reflections("commands");
         
-        for (Class<?> cl : ref.getTypesAnnotatedWith(BotCommand.class)) {
+        for (Class<?> cl : ref.getTypesAnnotatedWith(BotCommand.class,true)) {
             try {
-				Object cmdAsObject=cl.newInstance();
+            	
+            	
+				Object annotatedAsObject;
+				if(cl.getConstructor()==null) {
+					Constructor<?> cons=cl.getConstructor(JDA.class);
+					if (cons!=null) {
+						annotatedAsObject=cons.newInstance(jda);
+					}
+					else {
+						System.err.println(cl.getName()+" is annotated with @BotCommand but has no no-args-constructor/one-arg-Constructor with the argument type JDA");
+						break;
+					}
+				}else {
+					annotatedAsObject = cl.newInstance();
+				}
 				
 				BotCommand cmdAsAnnotation = cl.getAnnotation(BotCommand.class);
-				if (cmdAsObject instanceof Command) {
-					Command cmd=(Command) cmdAsObject;
-					CommandHandler.commands.put(cmdAsAnnotation.alias().toLowerCase(), cmd);
-					
+				if (annotatedAsObject instanceof Command) {
+					Command cmd=(Command) annotatedAsObject;
+					for (String alias : cmdAsAnnotation.aliases()) {
+						CommandHandler.commands.put(alias.toLowerCase(), cmd);
+					}
 				}else {
 					System.err.println(cl.getName()+" is annotated with @BotCommand but does not implement "+Command.class.getName());
 				}
 			} catch (InstantiationException e) {
-				System.err.println(cl.getName()+" is annotated with @BotCommand but has no no-args-constructor or cannot be instanciated");
+				System.err.println(cl.getName()+" is annotated with @BotCommand but cannot be instanciated");
 			} catch (IllegalAccessException e) {
 				System.err.println(cl.getName()+" is annotated with @BotCommand but the no-args constructor is not visible");
 			} catch (Throwable e) {
