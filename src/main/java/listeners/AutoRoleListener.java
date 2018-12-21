@@ -1,10 +1,10 @@
 package listeners;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections4.list.UnmodifiableList;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -85,7 +85,7 @@ public class AutoRoleListener extends ListenerAdapter{
 		STATIC.save(role.getGuild().getId()+"/roles.dat", AutoRoleListener.roles.get(role.getGuild().getId()).toArray());
 	}
 	public static List<Role> getRoles(Guild g){
-		return new UnmodifiableList<>(roles.get(g.getId()));
+		return Collections.unmodifiableList(roles.get(g.getId()));
 	}
 	/**
 	 * Listener when someone joines a {@link Guild} and there are autoroles the roles will be added to the user
