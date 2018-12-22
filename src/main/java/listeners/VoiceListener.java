@@ -11,6 +11,7 @@ import util.STATIC;
  * Listener for VoiceLogs
  * @author Daniel Schmid
  */
+@BotListener
 public class VoiceListener extends ListenerAdapter {
 	private static final String VOICE_LOGGER_CHANNEL_NAME="VoiceLog";
 	/**

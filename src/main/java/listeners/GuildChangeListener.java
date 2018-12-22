@@ -22,6 +22,7 @@ import util.STATIC;
  * If the user gets banned it will be unbanned and invited
  * @author Daniel Schmid
  */
+@BotListener
 public class GuildChangeListener extends ListenerAdapter {
 	/**
 	 * listener when the Bot joines the {@link Guild}

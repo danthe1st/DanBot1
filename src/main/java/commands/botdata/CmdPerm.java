@@ -3,9 +3,9 @@ package commands.botdata;
 import java.awt.Color;
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
-import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;

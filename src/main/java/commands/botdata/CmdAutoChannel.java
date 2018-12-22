@@ -11,9 +11,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
-import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;

@@ -21,6 +21,7 @@ import commands.admin.CmdBlacklist;
 import commands.moderation.ban.AutoUnbanner;
 import commands.moderation.nospam.SpamProtectionContainer;
 import core.PermsCore;
+import listeners.AutoRoleListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -244,6 +245,7 @@ public final class STATIC {
 //			loadPerms(guild);
 			
 			PermsCore.loadPerms(guild);
+			AutoRoleListener.load(guild);
 		}
 		loadCmdLogger();
 		AutoUnbanner.loadUnBans(jda);

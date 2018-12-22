@@ -8,6 +8,7 @@ import util.STATIC;
  * Listener on Bot Login
  * @author Daniel Schmid
  */
+@BotListener
 public class ReadyListener extends ListenerAdapter {
 	/**
 	 * on login:<br>

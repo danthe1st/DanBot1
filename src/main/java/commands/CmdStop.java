@@ -2,7 +2,6 @@ package commands;
 
 import java.awt.Color;
 
-import core.BotCommand;
 import core.Main;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;

@@ -16,6 +16,7 @@ import util.STATIC;
  * Listener for autochannel-feature
  * @author Daniel Schmid
  */
+@BotListener
 public class AutoChannelHandler extends ListenerAdapter{
 	List<VoiceChannel> active=new ArrayList<>();
 	/**

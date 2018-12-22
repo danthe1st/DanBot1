@@ -1,8 +1,8 @@
 package commands.moderation;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
-import core.BotCommand;
 import core.PermsCore;
 import listeners.AutoRoleListener;
 import net.dv8tion.jda.core.entities.Role;
