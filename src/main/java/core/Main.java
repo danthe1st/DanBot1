@@ -1,7 +1,13 @@
 package core;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.security.auth.login.LoginException;
@@ -20,6 +26,7 @@ import net.dv8tion.jda.core.WebSocketCode;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import util.STATIC;
 import commands.BotCommand;
 import commands.Command;
 
@@ -148,8 +155,10 @@ public class Main {
 				
 				ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 			    configurationBuilder.addUrls(ClasspathHelper.forClassLoader());
+			    loadPlugins(configurationBuilder);
 			    Reflections ref = new Reflections(configurationBuilder);
-			    addCommands(ref,builder);
+			   
+			    addCommandsAndListeners(ref,builder);
 				try {
 					jda=builder.build();
 					
@@ -176,9 +185,10 @@ public class Main {
 			}
 	}
 	/**
-	 * adds Commands to the Command-Map
+	 * adds Commands and Listeners
 	 */
-	private static void addCommands(Reflections ref,JDABuilder jdaBuilder) {
+	private static void addCommandsAndListeners(Reflections ref,JDABuilder jdaBuilder) {
+		
         for (Class<?> cl : ref.getTypesAnnotatedWith(BotCommand.class,true)) {//TODO remove duplicate Code
             try {
 				Object annotatedAsObject=instantiateObject(cl);
@@ -204,7 +214,7 @@ public class Main {
 
 			}
         }
-        for (Class<?> cl : ref.getTypesAnnotatedWith(BotListener.class,true)) {
+        for (Class<?> cl : ref.getTypesAnnotatedWith(BotListener.class)) {
             try {
 				Object annotatedAsObject=instantiateObject(cl);
 				if (annotatedAsObject==null) {
@@ -265,9 +275,6 @@ public class Main {
         
 	}
 	private static Object instantiateObject(Class<?> cl) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-
-    	
-    	
 		for(Constructor<?> cons:cl.getConstructors()) {
 			if (cons.getParameterCount()==0) {
 				return cons.newInstance();
@@ -275,7 +282,34 @@ public class Main {
 		}
 		
 		return null;
-}
+	}
+	private static void loadPlugins(ConfigurationBuilder builder) {
+		List<URL> urls=new ArrayList<>();
+		File pluginFolder=new File(STATIC.getSettingsDir(),"plugins");
+		if (pluginFolder.exists()) {
+			String[] filesInPluginFolder=pluginFolder.list();
+			for (String pluginName : filesInPluginFolder) {
+				try {
+					if (pluginName.endsWith(".jar")) {
+						File pluginFile=new File(pluginFolder,pluginName);
+						if (pluginFile.isFile()) {
+							urls.add(pluginFile.toURI().toURL());
+						}
+					}
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+			}
+			URL[] urlArr=new URL[urls.size()];
+			for (int i = 0; i < urlArr.length; i++) {
+				urlArr[i]=urls.get(i);
+			}
+			builder.addUrls(urls);
+			builder.addClassLoader(new URLClassLoader(urlArr));
+		}else {
+			pluginFolder.mkdir();
+		}
+	}
 	/**
 	 * should load a RichPresence, but unfortunatly this doesn't work.
 	 * @param jda the Representation of the <b>Java Discord API</b> as {@link JDAImpl}
