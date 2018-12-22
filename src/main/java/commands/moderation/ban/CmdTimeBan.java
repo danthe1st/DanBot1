@@ -6,9 +6,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
-import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;

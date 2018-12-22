@@ -3,9 +3,15 @@ package listeners;
 import commands.moderation.nospam.SpamProtectionContainer;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
+/**
+ * Listener for the spam-protection<br>
+ * @author Daniel Schmid
+ */
+@BotListener
 public class SpamProtectListener extends ListenerAdapter {
-
+	/**
+	 * listener to call the spam protection when a Message in a protected Guild is sent.
+	 */
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		if (SpamProtectionContainer.isGuildProtected(event.getGuild())) {

@@ -1,7 +1,7 @@
 package commands.admin;
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
-import core.BotCommand;
 import core.CommandHandler;
 import core.CommandParser;
 import core.PermsCore;

@@ -11,6 +11,7 @@ import util.STATIC;
  * Listener for Commands
  * @author Daniel Schmid
  */
+@BotListener
 public class CommandListener extends ListenerAdapter {
 	/**
 	 * if anyone sends a {@link Message} and this Message begins with the Bot prefix for the {@link Guild} it will be parsed and executed

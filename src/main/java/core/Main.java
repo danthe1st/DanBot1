@@ -1,21 +1,17 @@
 package core;
 
 import java.lang.reflect.Constructor;
-import java.util.EventListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 import javax.security.auth.login.LoginException;
 
 import org.json.JSONObject;
 import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
-import listeners.AutoChannelHandler;
-import listeners.AutoRoleListener;
-import listeners.CommandListener;
-import listeners.GuildChangeListener;
-import listeners.ReadyListener;
-import listeners.SpamProtectListener;
-import listeners.VoiceListener;
+import listeners.BotListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -24,6 +20,7 @@ import net.dv8tion.jda.core.WebSocketCode;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import commands.BotCommand;
 import commands.Command;
 
 /**
@@ -147,17 +144,20 @@ public class Main {
 				
 				builder.setRequestTimeoutRetry(true);
 				
-				initListeners(builder);
+				//initListeners(builder);
 				
-				
+				ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+			    configurationBuilder.addUrls(ClasspathHelper.forClassLoader());
+			    Reflections ref = new Reflections(configurationBuilder);
+			    addCommands(ref,builder);
 				try {
 					jda=builder.build();
 					
 					
 					jda.awaitReady();
-					addCommands(jda);
-					jda.addEventListener(new AutoRoleListener(jda));
-					jda.addEventListener(new SpamProtectListener());
+					
+//					jda.addEventListener(new AutoRoleListener(jda));
+//					jda.addEventListener(new SpamProtectListener());
 					loadRichPresence((JDAImpl) jda);
 					Console.runConsole(scan, jda);
 					((JDAImpl) jda).getGuildSetupController().clearCache();
@@ -178,29 +178,14 @@ public class Main {
 	/**
 	 * adds Commands to the Command-Map
 	 */
-	private static void addCommands(JDA jda) {//TODO
-		System.out.println("Started loading Commands...");
-		 
-        Reflections ref = new Reflections("commands");
-        
-        for (Class<?> cl : ref.getTypesAnnotatedWith(BotCommand.class,true)) {
+	private static void addCommands(Reflections ref,JDABuilder jdaBuilder) {
+        for (Class<?> cl : ref.getTypesAnnotatedWith(BotCommand.class,true)) {//TODO remove duplicate Code
             try {
-            	
-            	
-				Object annotatedAsObject;
-				if(cl.getConstructor()==null) {
-					Constructor<?> cons=cl.getConstructor(JDA.class);
-					if (cons!=null) {
-						annotatedAsObject=cons.newInstance(jda);
-					}
-					else {
-						System.err.println(cl.getName()+" is annotated with @BotCommand but has no no-args-constructor/one-arg-Constructor with the argument type JDA");
-						break;
-					}
-				}else {
-					annotatedAsObject = cl.newInstance();
+				Object annotatedAsObject=instantiateObject(cl);
+				if (annotatedAsObject==null) {
+					System.err.println("no matching Constructor found for class"+cl.getName());
+					break;
 				}
-				
 				BotCommand cmdAsAnnotation = cl.getAnnotation(BotCommand.class);
 				if (annotatedAsObject instanceof Command) {
 					Command cmd=(Command) annotatedAsObject;
@@ -216,6 +201,28 @@ public class Main {
 				System.err.println(cl.getName()+" is annotated with @BotCommand but the no-args constructor is not visible");
 			} catch (Throwable e) {
 				System.err.println(cl.getName()+" is annotated with @BotCommand but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
+
+			}
+        }
+        for (Class<?> cl : ref.getTypesAnnotatedWith(BotListener.class,true)) {
+            try {
+				Object annotatedAsObject=instantiateObject(cl);
+				if (annotatedAsObject==null) {
+					System.err.println("no matching Constructor found for class"+cl.getName());
+					break;
+				}
+				if (annotatedAsObject instanceof ListenerAdapter) {
+					ListenerAdapter listener=(ListenerAdapter) annotatedAsObject;
+					jdaBuilder.addEventListener(listener);
+				}else {
+					System.err.println(cl.getName()+" is annotated with @BotListener but does not implement "+ListenerAdapter.class.getName());
+				}
+			} catch (InstantiationException e) {
+				System.err.println(cl.getName()+" is annotated with @BotListener but cannot be instanciated");
+			} catch (IllegalAccessException e) {
+				System.err.println(cl.getName()+" is annotated with @BotListener but the no-args constructor is not visible");
+			} catch (Throwable e) {
+				System.err.println(cl.getName()+" is annotated with @BotListener but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
 
 			}
         }
@@ -255,8 +262,20 @@ public class Main {
 //		CommandHandler.commands.put("timeban", new CmdTimeBan());
 //		CommandHandler.commands.put("blacklist", new CmdBlacklist());
 //		CommandHandler.commands.put("nospam", new CmdNoSpam());
-        System.out.println(CommandHandler.commands.size()+" commands loaded.");
+        
 	}
+	private static Object instantiateObject(Class<?> cl) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+    	
+    	
+		for(Constructor<?> cons:cl.getConstructors()) {
+			if (cons.getParameterCount()==0) {
+				return cons.newInstance();
+			}
+		}
+		
+		return null;
+}
 	/**
 	 * should load a RichPresence, but unfortunatly this doesn't work.
 	 * @param jda the Representation of the <b>Java Discord API</b> as {@link JDAImpl}
@@ -300,19 +319,19 @@ public class Main {
                 .put("op", WebSocketCode.PRESENCE).toString());
     }
 	
-	/**
-	 * initiiert die Listener
-	 * @param builder der JDABuilder
-	 */
-	private static void initListeners(final JDABuilder builder) {
-		builder.addEventListener(
-				new ReadyListener(),
-				new VoiceListener(),
-				new CommandListener(),
-				new AutoChannelHandler(),
-				new GuildChangeListener());
-				
-	}
+//	/**
+//	 * initiating the listeners
+//	 * @param builder der JDABuilder
+//	 */
+//	private static void initListeners(final JDABuilder builder) {
+//		builder.addEventListener(
+//				new ReadyListener(),
+//				new VoiceListener(),
+//				new CommandListener(),
+//				new AutoChannelHandler(),
+//				new GuildChangeListener());
+//				
+//	}
 	/**
 	 * tests if the Bot is stoppable
 	 * @return <code>true</code> if it s stoppable

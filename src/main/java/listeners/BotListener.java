@@ -1,4 +1,4 @@
-package commands;
+package listeners;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.TYPE)
-public @interface BotCommand{
-	String[] aliases();
+public @interface BotListener{
+	
 }

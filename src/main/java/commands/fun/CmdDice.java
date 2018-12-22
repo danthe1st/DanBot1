@@ -3,9 +3,9 @@ package commands.fun;
 import java.awt.Color;
 import java.util.Random;
 
+import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
-import core.BotCommand;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;

@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -17,14 +15,12 @@ import util.STATIC;
  * Listener to automatically assign roles
  * @author Daniel Schmid
  */
+@BotListener
 public class AutoRoleListener extends ListenerAdapter{
 	private static HashMap<String, List<Role>> roles=new HashMap<>();
-	public AutoRoleListener(JDA jda) {
+	public AutoRoleListener() {
 		if (roles==null) {
 			roles=new HashMap<>();
-		}
-		for (Guild g : jda.getGuilds()) {
-			load(g);
 		}
 		
 	}
@@ -61,7 +57,7 @@ public class AutoRoleListener extends ListenerAdapter{
 	 * loads autoroles for a {@link Guild}
 	 * @param g the {@link Guild} where autoroles should be loaded
 	 */
-	private static void load(Guild g) {
+	public static void load(Guild g) {
 		String[] roleIDs=(String[]) STATIC.load(g.getId()+"/roles.dat");
 		if (roleIDs==null) {
 			return;
