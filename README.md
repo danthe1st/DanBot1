@@ -13,3 +13,4 @@ Programm your own Plugins:
 * Listeners should be annotated with @listeners.BotListener
 * Listeners should extend net.dv8tion.jda.core.hooks.ListenerAdapter
 * You can run the Bot by executing core.Main.main(String[] args);
+* you can export the plugin as a normal JAR File, but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
