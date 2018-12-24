@@ -1,7 +1,10 @@
-package commands;
+package commands.admin;
 
 import java.io.File;
 
+import commands.BotCommand;
+import commands.Command;
+import commands.CommandType;
 import core.Main;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -14,10 +17,11 @@ import util.STATIC;
 public class CmdRestart implements Command{
 	private static String[] startfiles=new String[] {"DanBot1.bat","DanBot1.sh"};
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.checkOwner(event);	
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		if (!PermsCore.check(event, "restart")) {
-			return;
-		}
 		STATIC.msg(event.getTextChannel(), "restarting DanBot1 "+STATIC.VERSION, false);		
 		Command.super.executed(true, event);
 		event.getJDA().shutdown();
@@ -80,6 +84,6 @@ public class CmdRestart implements Command{
 	}
 	@Override
 	public CommandType getCommandType() {
-		return CommandType.BOT_MODERATION;
+		return CommandType.ADMIN;
 	}
 }
