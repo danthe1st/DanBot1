@@ -1,7 +1,10 @@
-package commands;
+package commands.admin;
 
 import java.awt.Color;
 
+import commands.BotCommand;
+import commands.Command;
+import commands.CommandType;
 import core.Main;
 import core.PermsCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -12,6 +15,10 @@ import util.STATIC;
  */
 @BotCommand(aliases = "stop")
 public class CmdStop implements Command{//TODO make it only possible for specified Guilds
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.checkOwner(event);	
+	}
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "stop")) {
@@ -34,6 +41,6 @@ public class CmdStop implements Command{//TODO make it only possible for specifi
 	}
 	@Override
 	public CommandType getCommandType() {
-		return CommandType.BOT_MODERATION;
+		return CommandType.ADMIN;
 	}
 }
