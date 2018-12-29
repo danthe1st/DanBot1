@@ -34,6 +34,7 @@ public class TrackManager extends AudioEventAdapter{
 	 * adds a Track
 	 * @param track the track to add
 	 * @param author The {@link Member} who ordered the track
+	 * @param channel the Channel where the Track was requested
 	 */
 	public void queue(final AudioTrack track, final Member author,TextChannel channel) {
 		final AudioInfo info=new AudioInfo(track, author,channel);

@@ -109,7 +109,7 @@ public final class STATIC {
 	/**
 	 * send a Message
 	 * @param channel The {@link TextChannel} where the Message should be sent
-	 * @param text The content of the Message as {@link MessageEmbed}
+	 * @param message The content of the Message as {@link MessageEmbed}
 	 * @param timeout should the Message be deleted automatically
 	 */
 	public static void msg(TextChannel channel, MessageEmbed message,boolean timeout) {

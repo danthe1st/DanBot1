@@ -8,7 +8,6 @@
     <groupId>DanBot1</groupId>
     <artifactId>DanBot1</artifactId>
     <version>3.0 - Living</version>
-    <packaging>jar</packaging>
     <name>DanBot1</name>
     <scm>
 	    <connection>scm:git:git://github.com/danthe1st/DanBot1</connection>
@@ -111,7 +110,31 @@
     </dependencies>
 
     <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    
+    	<finalName>DanBot1</finalName>
         <plugins>
+        	<!--  <plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-source-plugin</artifactId>
+			  <executions>
+			    <execution>
+			      <id>attach-sources</id>
+			      <goals>
+			        <goal>jar</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
             <plugin><!-- test JAR -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -136,17 +159,20 @@
 				    <archive>
 				      <manifest>
 				        <mainClass>core.Main</mainClass>
+				        <addClasspath>true</addClasspath>
 				      </manifest>
 				    </archive>
-					    <outputDirectory>./DanBot1/</outputDirectory>
-					    <finalName>DanBot1</finalName>
+				    <outputDirectory>./DanBot1/</outputDirectory>
+				    <finalName>DanBot1</finalName>
 				    <descriptorRefs>
-				      <descriptorRef>jar-with-dependencies</descriptorRef>
+				    	<descriptorRef>jar-with-dependencies</descriptorRef>
 				    </descriptorRefs>
+				    <appendAssemblyId>false</appendAssemblyId>
 				  </configuration>
 				  <executions>
 				    <execution>
 				      <id>make-assembly</id>
+				      <phase>package</phase>
 				      <goals>
 				        <goal>single</goal>
 				      </goals>
