@@ -1,0 +1,14 @@
+commands
+commands.admin
+commands.botdata
+commands.fun
+commands.moderation
+commands.moderation.ban
+commands.moderation.nospam
+commands.music
+commands.utils
+commands.utils.spam
+consoleCmd
+core
+listeners
+util

@@ -117,7 +117,7 @@ public class PermsCore {
 		return checkOwner(event, true);
 	}
 	/**
-	 * tests if the Author of a Message is the Developer of this Bot<br
+	 * tests if the Author of a Message is the Developer of this Bot<br>
 	 * if forbidden and doErrMsg is true an errormessage will be sent.
 	 * @param event the {@link MessageReceivedEvent} of the Message
 	 * @param doErrMsg should an Error-Message be sent?
@@ -289,7 +289,7 @@ public class PermsCore {
 	private static final String saveName="perms.dat";
 	/**
 	 * saves the Permissions of a {@link Guild}
-	 * @param guild The Guild(Discord-Server)
+	 * @param g The Guild(Discord-Server)
 	 */
 	public static void savePerms(Guild g) {
 		Map<String, String[]> guildPerms = perms.get(g.getId());

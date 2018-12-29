@@ -375,7 +375,7 @@ public class Main {
 	}
 	/**
 	 * get the Program arguments the Bot is started with.
-	 * @return
+	 * @return main args
 	 */
 	public static String[] getArgs() {
 		return args;

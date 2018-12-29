@@ -131,7 +131,7 @@ public class CmdAutoChannel implements Command, Serializable {
 	}
 	/**
 	 * loads all autochannels
-	 * @param jda
+	 * @param jda the {@link JDA}
 	 */
 	public static void load(final JDA jda) {
 		try {
