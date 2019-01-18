@@ -19,10 +19,11 @@ import util.STATIC;
 @BotCommand(aliases = "unnick")
 public class CmdUnNick implements Command{
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return !((args.length==0&&!PermsCore.check(event, "unnick",false))||(!PermsCore.check(event, "unnick.others")));
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		if((args.length==0&&!PermsCore.check(event, "unnick",false))||(!PermsCore.check(event, "unnick.others"))) {
-			return;
-		}
 		if (args.length==0) {
 			try {
 				event.getGuild().getController().setNickname(event.getGuild().getMember(event.getAuthor()), null).queue();

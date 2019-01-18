@@ -42,6 +42,10 @@ public class CmdRestart implements Command{
 		Main.main(Main.getArgs());
 		return;
 	}
+	/**
+	 * looks for the Command({@link Runtime#exec(String)}) to restart the Bot
+	 * @return the Command
+	 */
 	private String getRestartCommand() {
 		String command=System.getProperty("restartcommand");
 		if (command!=null) {

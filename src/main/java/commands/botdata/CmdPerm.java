@@ -15,16 +15,15 @@ import util.STATIC;
 /**
  * Command forcguild-specified Bot-Permissions
  * @author Daniel Schmid
- *
  */
 @BotCommand(aliases = "perm")
 public class CmdPerm implements Command{
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "perm");
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		
-		if(!PermsCore.check(event, "perm")) {
-			return;
-		}
 		if(args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), "not enough arguments");
 			return;

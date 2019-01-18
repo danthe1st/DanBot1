@@ -1,5 +1,9 @@
 package commands;
 
+/**
+ * enumeration for types of Commands
+ * @author Daniel Schmid
+ */
 public enum CommandType {
 	
 	USER("User Command"),

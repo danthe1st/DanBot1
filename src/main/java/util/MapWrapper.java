@@ -5,6 +5,12 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * XML-Wrapper for Maps
+ * @author Daniel Schmid
+ * @param <K> The Generic of the Key
+ * @param <V> The Generic of the Value
+ */
 @XmlRootElement
 public class MapWrapper<K,V> {
 	private Map<K, V> data;

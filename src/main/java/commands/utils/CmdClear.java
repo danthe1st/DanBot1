@@ -31,10 +31,11 @@ public class CmdClear implements Command {
 		}
 	}
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "clearChat");
+	}
+	@Override
 	public void action(String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "clearChat")) {
-			return;
-		}
 		if(args.length>0) {
 			int num=getInt(args[0]);
 			if(num>1&&num<=100) {

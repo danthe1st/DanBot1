@@ -14,16 +14,16 @@ import util.STATIC;
 /**
  * Command to move {@link Member}s from their current {@link VoiceChannel} to the AFK-{@link VoiceChannel}
  * @author Daniel Schmid
- *
  */
 @BotCommand(aliases = {"vkick"})
 public class CmdVoiceKick implements Command{
 
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "vkick");
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		if( !(PermsCore.check(event, "vkick")) ) {
-			return;
-		}
 		List<Member> toKick=STATIC.getMembersFromMsg(event.getMessage());
 		try {
 			for (Member member : toKick) {

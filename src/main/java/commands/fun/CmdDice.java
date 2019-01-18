@@ -18,6 +18,10 @@ import util.STATIC;
 public class CmdDice implements Command{
 	private static Random rand=new Random();
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "dice");
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "dice")) {
 			return;

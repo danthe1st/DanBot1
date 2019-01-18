@@ -10,15 +10,15 @@ import util.STATIC;
 /**
  * Command to change/show the Bot prefix
  * @author Daniel Schmid
- *
  */
 @BotCommand(aliases = "prefix")
 public class CmdPrefix implements Command{
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "prefix");
+	}
+	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "prefix")) {
-			return;
-		}
 		if(args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), "Not anough arguments.");
 			return;

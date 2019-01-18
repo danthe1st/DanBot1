@@ -92,8 +92,11 @@ public class CmdBlacklist implements Command{
 	public CommandType getCommandType() {
 		return CommandType.ADMIN;
 	}
-	
-	
+	/**
+	 * checks if a user is Blacklisted
+	 * @param userId the ISnowflake ID of the user
+	 * @return <code>true</code> if the user is blacklisted, <code>false</code> if not
+	 */
 	public static boolean isBlacklisted(String userId) {
 		return blacklist.contains(userId);
 	}

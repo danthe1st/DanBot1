@@ -220,10 +220,11 @@ public class CmdVote implements Command, Serializable{
 		});
 	}
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "vote");
+	}
+	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "vote")) {
-			return;
-		}
 		channel=event.getTextChannel();
 		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(event.getGuild())));

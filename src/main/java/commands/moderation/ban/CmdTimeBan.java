@@ -18,6 +18,11 @@ import util.STATIC;
  */
 @BotCommand(aliases = {"tban","timeban"})
 public class CmdTimeBan implements Command{
+	/**
+	 * parses/calculates the System time
+	 * @param time the relative time as String
+	 * @return the time in ms
+	 */
 	private long getBanTime(String time) {
 		int d=0;
 		int h=0;
@@ -101,6 +106,10 @@ public class CmdTimeBan implements Command{
 		}
 		//									ms	 s	 min	 h
 		return   System.currentTimeMillis()+1000L*60*(min+60*(h+24*d));
+	}
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "ban");
 	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ban")) {

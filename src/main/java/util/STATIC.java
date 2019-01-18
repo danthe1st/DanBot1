@@ -241,9 +241,6 @@ public final class STATIC {
 		CmdBlacklist.loadBlacklist(jda);
 		for (Guild guild : jda.getGuilds()) {
 			loadPrefix(guild);
-//			System.out.println("loading Permissions for Guild "+guild.getName()+"...");
-//			loadPerms(guild);
-			
 			PermsCore.loadPerms(guild);
 			AutoRoleListener.load(guild);
 		}
@@ -274,8 +271,6 @@ public final class STATIC {
 			f.delete();
 			return;
 		}
-		
-		
 		File file=new File(saveFile);
 		if (!file.exists()) {
 			try {
@@ -285,12 +280,10 @@ public final class STATIC {
 			}
 		}
 			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		
-		
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		final String prefix=prefixe.get(guild);
 		FileOutputStream fos;
 		try {
@@ -302,7 +295,6 @@ public final class STATIC {
 			e.printStackTrace();
 		}
 	}
-	
 	/**
 	 * loads the prefix from a Guild
 	 * @param g The Guild(Discord-Server)
@@ -326,75 +318,6 @@ public final class STATIC {
 			}
 		}
 	}
-//	/**
-//	 * saves the Permissions of a {@link Guild}
-//	 * @param guild The Guild(Discord-Server)
-//	 */
-//	private static void savePerms(final Guild guild){
-//		
-//		if (!new File(STATIC.getSettingsDir()+"/"+guild.getId()).exists()) {
-//			new File(STATIC.getSettingsDir()+"/"+guild.getId()).mkdirs();
-//		}
-//		
-//		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/perms.dat";
-//		File file=new File(saveFile);
-//		if(!file.exists()) {
-//			try {
-//				file.createNewFile();
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
-//		}
-//		if(!permsLocal.containsKey(guild)) {
-//			final File f=new File(saveFile);
-//			f.delete();
-//			return;
-//		}
-//		
-//		final HashMap<String, String[]> perms=permsLocal.get(guild);
-//		FileOutputStream fos;
-//		try {
-//			fos = new FileOutputStream(saveFile);
-//			final ObjectOutputStream oos=new ObjectOutputStream(fos);
-//			oos.writeObject(perms);
-//			oos.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//	/**
-//	 * Loads the Permissions of a {@link Guild}
-//	 * @param g The Guild(Discord-Server)
-//	 */
-//	@SuppressWarnings("unchecked")
-//	private static void loadPerms(final Guild g) {
-//		if (!new File(STATIC.getSettingsDir()+"/"+g.getId()).exists()) {
-//			new File(STATIC.getSettingsDir()+"/"+g.getId()).mkdirs();
-//		}
-//		final File file=new File(STATIC.getSettingsDir()+"/"+g.getId()+"/perms.dat");
-//		if (!file.exists()) {
-//			if (!permsLocal.containsKey(g)) {
-//				permsLocal.put(g, PERMS);
-//				savePerms(g);
-//			}
-//			return;
-//		}
-//		
-//		else {
-//			try {
-//				final FileInputStream fis=new FileInputStream(file);
-//				final ObjectInputStream ois=new ObjectInputStream(fis);
-//				permsLocal.put(g, (HashMap<String, String[]>) ois.readObject());
-//				ois.close();
-//			} catch (IOException|ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//			if (!permsLocal.containsKey(g)) {
-//				permsLocal.put(g, PERMS);
-//				savePerms(g);
-//			}
-//		}
-//	}
 	/**
 	 * gets the name of the Logger Channel for a {@link Guild}
 	 * @param g The Guild(Discord-Server)

@@ -44,6 +44,11 @@ public class CmdMusic implements Command{
 	public CmdMusic() {
 		AudioSourceManagers.registerRemoteSources(MANAGER);
 	}
+	/**
+	 * creates an Audio-Player for a Guild
+	 * @param g the {@link Guild}
+	 * @return the created Audio Player
+	 */
 	private AudioPlayer createPlayer(final Guild g) {
 		final AudioPlayer p=MANAGER.createPlayer();
 		final TrackManager m=new TrackManager(p);
@@ -52,9 +57,19 @@ public class CmdMusic implements Command{
 		PLAYERS.put(g, new AbstractMap.SimpleEntry<AudioPlayer, TrackManager>(p, m));
 		return p;
 	}
+	/**
+	 * checks if there is an Audio Player for a specified {@link Guild}
+	 * @param g the {@link Guild}
+	 * @return <code>true</code> if the Audio exists
+	 */
 	private boolean hasPlayer(final Guild g) {
 		return PLAYERS.containsKey(g);
 	}
+	/**
+	 * gets the Audio Player of a {@link Guild}
+	 * @param g the {@link Guild}
+	 * @return the Audio Player of the {@link Guild}
+	 */
 	private AudioPlayer getPlayer(final Guild g) {
 		if (hasPlayer(g)) {
 			return PLAYERS.get(g).getKey();
@@ -63,6 +78,11 @@ public class CmdMusic implements Command{
 			return createPlayer(g);
 		}
 	}
+	/**
+	 * gets the {@link TrackManager} for a Guild
+	 * @param g the {@link Guild}
+	 * @return the {@link TrackManager} of the Guild
+	 */
 	private TrackManager getManager(final Guild g) {
 		return PLAYERS.get(g).getValue();
 	}
@@ -147,10 +167,11 @@ public class CmdMusic implements Command{
 		return "\'["+getTimeStamp(length)+"]\'"+title+"\n";
 	}
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "playMusic");
+	}
+	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "playMusic")) {
-			return;
-		}
 		guild=event.getGuild();
 		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(guild)));

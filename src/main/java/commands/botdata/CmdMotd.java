@@ -21,6 +21,10 @@ public class CmdMotd implements Command{
 	private static Map<Guild, String> motd=new HashMap<Guild, String>();
 	private static final String stdMotd="Invite: https://discordapp.com/api/oauth2/authorize?client_id=371042228891549707&permissions=8&scope=bot\n"
 			+ "Support: https://discord.gg/qmwcEjF";
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "motd");
+	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "motd")) {
 			return;

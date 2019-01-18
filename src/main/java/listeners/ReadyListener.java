@@ -18,14 +18,9 @@ public class ReadyListener extends ListenerAdapter {
 		System.out.println("\nThis Bot is running on following servers: \n");
 		for (final Guild g : event.getJDA().getGuilds()) {
 			System.out.println(STATIC.getServerData(g));
-//			try {
-//				g.getController().setNickname(g.getMember(event.getJDA().getSelfUser()), Main.getNickname()).queue();
-//			} catch (Exception e) {}
 		}
 		//preload Data
 		System.out.println("Loading data...");
-		
-		
 		STATIC.loadData(event.getJDA());
 		System.out.println("loaded");
 	}

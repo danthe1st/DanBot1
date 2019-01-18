@@ -23,7 +23,6 @@ public class CmdClearPMs implements Command {
 			return 0;
 		}
 	}
-	
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if(args.length>0) {
