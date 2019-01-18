@@ -2,9 +2,9 @@ package consoleCmd;
 
 import java.awt.Color;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.TextChannel;
 /**
  * Console Command to write a Message
  * @author Daniel Schmid

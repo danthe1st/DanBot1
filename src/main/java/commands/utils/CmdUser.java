@@ -7,9 +7,10 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
  * Command to echo userinfo
@@ -56,10 +57,13 @@ public class CmdUser implements Command{
 				emB.appendDescription("**Nickname**: *"+member.getNickname()+"* \n");
 				emB.appendDescription("**Real Name**: *"+member.getUser().getName()+"* \n");
 			}
-			if (member.getGame()!=null) {
-				emB.appendDescription("**Game**: *"+member.getGame().getName()+"* \n");
+			if (!member.getActivities().isEmpty()) {
+				emB.appendDescription("**Games**\n");
 			}
-			emB.appendDescription("**joined** the Guild: *"+member.getJoinDate().getDayOfMonth()+"."+member.getJoinDate().getMonthValue()+"."+member.getJoinDate().getYear()+"* \n");
+			for (Activity activity : member.getActivities()) {
+				emB.appendDescription("\t*"+activity.getName()+"* \n");//TODO testen
+			}
+			emB.appendDescription("**joined** the Guild: *"+member.getTimeJoined().getDayOfMonth()+"."+member.getTimeJoined().getMonthValue()+"."+member.getTimeJoined().getYear()+"* \n");
 			if (!member.getRoles().isEmpty()) {
 				emB.appendDescription("***Roles***: \n");
 				emB.appendDescription("*Main Role*: **"+member.getRoles().get(0).getName()+"** \n");

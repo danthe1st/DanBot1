@@ -1,34 +1,32 @@
 package core;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 
 import javax.security.auth.login.LoginException;
 
-import org.json.JSONObject;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
-import listeners.BotListener;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.WebSocketCode;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.impl.JDAImpl;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import util.STATIC;
 import commands.BotCommand;
 import commands.Command;
+import listeners.BotListener;
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.internal.JDAImpl;
+import util.STATIC;
 
 /**
  * <b>Main-Class</b><br>
@@ -49,7 +47,17 @@ public class Main {
 		}
 		Runtime.getRuntime().addShutdownHook(new Thread(new ScanCloser(scan)));
 	}
-	
+	/**
+	 * start-Method
+	 * @param args 
+	 * <pre> ?       show this help
+	 * noStop  sets the Bot unstoppable
+	 * game=<name>     Sets a game name
+	 * token=<Discord Bot token> Sets the token of the Bot (you will be asked if it is not set)
+	 * status=<status> Sets a Discord-Status for the Bot
+	 * 		do_not_disturb, idle, invisible, online, offline, unknown
+	 * admin=<id> sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)</pre>
+	 */
 	public static void main(final String[] args) {
 		Main.args=args;
 		JDA jda = null;
@@ -69,7 +77,7 @@ public class Main {
 							+ "See http://wwwmaster.at/daniel/data/DanBot1 for a list of all Commands\n"
 							+ "possible arguments:\n"
 							+ "\t?\tshow this help\n"
-							+ "noStop\tsets the Bot unstoppable\n"
+							+ "\tnoStop\tsets the Bot unstoppable\n"
 							+ "\tgame=<name>\tSets a game name\n"
 							+ "\ttoken=<Discord Bot token> Sets the token of the Bot (you will be asked if it is not set)\n"
 							+ "\tstatus=<status>\tSets a Discord-Status for the Bot\n"
@@ -131,158 +139,111 @@ public class Main {
 			}
 		}
 		System.out.println("DanBot1 by Daniel Schmid");
-			boolean alreadyDone=false;
-			while (true) {
-				while (alreadyDone||token==null||token.equals("")) {
-					System.out.println("Please enter a valid Bot token:");
-					token=scan.next();
-					alreadyDone=false;
-				}
-				alreadyDone=true;
-				
-				final JDABuilder builder=new JDABuilder(AccountType.BOT);
-				builder.setToken(token);	
-				builder.setAutoReconnect(true);
-				builder.setStatus(status);
-				if (game==null) {
-					game="with you";
-				}
-				builder.setGame(Game.playing(game));
-				
-				builder.setRequestTimeoutRetry(true);
-				
-				//initListeners(builder);
-				
-				ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			    configurationBuilder.addUrls(ClasspathHelper.forClassLoader());
-			    loadPlugins(configurationBuilder);
-			    Reflections ref = new Reflections(configurationBuilder);
-			   
-			    addCommandsAndListeners(ref,builder);
-				try {
-					jda=builder.build();
-					
-					
-					jda.awaitReady();
-					
-//					jda.addEventListener(new AutoRoleListener(jda));
-//					jda.addEventListener(new SpamProtectListener());
-					loadRichPresence((JDAImpl) jda);
-					Console.runConsole(scan, jda);
-					((JDAImpl) jda).getGuildSetupController().clearCache();
-				} catch (final LoginException e) {
-					System.err.println("The entered token is not valid!");
-					token=null;
-					continue;
-				} catch (final IllegalArgumentException e) {
-					System.err.println("There is no token entered!");
-					token=null;
-					continue;
-				} catch (final InterruptedException e) {
-					e.printStackTrace();
-				}
-				break;
+		boolean alreadyDone=false;
+		while (true) {
+			while (alreadyDone||token==null||token.equals("")) {
+				System.out.println("Please enter a valid Bot token:");
+				token=scan.next();
+				alreadyDone=false;
 			}
+			alreadyDone=true;
+			
+			final JDABuilder builder=new JDABuilder(AccountType.BOT);
+			builder.setToken(token);	
+			builder.setAutoReconnect(true);
+			builder.setStatus(status);
+			if (game==null) {
+				game="with you";
+			}
+			builder.setActivity(Activity.playing(game));
+			
+			builder.setRequestTimeoutRetry(true);
+			
+			//initListeners(builder);
+			
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+		    configurationBuilder.addUrls(ClasspathHelper.forClassLoader());
+		    loadPlugins(configurationBuilder);
+		    Reflections ref = new Reflections(configurationBuilder);
+		   
+		    addCommandsAndListeners(ref,builder);
+			try {
+				jda=builder.build();
+				jda.awaitReady();
+				Console.runConsole(scan, jda);
+				((JDAImpl) jda).getGuildSetupController().clearCache();
+			} catch (final LoginException e) {
+				System.err.println("The entered token is not valid!");
+				token=null;
+				continue;
+			} catch (final IllegalArgumentException e) {
+				System.err.println("There is no token entered!");
+				token=null;
+				continue;
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+			break;
+		}
 	}
 	/**
 	 * adds Commands and Listeners
+	 * @param ref The {@link Reflections} Object
+	 * @param jdaBuilder The Builder of the JDA
 	 */
 	private static void addCommandsAndListeners(Reflections ref,JDABuilder jdaBuilder) {
-		
-        for (Class<?> cl : ref.getTypesAnnotatedWith(BotCommand.class,true)) {//TODO remove duplicate Code
+		addAction(ref, jdaBuilder, BotCommand.class,(cmdAsAnnotation,annotatedAsObject)->{
+    		BotCommand cmdAsBotCommand=(BotCommand)cmdAsAnnotation;
+    		Command cmd=(Command)annotatedAsObject;
+    		for (String alias : cmdAsBotCommand.aliases()) {
+				CommandHandler.commands.put(alias.toLowerCase(), cmd);
+			}
+    	});
+    	addAction(ref, jdaBuilder, BotListener.class,(cmdAsAnnotation,annotatedAsObject)->{
+    		ListenerAdapter listener=(ListenerAdapter) annotatedAsObject;
+			jdaBuilder.addEventListeners(listener);
+    	});
+	}
+	/**
+	 * invokes Method Objects of all Classes from that are annotated with a specified {@link Annotation}
+	 * @param ref The {@link Reflections} Object that scanned the Classes
+	 * @param jdaBuilder The Builder of the JDA
+	 * @param annotClass The Class Object of the Annotation
+	 * @param function
+	 */
+	private static void addAction(Reflections ref,JDABuilder jdaBuilder,Class<? extends Annotation> annotClass, BiConsumer<Annotation, Object> function) {
+		for (Class<?> cl : ref.getTypesAnnotatedWith(annotClass,true)) {
             try {
 				Object annotatedAsObject=instantiateObject(cl);
 				if (annotatedAsObject==null) {
 					System.err.println("no matching Constructor found for class"+cl.getName());
 					break;
 				}
-				BotCommand cmdAsAnnotation = cl.getAnnotation(BotCommand.class);
-				if (annotatedAsObject instanceof Command) {
-					Command cmd=(Command) annotatedAsObject;
-					for (String alias : cmdAsAnnotation.aliases()) {
-						CommandHandler.commands.put(alias.toLowerCase(), cmd);
-					}
-				}else {
-					System.err.println(cl.getName()+" is annotated with @BotCommand but does not implement "+Command.class.getName());
-				}
+				Annotation cmdAsAnnotation = cl.getAnnotation(annotClass);
+				function.accept(cmdAsAnnotation, annotatedAsObject);
 			} catch (InstantiationException e) {
-				System.err.println(cl.getName()+" is annotated with @BotCommand but cannot be instanciated");
+				System.err.println(cl.getName()+" is annotated with @"+annotClass.getName()+" but cannot be instanciated");
 			} catch (IllegalAccessException e) {
-				System.err.println(cl.getName()+" is annotated with @BotCommand but the no-args constructor is not visible");
+				System.err.println(cl.getName()+" is annotated with @"+annotClass.getName()+" but the no-args constructor is not visible");
 			} catch (Throwable e) {
-				System.err.println(cl.getName()+" is annotated with @BotCommand but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
-
+				System.err.println(cl.getName()+" is annotated with @"+annotClass.getName()+" but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
 			}
         }
-        for (Class<?> cl : ref.getTypesAnnotatedWith(BotListener.class)) {
-            try {
-				Object annotatedAsObject=instantiateObject(cl);
-				if (annotatedAsObject==null) {
-					System.err.println("no matching Constructor found for class"+cl.getName());
-					break;
-				}
-				if (annotatedAsObject instanceof ListenerAdapter) {
-					ListenerAdapter listener=(ListenerAdapter) annotatedAsObject;
-					jdaBuilder.addEventListener(listener);
-				}else {
-					System.err.println(cl.getName()+" is annotated with @BotListener but does not implement "+ListenerAdapter.class.getName());
-				}
-			} catch (InstantiationException e) {
-				System.err.println(cl.getName()+" is annotated with @BotListener but cannot be instanciated");
-			} catch (IllegalAccessException e) {
-				System.err.println(cl.getName()+" is annotated with @BotListener but the no-args constructor is not visible");
-			} catch (Throwable e) {
-				System.err.println(cl.getName()+" is annotated with @BotListener but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
-
-			}
-        }
-        
-        
-//        CommandHandler.commands.put("ping", new CmdPing());
-//		CommandHandler.commands.put("say", new CmdSay());
-//		CommandHandler.commands.put("clear", new CmdClear());
-//		CommandHandler.commands.put("cls", CommandHandler.commands.get("clear"));
-//		CommandHandler.commands.put("m", new CmdMusic());
-//		CommandHandler.commands.put("music", CommandHandler.commands.get("m"));
-//		CommandHandler.commands.put("vote", new CmdVote());
-//		CommandHandler.commands.put("v", CommandHandler.commands.get("vote"));
-//		CommandHandler.commands.put("autochannel", new CmdAutoChannel());
-//		CommandHandler.commands.put("autoc", CommandHandler.commands.get("autochannel"));
-//		CommandHandler.commands.put("prefix", new CmdPrefix());
-//		CommandHandler.commands.put("stop", new CmdStop());
-//		CommandHandler.commands.put("help", new CmdHelp());
-//		CommandHandler.commands.put("perm", new CmdPerm());
-//		CommandHandler.commands.put("spam", new CmdSpam());
-//		CommandHandler.commands.put("kick", new CmdKick());
-//		CommandHandler.commands.put("ban", new CmdBan());
-//		CommandHandler.commands.put("role", new CmdRole());
-//		CommandHandler.commands.put("motd", new CmdMotd());
-//		CommandHandler.commands.put("cmdlogger", new CmdLogger());
-//		CommandHandler.commands.put("user", new CmdUser());
-//		CommandHandler.commands.put("restart", new CmdRestart());
-//		CommandHandler.commands.put("eval", new CmdEval());
-//		CommandHandler.commands.put("autorole", new CmdAutoRole());
-//		CommandHandler.commands.put("unnick", new CmdUnNick());
-//		CommandHandler.commands.put("sudo", new CmdSudo());
-//		CommandHandler.commands.put("dice", new CmdDice());
-//		CommandHandler.commands.put("clearpm", new CmdClearPMs());
-//		CommandHandler.commands.put("vkick", new CmdVoiceKick());
-//		CommandHandler.commands.put("reload", new CmdReload());
-//		CommandHandler.commands.put("tban", new CmdTimeBan());
-//		CommandHandler.commands.put("timeban", new CmdTimeBan());
-//		CommandHandler.commands.put("blacklist", new CmdBlacklist());
-//		CommandHandler.commands.put("nospam", new CmdNoSpam());
-        
+    }
+	/**
+	 * Instantiates an Object from a Class
+	 * @param cl The {@link Class} Object
+	 * @return the instantiated Object
+	 * @throws InstantiationException if the {@link Class} represents an abstract class, an interface, an array class, a primitive type, or void or if the class has no no-args-constructor or if the instantiation fails for some other reason
+	 * @throws IllegalAccessException if the class or its no-arg-constructor is not accessible
+	 */
+	private static Object instantiateObject(Class<?> cl) throws InstantiationException, IllegalAccessException{
+		return cl.newInstance();
 	}
-	private static Object instantiateObject(Class<?> cl) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		for(Constructor<?> cons:cl.getConstructors()) {
-			if (cons.getParameterCount()==0) {
-				return cons.newInstance();
-			}
-		}
-		
-		return null;
-	}
+	/**
+	 * loads the Plugins into an {@link ConfigurationBuilder}
+	 * @param builder the {@link ConfigurationBuilder}
+	 */
 	private static void loadPlugins(ConfigurationBuilder builder) {
 		List<URL> urls=new ArrayList<>();
 		File pluginFolder=new File(STATIC.getSettingsDir(),"plugins");
@@ -310,62 +271,7 @@ public class Main {
 			pluginFolder.mkdir();
 		}
 	}
-	/**
-	 * should load a RichPresence, but unfortunatly this doesn't work.
-	 * @param jda the Representation of the <b>Java Discord API</b> as {@link JDAImpl}
-	 */
-	public static void loadRichPresence(JDAImpl jda) { //JDA object can be casted to a JDAImpl
-        JSONObject obj = new JSONObject();
-        JSONObject gameObj = new JSONObject();
-
-        /* LAYOUT:
-        * name
-        * details
-        * time elapsed (timestamps)
-        * status
-        */
-        gameObj.put("name",  game);
-        gameObj.put("type", 0); //1 if streaming
-        gameObj.put("details", "waiting for commands");
-        gameObj.put("state", "online");
-        gameObj.put("timestamps", new JSONObject().put("start", 1508373056)); //somehow used for the time elapsed thing I assume, you can probably also set the end to make it show "xx:xx left"
-
-        JSONObject assetsObj = new JSONObject();
-        assetsObj.put("large_image", "danbot1_big"); //ID of large icon
-        assetsObj.put("largeImageKey", "danbot1_big"); //ID of large icon
-        assetsObj.put("large_text", "Large Text");
-
-        assetsObj.put("small_image", "danbot1_small"); //ID of small icon
-        assetsObj.put("smallImageKey", "danbot1_small"); //ID of small icon
-//test with imageConfig???
-        gameObj.put("assets", assetsObj);
-        gameObj.put("application_id", "371042228891549707"); //Application ID
-
-        obj.put("game", gameObj);
-        obj.put("afk", jda.getPresence().isIdle());
-        obj.put("status", jda.getPresence().getStatus().getKey());
-        obj.put("since", System.currentTimeMillis());
-
-        //System.out.println(obj);
-       
-        jda.getClient().send(new JSONObject()
-                .put("d", obj)
-                .put("op", WebSocketCode.PRESENCE).toString());
-    }
 	
-//	/**
-//	 * initiating the listeners
-//	 * @param builder der JDABuilder
-//	 */
-//	private static void initListeners(final JDABuilder builder) {
-//		builder.addEventListener(
-//				new ReadyListener(),
-//				new VoiceListener(),
-//				new CommandListener(),
-//				new AutoChannelHandler(),
-//				new GuildChangeListener());
-//				
-//	}
 	/**
 	 * tests if the Bot is stoppable
 	 * @return <code>true</code> if it s stoppable

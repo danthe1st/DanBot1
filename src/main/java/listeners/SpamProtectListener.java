@@ -1,8 +1,8 @@
 package listeners;
 
 import commands.moderation.nospam.SpamProtectionContainer;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 /**
  * Listener for the spam-protection<br>
  * @author Daniel Schmid

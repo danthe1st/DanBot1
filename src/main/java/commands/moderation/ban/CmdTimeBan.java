@@ -1,6 +1,6 @@
 package commands.moderation.ban;
 
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,7 +10,7 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
  * Command to ban a {@link Member} until a specified time expires

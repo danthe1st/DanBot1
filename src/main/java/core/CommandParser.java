@@ -2,8 +2,8 @@ package core;
 
 import java.util.ArrayList;
 
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
  * Class to parse a Command into a {@link CommandContainer}

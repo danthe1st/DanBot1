@@ -1,8 +1,8 @@
 package listeners;
 
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import util.STATIC;
 /**
  * Listener on Bot Login

@@ -2,10 +2,11 @@ package commands;
 
 import java.awt.Color;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import util.LoggerUtils;
 import util.STATIC;
 /**
@@ -47,7 +48,7 @@ public interface Command {
 						.setColor(Color.GRAY)
 						.setDescription(s)
 						.build()).queue();
-			} catch (net.dv8tion.jda.core.exceptions.InsufficientPermissionException e) {
+			} catch (InsufficientPermissionException e) {
 			}
 			
 		}
