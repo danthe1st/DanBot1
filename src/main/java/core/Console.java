@@ -14,7 +14,7 @@ import consoleCmd.CmdList;
 import consoleCmd.CmdMsg;
 import consoleCmd.CmdUser;
 import consoleCmd.Command;
-import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.api.JDA;
 /**
  * Core Class for the Console, for entering Commands with {@link System#in}
  * @author Daniel Schmid

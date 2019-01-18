@@ -14,9 +14,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
 import util.MapWrapper;
 import util.STATIC;
 
@@ -85,7 +85,7 @@ public class AutoUnbanner {
 			},delay);
 		}
 	}
-	private  void unban(Guild g,String user) {
+	private void unban(Guild g,String user) {
 		g.getController().unban(user).queue();
 		System.out.println("unbanned user with id ["+user+"] from guild "+g.getName());
 		User JDAUser=jda.getUserById(user);

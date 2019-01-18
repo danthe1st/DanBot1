@@ -5,7 +5,7 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.STATIC;
 /**
  * Ping Command(echos "Pong!" and the current Bot ping)
@@ -19,7 +19,7 @@ public class CmdPing implements Command{
 		}
 		STATIC.msg(event.getTextChannel(), "Pong",true);
 		
-		STATIC.msg(event.getTextChannel(), "my Ping: "+event.getJDA().getPing());
+		STATIC.msg(event.getTextChannel(), "my Ping: "+event.getJDA().getGatewayPing());
 	}
 	public String help(String prefix) {
 		return "Pong!\n"

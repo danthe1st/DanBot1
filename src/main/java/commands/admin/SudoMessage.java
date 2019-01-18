@@ -4,26 +4,26 @@ import java.time.OffsetDateTime;
 import java.util.Formatter;
 import java.util.List;
 
-import net.dv8tion.jda.client.entities.Group;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Category;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.IMentionable;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.MessageType;
-import net.dv8tion.jda.core.entities.PrivateChannel;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.requests.RestAction;
-import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
-import net.dv8tion.jda.core.requests.restaction.MessageAction;
+import net.dv8tion.jda.api.entities.Invite.Group;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.IMentionable;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.MessageType;
+import net.dv8tion.jda.api.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 /**
  * {@link Message} used for the sudo-Command
  * @author Daniel Schmid
@@ -97,10 +97,6 @@ public class SudoMessage implements Message{
 		return oldMsg.isEdited();
 	}
 
-	@Override
-	public OffsetDateTime getEditedTime() {
-		return oldMsg.getEditedTime();
-	}
 
 	@Override
 	public User getAuthor() {
@@ -160,11 +156,6 @@ public class SudoMessage implements Message{
 	@Override
 	public PrivateChannel getPrivateChannel() {
 		return oldMsg.getPrivateChannel();
-	}
-
-	@Override
-	public Group getGroup() {
-		return oldMsg.getGroup();
 	}
 
 	@Override
@@ -275,5 +266,10 @@ public class SudoMessage implements Message{
 	@Override
 	public String getJumpUrl() {
 		return oldMsg.getJumpUrl();
+	}
+
+	@Override
+	public OffsetDateTime getTimeEdited() {
+		return oldMsg.getTimeEdited();
 	}
 }

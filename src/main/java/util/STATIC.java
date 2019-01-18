@@ -22,18 +22,18 @@ import commands.moderation.ban.AutoUnbanner;
 import commands.moderation.nospam.SpamProtectionContainer;
 import core.PermsCore;
 import listeners.AutoRoleListener;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Invite;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Invite;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 
 /**
  * Class for Constants, data and utility-methods
@@ -441,19 +441,19 @@ public final class STATIC {
 		
 		try {		
 			for (Invite inv : g.getInvites().complete()) {
-				return inv.getURL();
+				return inv.getUrl();
 			}
 			
 		} catch (InsufficientPermissionException e) {
 			try {
 				for (TextChannel channel : g.getTextChannels()) {
 					for (Invite inv : channel.getInvites().complete()) {
-						return inv.getURL();
+						return inv.getUrl();
 					}
 				}
 				for (VoiceChannel channel : g.getVoiceChannels()) {
 					for (Invite inv : channel.getInvites().complete()) {
-						return inv.getURL();
+						return inv.getUrl();
 					}
 				}
 			} catch (InsufficientPermissionException e2) {
@@ -489,17 +489,17 @@ public final class STATIC {
 			return null;
 		}
 		try {
-			return g.getDefaultChannel().createInvite().setMaxAge(maxAge).complete().getURL();
+			return g.getDefaultChannel().createInvite().setMaxAge(maxAge).complete().getUrl();
 		} catch (Exception e) {}
 		for (TextChannel channel : g.getTextChannels()) {
 			try {
-				return channel.createInvite().setMaxAge(maxAge).complete().getURL();
+				return channel.createInvite().setMaxAge(maxAge).complete().getUrl();
 			} catch (Exception e) {}
 		}
 		
 		for (VoiceChannel channel : g.getVoiceChannels()) {
 			try {
-				return channel.createInvite().setMaxAge(maxAge).complete().getURL();
+				return channel.createInvite().setMaxAge(maxAge).complete().getUrl();
 			} catch (Exception e) {}
 		}
 		return "";

@@ -1,6 +1,6 @@
 package consoleCmd;
 
-import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.api.JDA;
 /**
  * Interface for Console Commands
  * @author Daniel Schmid

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 /**
  * Console Command to get information about an user
  * @author Daniel Schmid
@@ -68,7 +68,7 @@ public class CmdUser implements Command{
 			List<Member> allMembers=new ArrayList<>();
 			
 			List<Guild> owner=new ArrayList<>();
-			Game game=null;
+			List<Activity> activities=null;
 			Map<Guild, List<Role>> roles=new HashMap<>();
 			for (Guild guild : jda.getGuilds()) {
 				Member member=guild.getMember(user);
@@ -77,8 +77,8 @@ public class CmdUser implements Command{
 					if (member.isOwner()) {
 						owner.add(guild);
 					}
-					if (game==null) {
-						game=member.getGame();
+					if (activities.isEmpty()) {
+						activities=member.getActivities();
 					}
 					List<Role> rolesOnGuild=new ArrayList<>();
 					for (Role role : member.getRoles()) {
@@ -107,8 +107,12 @@ public class CmdUser implements Command{
 				sb.append("is Fake\n");
 			}
 			sb.append("id: "+user.getId()+" \n");
-			if (game!=null) {
-				sb.append("Game: "+game.getName()+" \n");
+			if (!activities.isEmpty()) {
+				sb.append("Games:");
+				for (Activity activity : activities) {
+					sb.append("\t"+activity.getName()+" \n");//TODO testen
+				}
+				
 			}
 			sb.append("Roles:\n");
 			for (Guild g : jda.getGuilds()) {
