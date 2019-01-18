@@ -5,16 +5,17 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * XML-Wrapper Class for Lists
+ * @author Daniel Schmid
+ * @param <E> the Generic of the List Elements
+ */
 @XmlRootElement
 public class ListWrapper<E> {
 	private List<E> data;
 	public ListWrapper() {
 		setData(new ArrayList<>());
 	}
-//	public ListWrapper(ArrayList<E> data) {
-//		this.setData(data);
-//	}
-	
 	public ListWrapper(List<E> data) {
 		this.data=new ArrayList<>(data);
 	}

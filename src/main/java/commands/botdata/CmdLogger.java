@@ -9,15 +9,15 @@ import util.STATIC;
 /**
  * Command to set the Logger-Channel
  * @author Daniel Schmid
- *
  */
 @BotCommand(aliases = "cmdlogger")
 public class CmdLogger implements Command{
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "logger");
+	}
+	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "logger")) {
-			return;
-		}
 		if(args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), "Not anough arguments.");
 			return;

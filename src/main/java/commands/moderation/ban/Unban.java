@@ -6,7 +6,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
-
+/**
+ * Wrapper-Class for an unban
+ * @author Daniel Schmid
+ */
 @XmlRootElement
 @XmlSeeAlso(value=String[].class)
 public class Unban{
@@ -26,6 +29,11 @@ public class Unban{
 		setGuild(null);
 		setUser(null);
 	}
+	/**
+	 * gets the Guild of the unban
+ 	 * @param jda the JDA Object
+	 * @return the Guild(Discord-Server)
+	 */
 	public Guild guild(JDA jda) {
 		return jda.getGuildById(getGuild());
 	}

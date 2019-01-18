@@ -12,6 +12,10 @@ import util.STATIC;
  */
 @BotCommand(aliases = "say")
 public class CmdSay implements Command {
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "say");
+	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "say")) {
 			return;

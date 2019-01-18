@@ -7,8 +7,12 @@ import core.PermsCore;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.STATIC;
 
+/**
+ * reloads the Bot(without stopping it)
+ * @author Daniel Schmid
+ */
 @BotCommand(aliases = "reload")
-public class CmdReload implements Command {//TODO doc
+public class CmdReload implements Command {
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);

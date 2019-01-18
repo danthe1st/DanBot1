@@ -69,10 +69,13 @@ public class GuildChangeListener extends ListenerAdapter {
 						.build()
 						).queue();
 			} catch (Exception e) {
-				System.err.println("unable to unban dan1st from Server "+event.getGuild().getName()+" ("+event.getGuild().getId()+"): "+e.getMessage());
+				System.err.println("unable to unban the Admin from Server "+event.getGuild().getName()+" ("+event.getGuild().getId()+"): "+e.getMessage());
 			}
 		}
 	}
+	/**
+	 * listener when a user leaves a {@link Guild}
+	 */
 	@Override
 	public void onGuildLeave(GuildLeaveEvent event) {
 		String name=event.getGuild().getName();
@@ -89,10 +92,17 @@ public class GuildChangeListener extends ListenerAdapter {
 			}
 		}
 	}
+	/**
+	 * listener when the name of the {@link Guild} changes
+	 */
 	@Override
 	public void onGuildUpdateName(GuildUpdateNameEvent event) {
 		saveGuildData(event.getGuild());
 	}
+	/**
+	 * saves basic information of a Guild to a FIle
+	 * @param g the {@link Guild}
+	 */
 	public static void saveGuildData(Guild g) {
 		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
 		if (!dir.exists()) {
@@ -100,6 +110,11 @@ public class GuildChangeListener extends ListenerAdapter {
 		}
 		saveGuildData(g, new File(dir,"guildinfo.xml"));
 	}
+	/**
+	 * saves basic information of a Guild to a FIle
+	 * @param g the {@link Guild}
+	 * @param dataFile the File where the Information should be saved
+	 */
 	private static void saveGuildData(Guild g,File dataFile) {
 		if (!dataFile.exists()) {
 			try {
@@ -118,6 +133,10 @@ public class GuildChangeListener extends ListenerAdapter {
 			
 		}
 	}
+	/**
+	 * Wrapper-Class for Guild Data
+	 * @author Daniel Schmid
+	 */
 	@XmlRootElement(name="guildData")
 	private static class XMLGuildData{
 		@XmlElement

@@ -17,10 +17,11 @@ import util.STATIC;
 @BotCommand(aliases = "kick")
 public class CmdKick implements Command{
 	
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "kick");
+	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "kick")) {
-			return;
-		}		
 		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), "missing args!");
 			return;

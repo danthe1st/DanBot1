@@ -22,7 +22,10 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 import util.MapWrapper;
 import util.STATIC;
-
+/**
+ * Wrapper-Class for spam-protection
+ * @author Daniel Schmid
+ */
 @XmlRootElement
 public class SpamProtectionContainer {
 	
@@ -34,9 +37,10 @@ public class SpamProtectionContainer {
 	private Map<String, UserStorage> userSpamMap=new HashMap<>();
 	private SortedMap<Long, String[]> timeSpamMap=new TreeMap<>();
 	private Timer timer;
-	
-	public SpamProtectionContainer() {
-	}
+	/**
+	 * no-args-Constructor for JAXB
+	 */
+	public SpamProtectionContainer() {}
 	private SpamProtectionContainer(SpamProtectType type,int tries, int time) {
 		this.type=type;
 		this.time=time;
@@ -82,6 +86,11 @@ public class SpamProtectionContainer {
 		}
 		return true;
 	}
+	/**
+	 * registeres a Message to the spam-protection
+	 * @param msg the Message
+	 * @return <code>true</code> if the Message does not violate the Spam-restrictions
+	 */
 	private boolean addMsg(Message msg) {
 		if (msg.getChannel().getName().toLowerCase().contains("spam")) {
 			return true;
@@ -116,6 +125,10 @@ public class SpamProtectionContainer {
 			return false;
 		}
 	}
+	/**
+	 * performs the administrative Action of that spam
+	 * @param msg the (spammed) Message
+	 */
 	private void doAction(Message msg) {
 		if (msg.getAuthor().getId().equals(msg.getJDA().getSelfUser().getId())) {
 			return;
@@ -141,12 +154,19 @@ public class SpamProtectionContainer {
 			
 		}
 	}
+	/**
+	 * Wrapper-Class for a User
+	 * @author Daniel Schmid
+	 */
 	private class UserStorage{
 		private int tries;
 		public UserStorage(int tries) {
 			this.tries=tries;
 		}
 	}
+	/**
+	 * reloads the timer and performs actions for (spammed) messages
+	 */
 	private void reloadTimer() {
 		List<Long> toRemove=new ArrayList<>();
 		synchronized (timeSpamMap) {
@@ -204,7 +224,9 @@ public class SpamProtectionContainer {
 			},delay);
 		}
 	}
-	
+	/**
+	 * saves the settings
+	 */
 	public static void save() {
 		Map<String, SpamProtectType> data=new HashMap<>();
 		protectors.forEach((k,v)->{
@@ -230,6 +252,9 @@ public class SpamProtectionContainer {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * loads the settings
+	 */
 	@SuppressWarnings("unchecked")
 	public static void load() {
 		try {

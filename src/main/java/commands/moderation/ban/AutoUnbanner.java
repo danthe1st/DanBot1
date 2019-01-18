@@ -19,7 +19,10 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import util.MapWrapper;
 import util.STATIC;
-
+/**
+ * Class for automatically unbanning a user(timeban)
+ * @author Daniel Schmid
+ */
 public class AutoUnbanner {
 
 	private static AutoUnbanner unbanner;
@@ -29,6 +32,9 @@ public class AutoUnbanner {
 	private AutoUnbanner(JDA jda) {
 		this.jda=jda;
 	}
+	/**
+	 * unbans all users that have not been unbanned and set a timer for unbanning
+	 */
 	private void reloadTimer() {
 		List<Long> toRemove=new ArrayList<>();
 		synchronized (unbans) {
@@ -85,6 +91,11 @@ public class AutoUnbanner {
 			},delay);
 		}
 	}
+	/**
+	 * unbans an user
+	 * @param g the {@link Guild} where th user should be unbanned
+	 * @param user the ISnowflake ID of the user to be unbanned
+	 */
 	private void unban(Guild g,String user) {
 		g.getController().unban(user).queue();
 		System.out.println("unbanned user with id ["+user+"] from guild "+g.getName());
@@ -98,6 +109,12 @@ public class AutoUnbanner {
 			JDAUser.openPrivateChannel().complete().sendMessage(msg).queue();
 		}
 	}
+	/**
+	 * registeres an user for unbanning
+	 * @param g the {@link Guild} where th user should be unbanned
+	 * @param user the ISnowflake ID of the user to be unbanned
+	 * @param systime the time when the user should be unbanned
+	 */
 	public static void addUnBan(Guild g,User user,long systime) {
 		
 		Unban unban=new Unban(g, user);
@@ -112,6 +129,11 @@ public class AutoUnbanner {
 		}
 		saveUnBans();
 	}
+	/**
+	 * Factory-Method
+	 * @param jda The JDA Object
+	 * @return the {@link AutoUnbanner}
+	 */
 	private static synchronized AutoUnbanner getUnbanner(JDA jda) {
 		
 		if (unbanner==null) {
@@ -122,6 +144,10 @@ public class AutoUnbanner {
 		}
 		return unbanner;
 	}
+	/**
+	 * loads the unbans from a file
+	 * @param jda the JDA Object
+	 */
 	public static void loadUnBans(JDA jda) {
 		try {
 			final File file=new File(STATIC.getSettingsDir()+"/unbans.xml");
@@ -138,6 +164,9 @@ public class AutoUnbanner {
 		} catch (JAXBException e) {
 		}
 	}
+	/**
+	 * saves the unbans to a file
+	 */
 	public static void saveUnBans() {
 		File file=new File(STATIC.getSettingsDir()+"/unbans.xml");
 		if (!file.exists()) {

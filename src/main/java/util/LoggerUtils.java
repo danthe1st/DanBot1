@@ -45,9 +45,9 @@ public class LoggerUtils extends ListenerAdapter {
 			path.mkdirs();
 		}
 		String s=String.format( "%s '%s' executed by %s in Channel %s (in Guild %s)", getCurrentSystemTime(), event.getMessage().getContentDisplay(), event.getMessage().getAuthor().getName(), event.getTextChannel().getName(),event.getGuild().getName());
-		//serverlokale Log-Datei
+		//server-local Log-File
 		write(STATIC.getSettingsDir()+"/"+event.getGuild().getId()+"/" +logfileName, s);
-		//globale Log-Datei
+		//global Log-File
 		write(STATIC.getSettingsDir()+"/"+logfileName, s);
     }
     /**

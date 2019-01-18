@@ -13,6 +13,10 @@ import util.STATIC;
  */
 @BotCommand(aliases = "ping")
 public class CmdPing implements Command{
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "ping");
+	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ping")) {
 			return;

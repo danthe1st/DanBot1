@@ -13,10 +13,11 @@ import util.STATIC;
 @BotCommand(aliases = "spam")
 public class CmdSpam implements Command {
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "spam");
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "spam")) {
-			return;
-		}
 		if (args.length==1&&args[0].equals("0")) {
 			MsgSpammer.addMsgSpam(0, event.getTextChannel(), null,null);
 			return;

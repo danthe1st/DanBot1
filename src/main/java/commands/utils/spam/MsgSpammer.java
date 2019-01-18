@@ -12,7 +12,10 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import util.STATIC;
-
+/**
+ * Class for the Spammer Thread
+ * @author Daniel Schmid
+ */
 public class MsgSpammer implements Runnable{
 	private static MsgSpammer spammer=new MsgSpammer();
 	
@@ -51,7 +54,13 @@ public class MsgSpammer implements Runnable{
 		}
 		spammerThread=null;
 	}
-
+	/**
+	 * adds messages to be spammed
+	 * @param count the number of messages to be spammed
+	 * @param channel where to spam
+	 * @param msg the Message that should be spammed
+	 * @param commander the user that commanded the spam
+	 */
 	public synchronized static void addMsgSpam(int count,TextChannel channel,String msg,User commander) {
 		if (count==0) {
 			spammer.spams.remove(channel.getGuild());
@@ -61,11 +70,14 @@ public class MsgSpammer implements Runnable{
 		spammer.spams.put(channel.getGuild(), wrapper);
 		
 		if (spammer.spammerThread==null) {
-			spammer.spammerThread=new Thread(spammer);
+			spammer.spammerThread=new Thread(spammer,"spam-Thread");
 			spammer.spammerThread.start();
 		}
 	}
-	
+	/**
+	 * Wrapper-Class for spam-commands
+	 * @author Daniel Schmid
+	 */
 	private static class SpamWrapper{
 		private int count;
 		private TextChannel channel;

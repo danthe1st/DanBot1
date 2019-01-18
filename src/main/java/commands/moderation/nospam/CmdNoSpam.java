@@ -14,11 +14,17 @@ import util.STATIC;
 public class CmdNoSpam implements Command{
 
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		if (args.length==0||args[0].equalsIgnoreCase("show")) {
+			return PermsCore.check(event, "nospam.see");
+		}else {
+			return PermsCore.check(event, "nospam.change");
+		}
+	}
+	
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (args.length==0||args[0].equalsIgnoreCase("show")) {
-			if (!PermsCore.check(event, "nospam.see")) {
-				return;
-			}
 			if (!SpamProtectionContainer.isGuildProtected(event.getGuild())) {
 				STATIC.msg(event.getTextChannel(), "This Guild has no spam-protection.");
 				return;
@@ -33,9 +39,6 @@ public class CmdNoSpam implements Command{
 		switch (args[0].toLowerCase()) {
 		case "add":
 		case "+":
-			if (!PermsCore.check(event, "nospam.change")) {
-				return;
-			}
 			if (args.length<3) {
 				STATIC.errmsg(event.getTextChannel(), "too few arguments.");
 			}

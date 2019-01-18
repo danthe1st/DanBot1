@@ -15,7 +15,9 @@ public class PlayerSendHandler implements AudioSendHandler {
     public PlayerSendHandler(final AudioPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
     }
-
+    /**
+     * tests if there is a Frame buffered
+     */
     @Override
     public boolean canProvide() {
         if (lastFrame == null) {
@@ -23,6 +25,9 @@ public class PlayerSendHandler implements AudioSendHandler {
         }
         return lastFrame != null;
     }
+    /**
+     * loads a buffered Frame
+     */
     @Override
     public byte[] provide20MsAudio() {
         if (lastFrame == null) {
@@ -34,7 +39,10 @@ public class PlayerSendHandler implements AudioSendHandler {
 
         return data;
     }
-
+    /**
+     * if the Audio is Opus Coded<br>
+     * This music library does only use Opus
+     */
     @Override
     public boolean isOpus() {
         return true;

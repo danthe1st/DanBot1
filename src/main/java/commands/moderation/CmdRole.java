@@ -16,6 +16,13 @@ import util.STATIC;
  */
 @BotCommand(aliases = "role")
 public class CmdRole implements Command{
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		if (args.length==1) {
+			return true;
+		}
+		return PermsCore.check(event, "role");
+	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if (args.length==1) {
 			List<Role> roles=STATIC.getRolesFromMsg(event.getMessage());
@@ -30,9 +37,6 @@ public class CmdRole implements Command{
 			event.getGuild().getController().addRolesToMember(event.getGuild().getMember(event.getAuthor()), roles).queue();
 			return;
 		}
-		if( !(PermsCore.check(event, "role")) ) {
-			return;
-		}		
 		if (args.length<2) {
 			STATIC.errmsg(event.getTextChannel(), "missing args!");
 			return;

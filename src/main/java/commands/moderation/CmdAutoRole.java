@@ -17,10 +17,11 @@ import util.STATIC;
 public class CmdAutoRole implements Command {
 
 	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "autorole");
+	}
+	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "autorole")) {
-			return;
-		}
 		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), "not anough arguments");
 			return;

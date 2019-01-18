@@ -5,7 +5,6 @@ import java.awt.Color;
 import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
-import core.Main;
 import core.PermsCore;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.STATIC;
@@ -21,13 +20,6 @@ public class CmdStop implements Command{//TODO make it only possible for specifi
 	}
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "stop")) {
-			return;
-		}
-		else if(!Main.getStopable()) {
-			STATIC.errmsg(event.getTextChannel(), "Bot not stoppable!");
-			return;
-		}
 		STATIC.msg(event.getTextChannel(), "DanBot1 "+STATIC.VERSION +" stopped.",Color.ORANGE,false);
 		System.out.println("stopped by "+event.getAuthor());
 		event.getJDA().shutdown();

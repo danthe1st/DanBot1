@@ -34,7 +34,6 @@ import util.STATIC;
  * @author Daniel Schmid
  */
 public class Main {
-	private static boolean stoppable=true;
 	private static String game=System.getProperty("game");
 	private static OnlineStatus status=OnlineStatus.ONLINE;
 	private static String token=System.getProperty("token");
@@ -64,10 +63,6 @@ public class Main {
 		for (String arg : args) {
 			try {
 				switch (arg.toLowerCase()) {
-				case "nostop":
-				case "-nostop":
-					stoppable=false;
-					continue;
 				case "?":
 				case "help":
 				case "-?":
@@ -158,8 +153,6 @@ public class Main {
 			builder.setActivity(Activity.playing(game));
 			
 			builder.setRequestTimeoutRetry(true);
-			
-			//initListeners(builder);
 			
 			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 		    configurationBuilder.addUrls(ClasspathHelper.forClassLoader());
@@ -270,14 +263,6 @@ public class Main {
 		}else {
 			pluginFolder.mkdir();
 		}
-	}
-	
-	/**
-	 * tests if the Bot is stoppable
-	 * @return <code>true</code> if it s stoppable
-	 */
-	public static boolean getStopable(){
-		return stoppable;
 	}
 	/**
 	 * get the Program arguments the Bot is started with.

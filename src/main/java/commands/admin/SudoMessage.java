@@ -4,7 +4,6 @@ import java.time.OffsetDateTime;
 import java.util.Formatter;
 import java.util.List;
 
-import net.dv8tion.jda.api.entities.Invite.Group;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.ChannelType;

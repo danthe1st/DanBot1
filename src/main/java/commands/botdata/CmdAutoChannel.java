@@ -154,17 +154,16 @@ public class CmdAutoChannel implements Command, Serializable {
 		} catch (JAXBException e) {
 		}
 	}
-
+	@Override
+	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+		return PermsCore.check(event, "autoChannel");//TODO test
+	}
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		if(!PermsCore.check(event, "autoChannel")) {
-			return;
-		}
 		final Guild g=event.getGuild();
 		final TextChannel tc=event.getTextChannel();
 		if(args.length<1) {
 			STATIC.errmsg(tc, help(STATIC.getPrefixExcaped(g)));
-			
 			return;
 		}
 		switch (args[0]) {
