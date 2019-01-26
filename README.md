@@ -13,3 +13,10 @@ Programm your own Plugins:
 * Listeners should extend net.dv8tion.jda.core.hooks.ListenerAdapter
 * You can run the Bot by executing core.Main.main(String[] args);
 * you can export the plugin as a normal JAR File, but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
+
+Licences of used Libraries
+* [unirest-java](https://github.com/Kong/unirest-java/blob/master/LICENS)
+* [JDA](https://github.com/DV8FromTheWorld/JDA/blob/master/LICENS)
+* [lavaplayer](https://raw.githubusercontent.com/sedmelluq/lavaplayer/master/LICENS)
+* [slf4j](https://github.com/qos-ch/slf4j/blob/master/LICENSE.txt)
+* [reflections](https://github.com/ronmamo/reflections/blob/master/COPYING.txt)
