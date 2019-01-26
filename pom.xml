@@ -39,73 +39,42 @@
 
     <dependencies>
         <dependency>
-            <groupId>fr.bmartel</groupId>
-            <artifactId>jspeedtest</artifactId>
-            <version>LATEST</version>
-        </dependency>
-        <dependency>
-            <groupId>com.moandjiezana.toml</groupId>
-            <artifactId>toml4j</artifactId>
-            <version>LATEST</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>LATEST</version>
-        </dependency>
-        <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sedmelluq</groupId>
             <artifactId>lavaplayer</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
             </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
 	       <groupId>org.slf4j</groupId>
 	       <artifactId>slf4j-api</artifactId>
 	       <version>LATEST</version>
+	       <scope>provided</scope>
 	   </dependency>
-        <!-- JAXB in J10
-        <dependency>
-		    <groupId>javax.xml.bind</groupId>
-		    <artifactId>jaxb-api</artifactId>
-		    <version>2.3.0</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.sun.xml.bind</groupId>
-		    <artifactId>jaxb-core</artifactId>
-		    <version>2.3.0</version>
-		</dependency>
-		
-		<dependency>
-		   <groupId>com.sun.xml.bind</groupId>
-		   <artifactId>jaxb-impl</artifactId>
-		   <version>2.3.0</version>
-		</dependency>
-		<dependency>
-		    <groupId>javax.activation</groupId>
-		    <artifactId>activation</artifactId>
-		    <version>1.1.1</version>
-		</dependency>-->
-		<!-- Reflection/Plugin -->
+        
+		<!-- Reflections -->
 		<dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -114,18 +83,6 @@
     
     	<finalName>DanBot1</finalName>
         <plugins>
-        	<!--  <plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-source-plugin</artifactId>
-			  <executions>
-			    <execution>
-			      <id>attach-sources</id>
-			      <goals>
-			        <goal>jar</goal>
-			      </goals>
-			    </execution>
-			  </executions>
-			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -135,7 +92,7 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
-            <plugin><!-- test JAR -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -159,7 +116,7 @@
 				    <archive>
 				      <manifest>
 				        <mainClass>core.Main</mainClass>
-				        <addClasspath>true</addClasspath>
+				        <addClasspath>false</addClasspath>
 				      </manifest>
 				    </archive>
 				    <outputDirectory>./DanBot1/</outputDirectory>
@@ -178,7 +135,7 @@
 				      </goals>
 				    </execution>
 				  </executions>
-			</plugin>
+			</plugin> 
         </plugins>
         
     </build>
