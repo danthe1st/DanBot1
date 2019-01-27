@@ -24,7 +24,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	@Override
 	public void onGuildVoiceJoin(final GuildVoiceJoinEvent event) {
-		final HashMap<VoiceChannel, Guild> autoChans=commands.botdata.CmdAutoChannel.getAutoChannels();
+		final HashMap<VoiceChannel, Guild> autoChans=io.github.danthe1st.commands.botdata.CmdAutoChannel.getAutoChannels();
 		final VoiceChannel vc=event.getChannelJoined();
 		final Guild g=event.getGuild();
 		if (autoChans.containsKey(vc)) {
@@ -47,7 +47,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	@Override
 	public void onGuildVoiceMove(final GuildVoiceMoveEvent event) {
-		final HashMap<VoiceChannel, Guild> autoChans=commands.botdata.CmdAutoChannel.getAutoChannels();
+		final HashMap<VoiceChannel, Guild> autoChans=io.github.danthe1st.commands.botdata.CmdAutoChannel.getAutoChannels();
 		final Guild g=event.getGuild();
 		
 		VoiceChannel vc=event.getChannelJoined();
@@ -86,9 +86,9 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	@Override
 	public void onVoiceChannelDelete(final VoiceChannelDeleteEvent event) {
-		final HashMap<VoiceChannel, Guild> autoChans=commands.botdata.CmdAutoChannel.getAutoChannels();
+		final HashMap<VoiceChannel, Guild> autoChans=io.github.danthe1st.commands.botdata.CmdAutoChannel.getAutoChannels();
 		if (autoChans.containsKey(event.getChannel())) {
-			commands.botdata.CmdAutoChannel.unsetChan(event.getChannel());
+			io.github.danthe1st.commands.botdata.CmdAutoChannel.unsetChan(event.getChannel());
 		}
 	}
 	/**
@@ -98,7 +98,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	private boolean isOldAutoChannel(final VoiceChannel vc) {
 		try {
-			final HashMap<VoiceChannel, Guild> channels=commands.botdata.CmdAutoChannel.getAutoChannels();
+			final HashMap<VoiceChannel, Guild> channels=io.github.danthe1st.commands.botdata.CmdAutoChannel.getAutoChannels();
 			final String name=vc.getName().substring(0, vc.getName().indexOf(STATIC.AUTOCHANNEL_POSTFIX));
 			for (final VoiceChannel voiceChannel : channels.keySet()) {
 				if(voiceChannel.getName().equals(name)) {

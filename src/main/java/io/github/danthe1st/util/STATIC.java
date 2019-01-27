@@ -15,12 +15,12 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import commands.botdata.CmdAutoChannel;
-import commands.botdata.CmdVote;
-import commands.admin.CmdBlacklist;
-import commands.moderation.ban.AutoUnbanner;
-import commands.moderation.nospam.SpamProtectionContainer;
-import core.PermsCore;
+import io.github.danthe1st.commands.admin.CmdBlacklist;
+import io.github.danthe1st.commands.botdata.CmdAutoChannel;
+import io.github.danthe1st.commands.botdata.CmdVote;
+import io.github.danthe1st.commands.moderation.ban.AutoUnbanner;
+import io.github.danthe1st.commands.moderation.nospam.SpamProtectionContainer;
+import io.github.danthe1st.core.PermsCore;
 import io.github.danthe1st.listeners.AutoRoleListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;

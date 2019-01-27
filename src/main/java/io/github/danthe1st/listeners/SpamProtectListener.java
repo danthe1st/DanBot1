@@ -1,6 +1,6 @@
 package io.github.danthe1st.listeners;
 
-import commands.moderation.nospam.SpamProtectionContainer;
+import io.github.danthe1st.commands.moderation.nospam.SpamProtectionContainer;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 /**
