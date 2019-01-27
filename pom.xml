@@ -5,12 +5,12 @@
 
     <groupId>io.github.danthe1st</groupId>
     <artifactId>DanBot1</artifactId>
-    <version>3.1</version>
+    <version>3.1-SNAPSHOT</version>
     <name>DanBot1</name>
     <scm>
-	    <connection>scm:git:https://github.com/danthe1st/DanBot1.git</connection>
-	    <developerConnection>scm:git:https://github.com/danthe1st/DanBot1.git</developerConnection>
-		<url>scm:git:https://github.com//danthe1st/DanBot1</url>
+	    <connection>scm:git:git@github.com:danthe1st/DanBot1.git</connection>
+	    <developerConnection>scm:git:git@github.com:danthe1st/DanBot1.git</developerConnection>
+		<url>scm:git:git@github.com:danthe1st/DanBot1</url>
 		<tag>DanBot1-3.1</tag>
   	</scm>
   	
@@ -28,7 +28,7 @@
         </repository>
         <repository>
 	        <id>mvn-repo</id>
-	        	<url>https://github.com/danthe1st/DanBot1</url>
+	        	<url>git@github.com:danthe1st/DanBot1</url>
 	        <releases>
 	            <enabled>true</enabled>
 	        </releases>
