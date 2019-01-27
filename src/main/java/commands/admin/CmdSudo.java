@@ -5,9 +5,9 @@ import commands.CommandType;
 import core.CommandHandler;
 import core.CommandParser;
 import core.PermsCore;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.STATIC;
 /**
  * Command for executing Commands as another user
  * @author Daniel Schmid

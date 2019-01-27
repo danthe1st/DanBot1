@@ -1,9 +1,9 @@
-package listeners;
+package io.github.danthe1st.listeners;
 
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import util.STATIC;
 /**
  * Listener on Bot Login
  * @author Daniel Schmid

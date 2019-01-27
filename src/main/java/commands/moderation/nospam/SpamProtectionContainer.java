@@ -17,11 +17,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import io.github.danthe1st.util.MapWrapper;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.PermissionException;
-import util.MapWrapper;
-import util.STATIC;
 /**
  * Wrapper-Class for spam-protection
  * @author Daniel Schmid

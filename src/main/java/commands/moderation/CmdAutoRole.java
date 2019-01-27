@@ -4,10 +4,10 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
-import listeners.AutoRoleListener;
+import io.github.danthe1st.listeners.AutoRoleListener;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.STATIC;
 /**
  * Command to administrate autoroles<br>
  * An autorole is a role which is given to a user when joining the Guild (Discord Server)

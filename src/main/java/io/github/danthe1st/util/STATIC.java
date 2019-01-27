@@ -1,4 +1,4 @@
-package util;
+package io.github.danthe1st.util;
 
 import java.awt.Color;
 import java.io.File;
@@ -21,7 +21,7 @@ import commands.admin.CmdBlacklist;
 import commands.moderation.ban.AutoUnbanner;
 import commands.moderation.nospam.SpamProtectionContainer;
 import core.PermsCore;
-import listeners.AutoRoleListener;
+import io.github.danthe1st.listeners.AutoRoleListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;

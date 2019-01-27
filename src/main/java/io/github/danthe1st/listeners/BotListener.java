@@ -1,4 +1,4 @@
-package listeners;
+package io.github.danthe1st.listeners;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

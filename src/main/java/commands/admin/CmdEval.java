@@ -1,7 +1,6 @@
 package commands.admin;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.STATIC;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -11,6 +10,7 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
+import io.github.danthe1st.util.STATIC;
 /**
  * Command to Evaluate Code
  * @author Daniel Schmid

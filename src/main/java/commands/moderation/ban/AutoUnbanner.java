@@ -14,11 +14,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import io.github.danthe1st.util.MapWrapper;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
-import util.MapWrapper;
-import util.STATIC;
 /**
  * Class for automatically unbanning a user(timeban)
  * @author Daniel Schmid

@@ -2,13 +2,13 @@ package commands;
 
 import java.awt.Color;
 
+import io.github.danthe1st.util.LoggerUtils;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
-import util.LoggerUtils;
-import util.STATIC;
 /**
  * Interface for Commands<br>
  * @author Daniel Schmid
