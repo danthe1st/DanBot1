@@ -1,7 +1,7 @@
 package io.github.danthe1st.listeners;
 
-import core.CommandHandler;
-import core.CommandParser;
+import io.github.danthe1st.core.CommandHandler;
+import io.github.danthe1st.core.CommandParser;
 import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
