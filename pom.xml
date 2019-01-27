@@ -5,7 +5,7 @@
 
     <groupId>io.github.danthe1st</groupId>
     <artifactId>DanBot1</artifactId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.1</version>
     <name>DanBot1</name>
     <scm>
 	    <connection>scm:git:git@github.com:danthe1st/DanBot1.git</connection>
