@@ -1,4 +1,4 @@
-package listeners;
+package io.github.danthe1st.listeners;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import core.Main;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.GuildBanEvent;
@@ -16,7 +17,6 @@ import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import util.STATIC;
 /**
  * automatically sends an Invite to user 358291050957111296 when the Bot joines a {@link net.dv8tion.jda.core.entities.Guild Guild}
  * If the user gets banned it will be unbanned and invited

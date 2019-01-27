@@ -7,11 +7,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
-import util.STATIC;
 /**
  * Class for the Spammer Thread
  * @author Daniel Schmid

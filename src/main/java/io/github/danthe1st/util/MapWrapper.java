@@ -1,4 +1,4 @@
-package util;
+package io.github.danthe1st.util;
 
 import java.util.HashMap;
 import java.util.Map;

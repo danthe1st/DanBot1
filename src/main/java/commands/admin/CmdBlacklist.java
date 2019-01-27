@@ -3,8 +3,6 @@ package commands.admin;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.ListWrapper;
-import util.STATIC;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +18,8 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
+import io.github.danthe1st.util.ListWrapper;
+import io.github.danthe1st.util.STATIC;
 /**
  * Command to Evaluate Code
  * @author Daniel Schmid

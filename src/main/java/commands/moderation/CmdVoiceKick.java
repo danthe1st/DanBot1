@@ -6,11 +6,11 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
-import util.STATIC;
 /**
  * Command to move {@link Member}s from their current {@link VoiceChannel} to the AFK-{@link VoiceChannel}
  * @author Daniel Schmid

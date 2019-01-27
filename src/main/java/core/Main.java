@@ -18,7 +18,8 @@ import org.reflections.util.ConfigurationBuilder;
 
 import commands.BotCommand;
 import commands.Command;
-import listeners.BotListener;
+import io.github.danthe1st.listeners.BotListener;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -26,7 +27,6 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.JDAImpl;
-import util.STATIC;
 
 /**
  * <b>Main-Class</b><br>

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import commands.Command;
 import commands.admin.CmdBlacklist;
 import core.CommandParser.CommandContainer;
-import util.STATIC;
+import io.github.danthe1st.util.STATIC;
 /**
  * executed by a listener when Message sent which begins with the Bot prefix
  * @author Daniel Schmid

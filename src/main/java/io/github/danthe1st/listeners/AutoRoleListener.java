@@ -1,16 +1,16 @@
-package listeners;
+package io.github.danthe1st.listeners;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import util.STATIC;
 /**
  * Listener to automatically assign roles
  * @author Daniel Schmid

@@ -5,10 +5,10 @@ import java.util.List;
 import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.STATIC;
 /**
  * Clears history of private Messages (min 2, max 100 Messages)
  * @author Daniel Schmid

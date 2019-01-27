@@ -1,12 +1,12 @@
-package listeners;
+package io.github.danthe1st.listeners;
 
 import core.CommandHandler;
 import core.CommandParser;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import util.STATIC;
 /**
  * Listener for Commands
  * @author Daniel Schmid

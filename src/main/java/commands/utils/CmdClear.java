@@ -6,10 +6,10 @@ import commands.BotCommand;
 import commands.Command;
 import commands.CommandType;
 import core.PermsCore;
+import io.github.danthe1st.util.STATIC;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.STATIC;
 /**
  * Command to delete the Chat-History (min 2, max 100 Messages)
  * @author Daniel Schmid 
