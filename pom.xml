@@ -5,13 +5,13 @@
 
     <groupId>io.github.danthe1st</groupId>
     <artifactId>DanBot1</artifactId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.1</version>
     <name>DanBot1</name>
     <scm>
 	    <connection>scm:git:https://github.com/danthe1st/DanBot1.git</connection>
 	    <developerConnection>scm:git:https://github.com/danthe1st/DanBot1.git</developerConnection>
 		<url>scm:git:https://github.com//danthe1st/DanBot1</url>
-		<tag>HEAD</tag>
+		<tag>DanBot1-3.1</tag>
   	</scm>
   	
 
