@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- DanBot1 by Daniel Schmid -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.danthe1st</groupId>
     <artifactId>DanBot1</artifactId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.0</version>
     <name>DanBot1</name>
     <scm>
 	    <connection>scm:git:git://github.com/danthe1st/DanBot1.git</connection>
 	    <developerConnection>scm:git:git://github.com/danthe1st/DanBot1.git</developerConnection>
 		<url>scm:git:git://github.com/danthe1st/DanBot1</url>
-		<tag>HEAD</tag>
+		<tag>DanBot1-3.0</tag>
   	</scm>
   	
 
@@ -44,31 +42,31 @@
         <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
-            <version>LATEST</version>
+            <version>1.4.9</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>LATEST</version>
+            <version>4.ALPHA.0_20</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sedmelluq</groupId>
             <artifactId>lavaplayer</artifactId>
-            <version>LATEST</version>
+            <version>1.3.10</version>
             <scope>provided</scope>
             </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>LATEST</version>
+            <version>1.7.25</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
 	       <groupId>org.slf4j</groupId>
 	       <artifactId>slf4j-api</artifactId>
-	       <version>LATEST</version>
+	       <version>1.7.25</version>
 	       <scope>provided</scope>
 	   </dependency>
         
@@ -76,7 +74,7 @@
 		<dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>LATEST</version>
+            <version>0.9.11</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -172,25 +170,18 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadoc</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>attach-sources</id>
 						<goals>
 							<goal>jar</goal>
 						</goals>
