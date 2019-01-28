@@ -3,20 +3,32 @@ a little Discord Chat Bot.<br>
 For a list of Commands and standard-permissions visit https://www.wwwmaster.at/daniel/data/DanBot1/
 
 Programm your own Plugins:
-* Create a new Java Project
+* Create a new Maven Project
 * Make sure that you are using Java 1.8
-* import DanBot1.jar to your Project (it is located in DanBot1/)
+* add DanBot1 to the Dependencies (replace VERSION with the version of the Bot):
+```xml
+<dependencies>
+	<dependency>
+		<groupId>io.github.danthe1st</groupId>
+		<artifactId>DanBot1</artifactId>
+		<version>VERSION</version>
+		<scope>provided</scope>
+	</dependency>
+</dependencies>
+```
 * Commands for the Bot have to be annotated with @commands.BotCommand
+* Commands should have a no-args-Constructor
 * the field aliases in @BotCommand mean the Command aliases (should be at least one)
 * Commands should implement the Interface commands.BotCommand
 * Listeners should be annotated with @listeners.BotListener
+* Listeners should have a no-args-Constructor
 * Listeners should extend net.dv8tion.jda.core.hooks.ListenerAdapter
 * You can run the Bot by executing core.Main.main(String[] args);
-* you can export the plugin as a normal JAR File, but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
+* you can export the plugin as a normal JAR File or use a maven export(mvn package), but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
 
-Licences of used Libraries
-* [unirest-java](https://github.com/Kong/unirest-java/blob/master/LICENS)
-* [JDA](https://github.com/DV8FromTheWorld/JDA/blob/master/LICENS)
-* [lavaplayer](https://raw.githubusercontent.com/sedmelluq/lavaplayer/master/LICENS)
-* [slf4j](https://github.com/qos-ch/slf4j/blob/master/LICENSE.txt)
-* [reflections](https://github.com/ronmamo/reflections/blob/master/COPYING.txt)
+used Libraries
+* [unirest-java](https://github.com/Kong/unirest-java/)
+* [JDA](https://github.com/DV8FromTheWorld/JDA/)
+* [lavaplayer](https://github.com/sedmelluq/lavaplayer/)
+* [slf4j](https://github.com/qos-ch/slf4j/)
+* [reflections](https://github.com/ronmamo/reflections)
