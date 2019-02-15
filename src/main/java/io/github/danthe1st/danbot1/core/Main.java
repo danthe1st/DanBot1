@@ -207,7 +207,7 @@ public class Main {
 	private static void addAction(Reflections ref,JDABuilder jdaBuilder,Class<? extends Annotation> annotClass, BiConsumer<Annotation, Object> function) {
 		for (Class<?> cl : ref.getTypesAnnotatedWith(annotClass,true)) {
             try {
-				Object annotatedAsObject=instantiateObject(cl);
+				Object annotatedAsObject=cl.newInstance();
 				if (annotatedAsObject==null) {
 					System.err.println("no matching Constructor found for class"+cl.getName());
 					break;
@@ -223,16 +223,6 @@ public class Main {
 			}
         }
     }
-	/**
-	 * Instantiates an Object from a Class
-	 * @param cl The {@link Class} Object
-	 * @return the instantiated Object
-	 * @throws InstantiationException if the {@link Class} represents an abstract class, an interface, an array class, a primitive type, or void or if the class has no no-args-constructor or if the instantiation fails for some other reason
-	 * @throws IllegalAccessException if the class or its no-arg-constructor is not accessible
-	 */
-	private static Object instantiateObject(Class<?> cl) throws InstantiationException, IllegalAccessException{
-		return cl.newInstance();
-	}
 	/**
 	 * loads the Plugins into an {@link ConfigurationBuilder}
 	 * @param builder the {@link ConfigurationBuilder}
