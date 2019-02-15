@@ -116,7 +116,7 @@
 				  <configuration>
 				    <archive>
 				      <manifest>
-				        <mainClass>core.Main</mainClass>
+				        <mainClass>io.github.com.danthe1st.core.Main</mainClass>
 				        <addClasspath>false</addClasspath>
 				      </manifest>
 				    </archive>
