@@ -57,7 +57,7 @@ public class VoiceListener extends ListenerAdapter {
 			if(!event.isMuted()) {
 				unmuted="un";
 			}
-			STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was "+unmuted+"muted in Voice Channel "+event.getVoiceState().getAudioChannel());
+			STATIC.msg(event.getGuild().getTextChannelsByName(VOICE_LOGGER_CHANNEL_NAME, true).get(0), "Member \"" + event.getVoiceState().getMember().getUser().getName()+"\" was "+unmuted+"muted in Voice Channel "+event.getVoiceState().getChannel());
 		}
 	}
 }

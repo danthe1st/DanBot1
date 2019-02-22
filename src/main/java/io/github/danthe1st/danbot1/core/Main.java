@@ -7,14 +7,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.BiConsumer;
 
+import java.util.Scanner;
 import javax.security.auth.login.LoginException;
-
-import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
@@ -28,6 +24,9 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.JDAImpl;
 
+import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 /**
  * <b>Main-Class</b><br>
  * Initiates the Bot
