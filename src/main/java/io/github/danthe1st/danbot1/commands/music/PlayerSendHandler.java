@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.music;
 
+import java.nio.ByteBuffer;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 import net.dv8tion.jda.api.audio.AudioSendHandler;
@@ -29,15 +31,14 @@ public class PlayerSendHandler implements AudioSendHandler {
      * loads a buffered Frame
      */
     @Override
-    public byte[] provide20MsAudio() {
+    public ByteBuffer provide20MsAudio() {
         if (lastFrame == null) {
             lastFrame = audioPlayer.provide();
         }
 
         final byte[] data = lastFrame != null ? lastFrame.getData() : null;
         lastFrame = null;
-
-        return data;
+        return ByteBuffer.wrap(data);
     }
     /**
      * if the Audio is Opus Coded<br>

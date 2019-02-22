@@ -363,19 +363,19 @@ public final class STATIC {
 	public static String getActiveInvite(Guild g) {
 		
 		try {		
-			for (Invite inv : g.getInvites().complete()) {
+			for (Invite inv : g.retrieveInvites().complete()) {
 				return inv.getUrl();
 			}
 			
 		} catch (InsufficientPermissionException e) {
 			try {
 				for (TextChannel channel : g.getTextChannels()) {
-					for (Invite inv : channel.getInvites().complete()) {
+					for (Invite inv : channel.retrieveInvites().complete()) {
 						return inv.getUrl();
 					}
 				}
 				for (VoiceChannel channel : g.getVoiceChannels()) {
-					for (Invite inv : channel.getInvites().complete()) {
+					for (Invite inv : channel.retrieveInvites().complete()) {
 						return inv.getUrl();
 					}
 				}
