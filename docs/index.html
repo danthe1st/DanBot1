@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>_.:- |DanBot1| -:._</title>
+		<link href="./design.css" type="text/css" rel="stylesheet"/>
+	</head>
+	<body>
+		
+		<h1>DanBot1</h1>
+		<hr/>
+		<aside>
+			<h2><a href="https://discordapp.com/oauth2/authorize?client_id=371042228891549707&scope=bot&permissions=2146958591&response_type=code">invite</a></h2>
+			<p>
+			<h2>Downloads</h2>
+				<ul>
+					<li><a href="https://github.com/danthe1st/DanBot1/raw/master/DanBot1/DanBot1.jar">latest JAR</a></li>
+					<li><a href="./DanBot1_latest.zip">ZIP without JAR</a></li>
+					<li><a href="./DanBot1_3.0.zip">version 3.0</a></li>
+					<li><a href="./DanBot1_2.0.zip">version 2.0</a></li>
+				</ul>
+			</p>
+			<hr>
+			<!--<h2>DanBot1 on <a href="https://discordbots.org/bot/371042228891549707" target="_blank">discordbots.org</a></h2>
+			<a href="https://discordbots.org/bot/371042228891549707" target="_blank">
+				<img src="https://discordbots.org/api/widget/371042228891549707.svg" alt="DanBot1" />
+			</a><br>-->
+			<h2><a href="https://discord.gg/qmwcEjF" target="_blank">Support Server</a></h2>
+			<iframe src="https://discordapp.com/widget?id=465833029391220736&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
+		</aside>
+		<div>
+			DanBot1 is a <a href="https://discordapp.com" target="_blank">Discord</a> Bot made by Daniel Schmid.
+		</div>
+		<hr>
+		<h2>Commands</h2>
+		<table>
+			<thead>
+				<tr><th>Command</th><th>Description</th><th>Syntax</th><th>Permission groups</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>ping</td><td>Prints "Pong" and the Ping of the user executing the Command</td><td>--ping</td><td>ping</td></tr>
+				<tr><td>say</td><td>prints a specified text(with an optional @mention)</td><td>--say [direct &ltuser to mention&gt] &lttext&gt</td><td>say</td></tr>
+				<tr><td>clear</td><td rowspan="2">clears a number of messages in the current Text Channel</td><td>--clear &ltnumber of msgs&gt </td><td rowspan="2">clearChat</td></tr>
+				<tr><td>cls</td><!--Rowspan--><td>--cls...</td><!--Rowspan--></tr>
+				<tr><td rowspan="6">music</td><td>Plays YouTube Tracks in the Voice Channel you are</td><td>--music play/p [&ltnumber of tracks&gt] &ltyt-link or search term&gt </td><td rowspan="7">playMusic</td></tr>
+				<tr>							<td>skip one track</td>									 <td>--music skip/s</td><!--Rowspan--></tr>
+				<tr>							<td>stops the whole music</td>							 <td>--music stop</td><!--Rowspan--></tr>
+				<tr>							<td>shuffles the playlist</td>							 <td>--music shuffle</td><!--Rowspan--></tr>
+				<tr>							<td>prints the current track info</td>					 <td>--music now/info</td><!--Rowspan--></tr>
+				<tr>							<td>lists all active tracks</td>						 <td>--music queue</td><!--Rowspan--></tr>
+				<tr><td>m</td><td>alias for music</td><td>--m...</td><!--Rowspan--></tr>
+				<tr><td rowspan="4">vote</td><td>Creates a Poll</td><td>--vote create &ltQuestion in the Poll&gt&ltanswer 1|answer 2|answer 3 ...&gt </td><td>vote, vote.create</td></tr>
+				<tr><!--Rowspan--><td>votes for the current poll</td><td>--vote v/vote &ltnumber of the answer you want to vote&gt </td><td>vote, vote.vote</td></tr>
+				<tr><!--Rowspan--><td>show the stats for the current Poll</td><td>--vote stats/s</td><td>vote, vote.stats</td></tr>
+				<tr><!--Rowspan--><td>close the current poll</td><td>--vote close</td><td>vote, vote.close</td></tr>
+				<tr><td>v</td><td>alias for vote</td><td>--v...</td><td>see vote</td></tr>
+				<tr><td rowspan="3">autochannel</td><td>Set an autochannel<br>(A Voice Channel which is duplicated when sb joins.<br>The duplicated channel will be terminated when the last user leaves)</td><td>--autochannel set/add &ltID of the autochannel you want to set&gt </td><td rowspan="4">autochannel</td></tr>
+				<tr><!--Rowspan--><td>unset an autochannel</td><td>--autochannel remove/unset/rem/delete/del &ltID of the autochannel you want to remove&gt </td><!--Rowspan--></tr>
+				<tr><!--Rowspan--><td>lists the autochannels</td><td>--autochannel list</td><!--Rowspan--></tr>
+				<tr><td>autoc</td><td>alias for autochannel</td><td>--autoc...</td><!--Rowspan--></tr>
+				<tr><td rowspan="2">prefix</td><td>prints the Bot-Prefix of the Discord-Server</td><td>--prefix show</td><td>prefix, prefix.show</td></tr>
+				<tr><!--Rowspan--><td>sets a new Bot-Prefix for the Discord-Server</td><td>--prefix set &ltnew Prefix&gt </td><td>prefix,prefix.get</td></tr>
+				<tr><td>stop</td><td>stops the Bot</td><td>--stop</td><td>stop</td></tr>
+				<tr><td>help</td><td>prints command help</td><td>--help</td><td></td></tr>
+				<tr><td rowspan="5">perm</td><td>gets the Bot-Permissions for the Discord-Server</td><td>--perm get/show</td><td>perm, perm.get</td></tr>
+				<tr><!--Rowspan--><td>reloads the Permissions(add Permissions for an Update)</td><td>--perm reload</td><td>perm,perm.change</td></tr>
+				<tr><!--Rowspan--><td>resets the Permissions</td><td>--perm reset</td><td>perm,perm.change</td></tr>
+				<tr><!--Rowspan--><td>sets a Permission</td><td>--perm set &ltPermission name&gt &ltPermission groups(seperated by whitespaces)&gt </td><td>perm,perm.change</td></tr>
+				<tr><!--Rowspan--><td>changes a Role in all Permissions</td><td>--perm chrole &ltold role&gt &ltnew role&gt </td><td>perm,perm.change</td></tr>
+				<tr><td rowspan="2">spam</td><td>spams a message in the current text channel</td><td>--spam &ltnumber of spams&gt &ltmsg&gt </td><td>spam</td></tr>
+				<tr><!--Rowspan--><td>stopps the Bot from spamming</td><td>--spam 0</td><td>spam</td></tr>
+				<tr><td>kick</td><td>kicks a user out of the Discord-Server with an optional reason</td><td>--kick &ltvictim&gt [&ltreason&gt] </td><td>kick</td></tr>
+				<tr><td>ban</td><td>bans a user out of the Discord-Server with an optional reason</td><td>--ban &ltvictim&gt [&ltreason&gt] </td><td>ban</td></tr>
+				<tr><td>timeban</td><td>bans a user and unbans it after a specified time.</td><td> --timeban &lttime&gt &ltusername&gt</td><td rowspan="2">ban</td></tr>
+				<tr><td>tban</td><td>alias for timeban</td><td> --tban ...</td><!--Rowspan--></tr>
+				<tr><td>role</td><td>lets a User join a Role on the Discord-Server</td><td>--role &ltrole&gt [&ltUser&gt] </td><td>role</td></tr>
+				<tr><td rowspan="2">motd</td><td>sets the Message of the day</td><td>--motd set &ltnew motd&gt </td><td>motd,motd.set</td></tr>
+				<tr><!--Rowspan--><td>displays the motd</td><td>--motd</td><td>motd,motd.show</td></tr>
+				<tr><td rowspan="2">cmdlogger</td><td>sets the Command-Log-channel</td><td>--cmdlogger set &ltnew logger channel&gt </td><td>logger, logger.set</td></tr>
+				<tr><!--Rowspan--><td>displays the current Command-Log-channel</td><td>--cmdlogger show</td><td>logger,logger.show</td></tr>
+				<tr><td>user</td><td>displays information for a Member of the Guild</td><td>--user &ltusername, nickname or ID of the User&gt </td><td>userinfo</td></tr>
+				<tr><td>restart</td><td>restarts the Bot</td><td>--restart</td><td>restart</td></tr>
+				<tr><td rowspan="2">autorole</td><td>list, adds or removes autoroles</td><td rowspan="2">Syntax: --autorole add/remove &ltname of the role&gt, list</td><td rowspan="2">autorole</td></tr>
+				<tr><!--Rowspan--><td>An autorole is a role which is given to a user when joining the Guild(Discord Server)</td><!--Rowspan--><!--Rowspan--></tr>
+				<tr><td>dice</td><td>Rolls the dice one time or often</td><td> --dice (&ltnumber&gt)</td><td>dice</td></tr>
+				<tr><td rowspan="3">nospam</td><td>shows the spam protection</td><td> --nospam</td><td>nospam.see</td></tr>
+				<tr><!--Rowspan--><td>enables/changes the spam protection settings<br>the spam-protection does an action(delete/kick/ban) when a message is spammed over a number of tries in a specified time</td><td> --nospam add &ltaction&gt &lttries&gt &lttime&gt</td><td>nospam.change</td></tr>
+				<tr><!--Rowspan--><td>disables the spam protection from the current server</td><td> --nospam remove</td><td>nospam.change</td></tr>
+				<tr><td>voicekick</td><td>kicks a User out of a Voice Channel</td><td> --voicekick &ltuser&gt</td><td>nospam.change</td></tr>
+				<tr><td>vkick</td><td>alias for voicekick</td><td> --vkick ...</td><td>nospam.change</td></tr>
+				
+				<!-- eval, sudo, reload, blacklist -->
+			</tbody>
+		</table>
+		<h2>Standard Permissions</h2>
+		<table>
+			<thead>
+				<tr><th>name</th><th>groups</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>role</td><td>Owner</td></tr>
+				<tr><td>perm</td><td>*</td></tr>
+				<tr><td>perm.get</td><td>*</td></tr>
+				<tr><td>perm.change</td><td>Owner</td></tr>
+				<tr><td>ping</td><td>*</td></tr>
+				<tr><td>prefix</td><td>*</td></tr>
+				<tr><td>prefix.set</td><td>Owner, Admin</td></tr>
+				<tr><td>logger</td><td>*</td></tr>
+				<tr><td>logger.set</td><td>Owner, Admin</td></tr>
+				<tr><td>logger.show</td><td>*</td></tr>
+				<tr><td>playMusic</td><td>*</td></tr>
+				<tr><td>ban</td><td>Owner</td></tr>
+				<tr><td>unnick</td><td>*</td></tr>
+				<tr><td>unnick.others</td><td>Owner, Admin, Moderator, Supporter</td></tr>
+				<tr><td>vote</td><td>*</td></tr>
+				<tr><td>vote.create</td><td>*</td></tr>
+				<tr><td>vote.stats</td><td>*</td></tr>
+				<tr><td>vote.vote</td><td>*</td></tr>
+				<tr><td>vote.close</td><td>*</td></tr>
+				<tr><td>userinfo</td><td>*</td></tr>
+				<tr><td>motd</td><td>*</td></tr>
+				<tr><td>motd.change</td><td>*</td></tr>
+				<tr><td>restart</td><td>Owner, Admin</td></tr>
+				<tr><td>say</td><td>*</td></tr>
+				<tr><td>autorole</td><td>Owner, Admin</td></tr>
+				<tr><td>clearChat</td><td>Owner, Admin, Moderator, Supporter</td></tr>
+				<tr><td>stop</td><td>Owner, Admin</td></tr>
+				<tr><td>kick</td><td>Owner</td></tr>
+				<tr><td>prefix.show</td><td>*</td></tr>
+				<tr><td>autoChannel</td><td>Owner, Admin</td></tr>
+				<tr><td>spam</td><td>Owner</td></tr>
+				<tr><td>dice</td><td>*</td></tr>
+				<tr><td>nospam.see</td><td>*</td></tr>
+				<tr><td>nospam.change</td><td>Owner, Admin</td></tr>
+				<tr><td>vkick</td><td>Owner, Admin</td></tr>
+			</tbody>
+		</table>
+		<div class="Platzhalter">
+		</div>
+		<footer>
+			by Daniel Schmid
+		</footer>
+		
+	</body>
+</html>
