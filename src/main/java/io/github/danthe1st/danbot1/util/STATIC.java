@@ -19,7 +19,6 @@ import io.github.danthe1st.danbot1.commands.admin.CmdBlacklist;
 import io.github.danthe1st.danbot1.commands.botdata.CmdAutoChannel;
 import io.github.danthe1st.danbot1.commands.botdata.CmdVote;
 import io.github.danthe1st.danbot1.commands.moderation.ban.AutoUnbanner;
-import io.github.danthe1st.danbot1.commands.moderation.nospam.SpamProtectionContainer;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.listeners.AutoRoleListener;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -246,7 +245,6 @@ public final class STATIC {
 		}
 		loadCmdLogger();
 		AutoUnbanner.loadUnBans(jda);
-		SpamProtectionContainer.load();
 	}
 	/**
 	 * sets the Bot prefix for a Guild
