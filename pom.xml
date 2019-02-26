@@ -292,4 +292,17 @@
     <properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	</properties>
+  	<developers>
+  		<developer>
+	  		<id>danthe1st</id>
+	  		<name>Daniel Schmid</name>
+	  		<roles>
+	  			<role>Only Developer</role>
+	  			<role>Lead Developer</role>
+	  			<role>Developer</role>
+	  		</roles>
+	  		<email>daniel@wwwmaster.at</email>
+	  		<timezone>+1</timezone>
+  		</developer>
+  	</developers>
 </project>
