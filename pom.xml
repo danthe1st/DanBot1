@@ -29,7 +29,6 @@
 			<distribution>repo</distribution>
 		</license>
   	</licenses>
-
     <repositories>
         <repository>
             <id>jitpack.io</id>
@@ -52,7 +51,6 @@
 	        </snapshots>
     	</repository>
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.mashape.unirest</groupId>
@@ -95,8 +93,7 @@
     </dependencies>
 
     <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    
+    	<sourceDirectory>src/main/java</sourceDirectory>
     	<finalName>DanBot1</finalName>
         <plugins>
 			<plugin>
@@ -162,7 +159,6 @@
 		            </goals>
 		            <configuration>
 		            <archive>
-                	
 				      	<manifest>
 					        <mainClass>io.github.danthe1st.danbot1.core.Main</mainClass>
 				     	</manifest>
@@ -254,7 +250,6 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 				<executions>
-					
 					<execution>
 						<id>attach-sources</id>
 						<goals>
@@ -283,7 +278,6 @@
 				</executions>
 			</plugin>
         </plugins>
-        
     </build>
 	<distributionManagement>
         <snapshotRepository>
@@ -292,8 +286,7 @@
 		</snapshotRepository>
 		<repository>
 			<id>ossrh</id>
-				<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
-			</url>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
     </distributionManagement>
     <properties>
