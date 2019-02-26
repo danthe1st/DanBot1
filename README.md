@@ -5,7 +5,7 @@ For a list of Commands and standard-permissions visit https://www.wwwmaster.at/d
 Programm your own Plugins:
 * Create a new Maven Project
 * Make sure that you are using Java 1.8
-* add DanBot1 to the Dependencies (replace VERSION with the version of the Bot):
+* add DanBot1 to the Dependencies (replace VERSION with [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1)):
 ```xml
 <dependencies>
 	<dependency>

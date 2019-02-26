@@ -35,7 +35,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 @BotCommand(aliases = {"m","music"})
 public class CmdMusic implements Command{
 
-	private static Guild guild;
 	private static final AudioPlayerManager MANAGER=new DefaultAudioPlayerManager();
 	private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS=new HashMap<>();
 	private int numTracksToLoad=0;
@@ -53,7 +52,7 @@ public class CmdMusic implements Command{
 		final AudioPlayer p=MANAGER.createPlayer();
 		final TrackManager m=new TrackManager(p);
 		p.addListener(m);
-		guild.getAudioManager().setSendingHandler(new PlayerSendHandler(p));
+		g.getAudioManager().setSendingHandler(new PlayerSendHandler(p));
 		PLAYERS.put(g, new AbstractMap.SimpleEntry<AudioPlayer, TrackManager>(p, m));
 		return p;
 	}
@@ -139,7 +138,7 @@ public class CmdMusic implements Command{
 	private void skip(final Guild g) {
 		getPlayer(g).stopTrack();
 		if (getManager(g).getQueue().isEmpty()) {
-			guild.getAudioManager().closeAudioConnection();
+			g.getAudioManager().closeAudioConnection();
 		}
 	}
 	/**
@@ -172,7 +171,7 @@ public class CmdMusic implements Command{
 	}
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
-		guild=event.getGuild();
+		Guild guild=event.getGuild();
 		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(guild)));
 			return;

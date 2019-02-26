@@ -231,24 +231,26 @@ public class Main {
 		File pluginFolder=new File(STATIC.getSettingsDir(),"plugins");
 		if (pluginFolder.exists()) {
 			String[] filesInPluginFolder=pluginFolder.list();
-			for (String pluginName : filesInPluginFolder) {
-				try {
-					if (pluginName.endsWith(".jar")) {
-						File pluginFile=new File(pluginFolder,pluginName);
-						if (pluginFile.isFile()) {
-							urls.add(pluginFile.toURI().toURL());
+			if (filesInPluginFolder!=null) {
+				for (String pluginName : filesInPluginFolder) {
+					try {
+						if (pluginName.endsWith(".jar")) {
+							File pluginFile=new File(pluginFolder,pluginName);
+							if (pluginFile.isFile()) {
+								urls.add(pluginFile.toURI().toURL());
+							}
 						}
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
 					}
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
 				}
+				URL[] urlArr=new URL[urls.size()];
+				for (int i = 0; i < urlArr.length; i++) {
+					urlArr[i]=urls.get(i);
+				}
+				builder.addUrls(urls);
+				builder.addClassLoader(new URLClassLoader(urlArr));
 			}
-			URL[] urlArr=new URL[urls.size()];
-			for (int i = 0; i < urlArr.length; i++) {
-				urlArr[i]=urls.get(i);
-			}
-			builder.addUrls(urls);
-			builder.addClassLoader(new URLClassLoader(urlArr));
 		}else {
 			pluginFolder.mkdir();
 		}
