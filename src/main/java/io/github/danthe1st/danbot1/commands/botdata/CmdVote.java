@@ -35,7 +35,6 @@ public class CmdVote implements Command, Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private static TextChannel channel;
 	private static HashMap<Guild, Poll> polls=new HashMap<>();
 	private static final String[] EMOTI= {":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":keycap_ten:"};
 	/**
@@ -92,6 +91,7 @@ public class CmdVote implements Command, Serializable{
 	 * @param event {@link MessageReceivedEvent} of the Command
 	 */
 	private void craetePoll(final String[] args, final MessageReceivedEvent event) {
+		TextChannel channel=event.getTextChannel();
 		if (polls.containsKey(event.getGuild())) {
 			STATIC.msg(event.getTextChannel(), "There is already a poll running on this guild");
 			return;
@@ -139,6 +139,7 @@ public class CmdVote implements Command, Serializable{
 	 * @param event The {@link MessageReceivedEvent} of the Command
 	 */
 	private void voteStats(final MessageReceivedEvent event) {
+		TextChannel channel=event.getTextChannel();
 		if (!polls.containsKey(event.getGuild())) {
 			STATIC.errmsg(event.getTextChannel(), "There is currently no poll running to show");
 			return;
@@ -151,6 +152,7 @@ public class CmdVote implements Command, Serializable{
 	 * @param event The {@link MessageReceivedEvent} of the Command
 	 */
 	private void closeVote(final MessageReceivedEvent event) {
+		TextChannel channel=event.getTextChannel();
 		if (!polls.containsKey(event.getGuild())) {
 			STATIC.errmsg(event.getTextChannel(), "There is currently no poll running to close");
 			return;
@@ -224,8 +226,8 @@ public class CmdVote implements Command, Serializable{
 		return PermsCore.check(event, "vote");
 	}
 	@Override
-	public void action(final String[] args, final MessageReceivedEvent event) {
-		channel=event.getTextChannel();
+	public synchronized void action(final String[] args, final MessageReceivedEvent event) {
+		TextChannel channel=event.getTextChannel();
 		if (args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(event.getGuild())));
 			return;

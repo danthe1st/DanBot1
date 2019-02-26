@@ -77,7 +77,7 @@ public class CmdUser implements Command{
 					if (member.isOwner()) {
 						owner.add(guild);
 					}
-					if (activities.isEmpty()) {
+					if (activities==null||activities.isEmpty()) {
 						activities=member.getActivities();
 					}
 					List<Role> rolesOnGuild=new ArrayList<>();
@@ -107,7 +107,7 @@ public class CmdUser implements Command{
 				sb.append("is Fake\n");
 			}
 			sb.append("id: "+user.getId()+" \n");
-			if (!activities.isEmpty()) {
+			if (activities!=null&&!activities.isEmpty()) {
 				sb.append("Games:");
 				for (Activity activity : activities) {
 					sb.append("\t"+activity.getName()+" \n");//TODO testen

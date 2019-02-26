@@ -4,9 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.danthe1st</groupId>
     <artifactId>DanBot1</artifactId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.1-RELEASE</version>
     <packaging>jar</packaging>
     <name>DanBot1</name>
+    <description>a small, pluginable Discord Bot</description>
     <scm>
 	    <connection>scm:git:git@github.com:danthe1st/DanBot1.git</connection>
 	    <developerConnection>scm:git:git@github.com:danthe1st/DanBot1.git</developerConnection>
@@ -115,30 +116,6 @@
                 </configuration>
                 <version>2.3.2</version>
             </plugin>
-            <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                	<archive>
-                	
-				      	<manifest>
-					        <mainClass>io.github.danthe1st.danbot1.core.Main</mainClass>
-					        
-					        <!- -<addClasspath>true</addClasspath>
-					        <classpathPrefix>lib</classpathPrefix> 
-					        
-					        <addExtensions>true</addExtensions>- ->
-				     	</manifest>
-				     	<!- -<manifestEntries>
-			                <Class-Path>lib/</Class-Path>
-			            </manifestEntries>- ->
-				    </archive>
-				    <outputDirectory>./DanBot1/</outputDirectory>
-				    <finalName>DanBot1</finalName>
-				    <appendAssemblyId>false</appendAssemblyId>
-                </configuration> 
-                <version>2.3.2</version>
-            </plugin>-->
 			<plugin><!-- git -->
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-scm-plugin</artifactId>
@@ -147,47 +124,6 @@
 		          <connectionType>connection</connectionType>
 		        </configuration>
 	      	</plugin>
-      		<!--  <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-shade-plugin</artifactId>
-		        <version>3.2.1</version>
-		        <executions>
-		          <execution>
-		            <phase>package</phase>
-		            <goals>
-		              <goal>shade</goal>
-		            </goals>
-		            <configuration>
-		            <archive>
-				      	<manifest>
-					        <mainClass>io.github.danthe1st.danbot1.core.Main</mainClass>
-				     	</manifest>
-				    </archive>
-		              <artifactSet>
-		                <excludes>
-		                </excludes>
-		              </artifactSet>
-		            </configuration>
-		          </execution>
-		        </executions>
-		      </plugin>
-			  <plugin>
-			    <artifactId>maven-dependency-plugin</artifactId>
-			    <executions>
-			        <execution>
-			            <phase>package</phase>
-			            <goals>
-			                <goal>copy-dependencies</goal>
-			            </goals>
-			            <configuration>
-			                <outputDirectory>${project.build.directory}/classes</outputDirectory>
-			                <overWriteReleases>false</overWriteReleases>
-			                <overWriteSnapshots>false</overWriteSnapshots>
-			                <overWriteIfNewer>true</overWriteIfNewer>
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin>-->
 			  <plugin><!-- assembly (real JAR) -->
 		      	<artifactId>maven-assembly-plugin</artifactId>
 				  <configuration>
@@ -232,6 +168,20 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-gpg-plugin</artifactId>
+		      <version>1.5</version>
+		      <executions>
+		        <execution>
+		          <id>sign-artifacts</id>
+		          <phase>verify</phase>
+		          <goals>
+		            <goal>sign</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+		    </plugin>
+			<plugin>
 			<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
 				<version>1.6.7</version>
@@ -251,17 +201,18 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>attach-javadocs</id>
 						<goals>
 							<goal>jar</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+					
 				</executions>
 			</plugin>
 			<plugin>
@@ -277,8 +228,88 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<javadocExecutable>C:\Program Files\Java\jdk1.8.0_144\bin\javadoc.exe</javadocExecutable>
+					<javadocVersion>1.8.0</javadocVersion>
+					<doclint>none</doclint>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-site-plugin</artifactId>
+		        <version>3.3</version>
+		        <configuration>
+		          <reportPlugins>
+		            <plugin>
+		              <groupId>org.apache.maven.plugins</groupId>
+		              <artifactId>maven-javadoc-plugin</artifactId>
+		              <configuration>
+		                <javadocExecutable>C:\Program Files\Java\jdk1.8.0_144\bin\javadoc.exe</javadocExecutable>
+						<javadocVersion>1.8.0</javadocVersion>
+						<doclint>none</doclint>
+		              </configuration>
+		            </plugin>
+		          </reportPlugins>
+		        </configuration>
+		      </plugin>
         </plugins>
     </build>
+    <profiles>
+    	<profile>
+	        <id>src</id>
+	        <build>
+	            <plugins>
+	                <plugin>
+	                    <groupId>org.apache.maven.plugins</groupId>
+	                    <artifactId>maven-source-plugin</artifactId>
+	                    <version>2.1.2</version>
+	                    <executions>
+	                        <execution>
+	                            <id>attach-sources</id>
+	                            <phase>verify</phase>
+	                            <goals>
+	                                <goal>jar-no-fork</goal>
+	                            </goals>
+	                        </execution>
+	                    </executions>
+	                </plugin>
+	            </plugins>
+	        </build>
+	    </profile>
+	    <profile>
+	        <id>javadoc</id>
+	        <build>
+	            <plugins>
+	                <plugin>
+	                    <groupId>org.apache.maven.plugins</groupId>
+	                    <artifactId>maven-javadoc-plugin</artifactId>
+	                    <version>2.7</version>
+	                    <executions>
+	                        <execution>
+	                            <id>attach-javadocs</id>
+	                            <phase>verify</phase>
+	                            <goals>
+	                                <goal>jar</goal>
+	                            </goals>
+	                        </execution>
+	                    </executions>
+	                </plugin>
+	            </plugins>
+	        </build>
+	    </profile>
+    </profiles>
 	<distributionManagement>
         <snapshotRepository>
 			<id>ossrh</id>
@@ -286,7 +317,7 @@
 		</snapshotRepository>
 		<repository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
 		</repository>
     </distributionManagement>
     <properties>
@@ -305,4 +336,5 @@
 	  		<timezone>+1</timezone>
   		</developer>
   	</developers>
+  	<url>https://danthe1st.github.io/DanBot1/index</url>
 </project>

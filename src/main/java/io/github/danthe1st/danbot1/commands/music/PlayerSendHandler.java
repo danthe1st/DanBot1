@@ -38,7 +38,7 @@ public class PlayerSendHandler implements AudioSendHandler {
 
         final byte[] data = lastFrame != null ? lastFrame.getData() : null;
         lastFrame = null;
-        return ByteBuffer.wrap(data);
+        return data!=null?ByteBuffer.wrap(data):null;
     }
     /**
      * if the Audio is Opus Coded<br>
