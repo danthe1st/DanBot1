@@ -54,7 +54,7 @@ public final class STATIC {
 	 * initialize permissions and markup escapes
 	 */
 	static {
-		markupEscapeMap.put("\\*", "\\*");//fett/kursiv
+		markupEscapeMap.put("*", "\\*");//bold/italic
 		markupEscapeMap.put("_", "\\_");//unterstrichen
 		markupEscapeMap.put("~", "\\~");//durchgestrichen
 		markupEscapeMap.put("`", "\\`");//Code/Codeblock
