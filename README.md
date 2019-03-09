@@ -22,7 +22,7 @@ Programm your own Plugins:
 * Commands should implement the Interface commands.BotCommand
 * Listeners should be annotated with @io.github.danthe1st.danbot1.listeners.BotListener
 * Listeners should have a no-args-Constructor
-* Listeners should extend net.dv8tion.jda.core.hooks.ListenerAdapter
+* Listeners should extend net.dv8tion.jda.api.hooks.ListenerAdapter
 * You can run the Bot by executing io.github.danthe1st.danbot1.core.Main.main(String[] args);
 * you can export the plugin as a normal JAR File or use a maven export(mvn package), but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
 

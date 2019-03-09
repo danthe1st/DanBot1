@@ -20,7 +20,7 @@ public class CmdMotd implements Command{
 
 	private static Map<Guild, String> motd=new HashMap<Guild, String>();
 	private static final String stdMotd="Invite: https://discordapp.com/api/oauth2/authorize?client_id=371042228891549707&permissions=8&scope=bot\n"
-			+ "Support-Server: https://discord.gg/qmwcEjF\n"
+			+ "Support-Server: https://discord.io/DanBot1\n"
 			+ "Website: https://danthe1st.github.io/DanBot1/";
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
