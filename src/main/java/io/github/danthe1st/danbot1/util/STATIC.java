@@ -129,7 +129,7 @@ public final class STATIC {
 				}, STATIC.INFO_TIMEOUT);
 			}
 		} catch (Exception e) {
-			System.err.println("Cannot send Message \""+message.getDescription()+"\" in channel "+channel.getName()+"["+channel.getGuild().getName()+"]");
+			System.err.println("Cannot send Message \""+message.getDescription()+"\" in channel "+channel.getName()+"["+channel.getGuild().getName()+"] because of a "+e.getClass().getSimpleName());
 		}
 	}
 	/**
@@ -198,15 +198,16 @@ public final class STATIC {
 			
 			if (member==null) {
 				List<Member> membersLocal=msg.getGuild().getMembersByEffectiveName(args[i], true);
-				if (!membersLocal.isEmpty()) {
+				if (membersLocal.isEmpty()) {
 					membersLocal=msg.getGuild().getMembersByName(args[i], true);
 				}
 				if (!membersLocal.isEmpty()) {
 					member=membersLocal.get(0);
 				}
 			}
-			
-			members.add(member);
+			if (member!=null) {
+				members.add(member);
+			}
 		}
 		return members;
 	}
@@ -227,7 +228,7 @@ public final class STATIC {
 	 * @param g the {@link Guild}
 	 * @return the escaped prefix
 	 */
-	public static String getPrefixExcaped(final Guild g) {
+	public static String getPrefixEscaped(final Guild g) {
 		return escapeDiscordMarkup(getPrefix(g));
 	}
 	/**
@@ -302,10 +303,7 @@ public final class STATIC {
 			new File(STATIC.getSettingsDir()+"/"+g.getId()).mkdirs();
 		}
 		final File file=new File(STATIC.getSettingsDir()+"/"+g.getId()+"/prefix.dat");
-		if (!file.exists()) {
-			
-		}
-		else {
+		if (file.exists()) {
 			try {
 				final FileInputStream fis=new FileInputStream(file);
 				final ObjectInputStream ois=new ObjectInputStream(fis);
@@ -351,7 +349,6 @@ public final class STATIC {
 	public static String getServerData(Guild g){
 		String retString=g.getName()+" ["+g.getId()+"]";
 		return retString+"\t"+getActiveInvite(g);
-		
 	}
 	/**
 	 * gets an {@link Invite} in a Guild
@@ -435,7 +432,6 @@ public final class STATIC {
 			cmdLoggerNames= (HashMap<String, String>)names;
 		}
 		cmdLoggerNames=new HashMap<>();
-		//return (HashMap<String, String>)load("cmdLogger.dat");
 	}
 	/**
 	 * saves an Object into a File

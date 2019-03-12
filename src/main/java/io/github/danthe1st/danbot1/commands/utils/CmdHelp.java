@@ -37,7 +37,7 @@ public class CmdHelp implements Command{
 			commands.forEach((name,command)->{
 				EmbedBuilder backUp=new EmbedBuilder(eb);
 				if (command.getCommandType()==null) {
-					String help="**"+STATIC.getPrefix(event.getGuild()) +name+"**:\n"+command.help(STATIC.getPrefixExcaped(event.getGuild()))+"\n\n";
+					String help="**"+STATIC.getPrefix(event.getGuild()) +name+"**:\n"+command.help(STATIC.getPrefixEscaped(event.getGuild()))+"\n\n";
 					try {
 						eb.appendDescription(help);
 						if (!(eb.isValidLength(AccountType.CLIENT)/*&&eb.isValidLength(AccountType.BOT)*/)) {

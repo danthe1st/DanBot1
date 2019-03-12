@@ -169,7 +169,7 @@ public class SudoMessage implements Message{
 
 	@Override
 	public Guild getGuild() {
-		return oldMsg.getGuild();
+		return author.getGuild();
 	}
 
 	@Override

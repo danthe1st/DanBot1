@@ -229,7 +229,7 @@ public class CmdVote implements Command, Serializable{
 	public synchronized void action(final String[] args, final MessageReceivedEvent event) {
 		TextChannel channel=event.getTextChannel();
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(event.getGuild())));
+			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		switch (args[0]) {
@@ -266,7 +266,7 @@ public class CmdVote implements Command, Serializable{
 			}
 			break;
 		default:
-			STATIC.errmsg(channel, help(STATIC.getPrefixExcaped(event.getGuild())));
+			STATIC.errmsg(channel, help(STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		polls.forEach((guild, poll)->{

@@ -163,7 +163,7 @@ public class CmdAutoChannel implements Command, Serializable {
 		final Guild g=event.getGuild();
 		final TextChannel tc=event.getTextChannel();
 		if(args.length<1) {
-			STATIC.errmsg(tc, help(STATIC.getPrefixExcaped(g)));
+			STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
 			return;
 		}
 		switch (args[0]) {
@@ -173,7 +173,7 @@ public class CmdAutoChannel implements Command, Serializable {
 		case "set":
 		case "add":
 			if(args.length<2) {
-				STATIC.errmsg(tc, help(STATIC.getPrefixExcaped(g)));
+				STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
 				return;
 			}
 			setChannel(args[1], g, tc);
@@ -184,13 +184,13 @@ public class CmdAutoChannel implements Command, Serializable {
 		case "delete":
 		case "del":
 			if(args.length<2) {
-				STATIC.errmsg(tc, help(STATIC.getPrefixExcaped(g)));
+				STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
 				return;
 			}
 			unsetChan(args[1], g, tc);
 			break;
 		default:
-			STATIC.errmsg(tc, help(STATIC.getPrefixExcaped(g)));
+			STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
 			break;
 		}
 		
