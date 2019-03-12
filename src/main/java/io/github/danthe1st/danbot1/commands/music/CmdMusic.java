@@ -173,7 +173,7 @@ public class CmdMusic implements Command{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		Guild guild=event.getGuild();
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(guild)));
+			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(guild)));
 			return;
 		}
 		switch (args[0].toLowerCase()) {
@@ -257,7 +257,7 @@ public class CmdMusic implements Command{
 			
 			break;
 		default:
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(guild)));
+			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(guild)));
 			break;
 		}
 	}

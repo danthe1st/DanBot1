@@ -61,7 +61,7 @@ public class CmdUser implements Command{
 				emB.appendDescription("**Games**\n");
 			}
 			for (Activity activity : member.getActivities()) {
-				emB.appendDescription("\t*"+activity.getName()+"* \n");//TODO testen
+				emB.appendDescription("\t*"+activity.getName()+"* \n");
 			}
 			emB.appendDescription("**joined** the Guild: *"+member.getTimeJoined().getDayOfMonth()+"."+member.getTimeJoined().getMonthValue()+"."+member.getTimeJoined().getYear()+"* \n");
 			if (!member.getRoles().isEmpty()) {

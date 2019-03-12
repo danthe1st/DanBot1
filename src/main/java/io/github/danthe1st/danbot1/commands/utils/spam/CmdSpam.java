@@ -23,7 +23,7 @@ public class CmdSpam implements Command {
 			return;
 		}
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(event.getGuild())));
+			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		try {

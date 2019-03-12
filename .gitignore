@@ -222,6 +222,7 @@ $RECYCLE.BIN/
 SERVER_SETTINGS/
 
 #other things
-DanBot1/
+/DanBot1/
 #javadoc
 javadoc.xml
+src/test/java/io/github/danthe1st/danbot1/Secreds.java

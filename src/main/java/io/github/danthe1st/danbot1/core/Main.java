@@ -39,6 +39,7 @@ public class Main {
 	private static final Scanner scan=new Scanner(System.in);
 	private static String adminId="358291050957111296";
 	private static String[] args;
+	private static JDA jda=null;
 	static {
 		if (game==null) {
 			game="with you";
@@ -58,7 +59,6 @@ public class Main {
 	 */
 	public static void main(final String[] args) {
 		Main.args=args;
-		JDA jda = null;
 		for (String arg : args) {
 			try {
 				switch (arg.toLowerCase()) {
@@ -90,14 +90,13 @@ public class Main {
 						token=arg.substring(6);
 					}
 					else if (arg.toLowerCase().startsWith("admin=")) {
-						adminId=arg.substring(6);
-						if (adminId.equals("")) {
-							adminId="358291050957111296";
-						}
+						String newAdminId=arg.substring(6);
 						try {
-							Integer.parseInt(adminId);
+							if (!newAdminId.equals("")) {
+								Long.parseLong(adminId);
+								adminId=newAdminId;
+							}
 						} catch (NumberFormatException e) {
-							adminId="358291050957111296";
 						}
 					}
 					else if (arg.toLowerCase().startsWith("status=")) {
@@ -157,7 +156,6 @@ public class Main {
 		    configurationBuilder.addUrls(ClasspathHelper.forClassLoader());
 		    loadPlugins(configurationBuilder);
 		    Reflections ref = new Reflections(configurationBuilder);
-		   
 		    addCommandsAndListeners(ref,builder);
 			try {
 				jda=builder.build();
@@ -184,14 +182,14 @@ public class Main {
 	 * @param jdaBuilder The Builder of the JDA
 	 */
 	private static void addCommandsAndListeners(Reflections ref,JDABuilder jdaBuilder) {
-		addAction(ref, jdaBuilder, BotCommand.class,(cmdAsAnnotation,annotatedAsObject)->{
+		addAction(ref, BotCommand.class,(cmdAsAnnotation,annotatedAsObject)->{
     		BotCommand cmdAsBotCommand=(BotCommand)cmdAsAnnotation;
     		Command cmd=(Command)annotatedAsObject;
     		for (String alias : cmdAsBotCommand.aliases()) {
 				CommandHandler.commands.put(alias.toLowerCase(), cmd);
 			}
     	});
-    	addAction(ref, jdaBuilder, BotListener.class,(cmdAsAnnotation,annotatedAsObject)->{
+    	addAction(ref, BotListener.class,(cmdAsAnnotation,annotatedAsObject)->{
     		ListenerAdapter listener=(ListenerAdapter) annotatedAsObject;
 			jdaBuilder.addEventListeners(listener);
     	});
@@ -203,7 +201,7 @@ public class Main {
 	 * @param annotClass The Class Object of the Annotation
 	 * @param function
 	 */
-	private static void addAction(Reflections ref,JDABuilder jdaBuilder,Class<? extends Annotation> annotClass, BiConsumer<Annotation, Object> function) {
+	private static void addAction(Reflections ref,Class<? extends Annotation> annotClass, BiConsumer<Annotation, Object> function) {
 		for (Class<?> cl : ref.getTypesAnnotatedWith(annotClass,true)) {
             try {
 				Object annotatedAsObject=cl.newInstance();
@@ -264,5 +262,8 @@ public class Main {
 	}
 	public static String getAdminId() {
 		return adminId;
+	}
+	public static JDA getJda() {
+		return jda;
 	}
 }

@@ -184,7 +184,7 @@ public class CmdPerm implements Command{
 			break;
 		}
 		default:
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixExcaped(event.getGuild())));
+			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 	}
