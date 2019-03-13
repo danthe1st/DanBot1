@@ -1,6 +1,7 @@
 package io.github.danthe1st.danbot1.core;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
@@ -30,7 +31,7 @@ public class CommandParser {
 	 * @return the parsed Command
 	 */
 	public static CommandContainer parser(final String raw, final MessageReceivedEvent event, final String prefix) {
-		final String beheaded=raw.replaceFirst(prefix, "");
+		final String beheaded=raw.replaceFirst(Pattern.quote(prefix), "");
 		final String[] splitBeheaded=beheaded.split(" ");
 		final String invoke=splitBeheaded[0];
 		final ArrayList<String> split=new ArrayList<String>();
