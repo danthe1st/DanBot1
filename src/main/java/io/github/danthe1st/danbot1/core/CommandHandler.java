@@ -11,8 +11,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
  * @author Daniel Schmid
  */
 public class CommandHandler {
-	public static final CommandParser parse=new CommandParser();
-	public static HashMap<String, Command> commands=new HashMap<String, Command>();
+	public static final HashMap<String, Command> commands=new HashMap<String, Command>();
 	/**
 	 * loads Command and executes it
 	 * @param cmd the Command as {@link CommandContainer}
