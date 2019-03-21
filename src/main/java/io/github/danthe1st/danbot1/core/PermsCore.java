@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Core Class for Permission System
  * @author Daniel Schmid
  */
-public class PermsCore {
+public class PermsCore {//TODO null checks
 	//					gId				Perm	Role
 	private static final Map<String, Map<String, String[]>> perms=new HashMap<>();
 	private static final HashMap<String, String[]> STD_PERMS =new HashMap<String, String[]>();
@@ -53,7 +53,6 @@ public class PermsCore {
 		STD_PERMS.put("autorole", new String[] {"Owner", "Admin"});
 		STD_PERMS.put("unnick.others", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
 		STD_PERMS.put("unnick", new String[] {"*"});
-		STD_PERMS.put("multicolor.set", new String[] {"Owner", "Admin"});
 		STD_PERMS.put("dice", new String[] {"*"});
 		STD_PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
 		STD_PERMS.put("nospam.see", new String[] {"*"});
@@ -141,11 +140,11 @@ public class PermsCore {
 		Map<String, String[]> guildPerms = perms.get(g.getId());
 		if (perms.get(g.getId())!=null) {
 			if (guildPerms.get(permName)==null) {//permission not found
-				guildPerms.put(permName, new String[0]);
+				return new String[0];
 			}
 			return guildPerms.get(permName);
 		}
-		return getRolesFromNames(STD_PERMS.get(permName), g);
+		return getRoleIDsFromNames(STD_PERMS.get(permName), g);
 	}
 	
 	/**
@@ -167,7 +166,7 @@ public class PermsCore {
 		
 		
 		STD_PERMS.forEach((permName,roles)->{
-			guildPerms.put(permName, getRolesFromNames(roles, g));
+			guildPerms.put(permName, getRoleIDsFromNames(roles, g));
 		});
 		
 		perms.put(g.getId(), guildPerms);
@@ -205,8 +204,8 @@ public class PermsCore {
 	 * @param newRole The name of the Role to Replace with
 	 */
 	public static void chRole(Guild g, String roleToChange, String newRole) {
-		roleToChange=getRoleFromName(roleToChange, g);
-		newRole=getRoleFromName(newRole, g);
+		roleToChange=getRoleIDFromName(roleToChange, g);
+		newRole=getRoleIDFromName(newRole, g);
 		if (roleToChange==null) {
 			return;
 		}
@@ -240,7 +239,7 @@ public class PermsCore {
 		}
 		for (String permName : STD_PERMS.keySet()) {
 			if (!(perms.containsKey(permName))) {
-				perms.put(permName,getRolesFromNames(STD_PERMS.get(permName),g));
+				perms.put(permName,getRoleIDsFromNames(STD_PERMS.get(permName),g));
 			}
 		}
 		savePerms(g);
@@ -275,7 +274,7 @@ public class PermsCore {
 				for (int i = 0,j=0; i < perm.length; i++) {
 					if (perm[i]!=null) {
 						permsNew[j]=perm[i];
-						perm[i]=null;
+						//perm[i]=null;
 						j++;
 						continue;
 					}
@@ -339,7 +338,13 @@ public class PermsCore {
 	 * @param g the Guild the Role is in
 	 * @return the id of the role or <code>null</code>
 	 */
-	public static String getRoleFromName(String name,Guild g) {
+	public static String getRoleIDFromName(String name,Guild g) {
+		if (name==null) {
+			return null;
+		}
+		if (name.equals("")) {
+			return null;
+		}
 		if (name.equals("*")) {
 			return name;
 		}
@@ -359,10 +364,19 @@ public class PermsCore {
 	 * @param g the Guild the Roles are in
 	 * @return the ids of the roles represented by a {@link String} array
 	 */
-	public static String[] getRolesFromNames(String[] names,Guild g) {
+	public static String[] getRoleIDsFromNames(String[] names,Guild g) {
+		if (names==null) {
+			return new String[0];
+		}
+		
 		List<String> roleIds=new ArrayList<>();
 		for (String role : names) {
-			String roleId=getRoleFromName(role, g);
+			String roleId;
+			if (role==null||role.equals("")) {
+				roleId = null;
+			}else {
+				roleId=getRoleIDFromName(role, g);
+			}
 			if (roleId!=null) {
 				roleIds.add(roleId);
 			}
@@ -376,10 +390,10 @@ public class PermsCore {
 	 * @param g the {@link Guild}
 	 * @return the standard-permissions for the guild
 	 */
-	private static Map<String, String[]> getStdPermsAsIds(Guild g){
+	public static Map<String, String[]> getStdPermsAsIds(Guild g){
 		Map<String, String[]> perms=new HashMap<>();
 		STD_PERMS.forEach((permName,permData)->{
-			perms.put(permName, getRolesFromNames(permData, g));
+			perms.put(permName, getRoleIDsFromNames(permData, g));
 		});
 		return perms;
 	}

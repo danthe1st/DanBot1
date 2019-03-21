@@ -30,8 +30,6 @@ public class CommandHandler {
 				} catch (Exception e) {
 					save=false;
 				}
-				
-				
 			}
 			commands.get(cmd.invoke.toLowerCase()).executed(save, cmd.event);
 		}

@@ -38,7 +38,7 @@ public class MainTest {//TODO execute loadEverything() before all tests
 				
 				"game=Unit_testing",
 				"token="+Secreds.token,
-				"admin=362282283048239104",
+				"admin=358291050957111296",
 				"status=idle"
 		});
 		jda=Main.getJda();
@@ -49,10 +49,20 @@ public class MainTest {//TODO execute loadEverything() before all tests
 	}*/
 	@Test
 	public void testBotData() {
+		Main.getJda().shutdown();
+		Main.main(new String[] {
+				
+				"game=Unit_testing",
+				"token="+Secreds.token,
+				"admin=362282283048239104",
+				"status=idle"
+		});
 		String currentGame=jda.getGuilds().get(0).getMember(jda.getSelfUser()).getActivities().get(0).getName();
 		assertEquals("Unit testing", currentGame);
 		assertEquals("362282283048239104", Main.getAdminId());
 		assertEquals(OnlineStatus.IDLE, jda.getGuilds().get(0).getMember(jda.getSelfUser()).getOnlineStatus());
+		Main.getJda().shutdown();
+		init();
 	}
 	@Test
 	public void testAddAction() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -75,7 +85,7 @@ public class MainTest {//TODO execute loadEverything() before all tests
 	}
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(value = ElementType.TYPE)
-	private @interface AnnotationForTestAddAction{
+	public @interface AnnotationForTestAddAction{
 		
 	}
 }
