@@ -93,7 +93,7 @@ public class CmdPerm implements Command{
 				groups[i] = PermsCore.getPerm(event.getGuild(), args[1])[i];
 			}
 			for (int j=0; i < args.length-1; i++,j++) {
-				groups[i] = PermsCore.getRoleFromName(args[j+2], event.getGuild());
+				groups[i] = PermsCore.getRoleIDFromName(args[j+2], event.getGuild());
 			}
 			PermsCore.setPerm(event.getGuild(), args[1], groups);
 			break;
@@ -126,7 +126,7 @@ public class CmdPerm implements Command{
 			}
 			for (int i = 0; i < groups.length; i++) {
 				for (int j = 3; j < args.length; j++) {
-					if (groups[i].equals(PermsCore.getRoleFromName(args[j], event.getGuild()))) {
+					if (groups[i].equals(PermsCore.getRoleIDFromName(args[j], event.getGuild()))) {
 						groups[i]=null;
 						break;
 					}

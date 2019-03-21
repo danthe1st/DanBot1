@@ -110,7 +110,7 @@ public class CmdUser implements Command{
 			if (activities!=null&&!activities.isEmpty()) {
 				sb.append("Games:");
 				for (Activity activity : activities) {
-					sb.append("\t"+activity.getName()+" \n");//TODO testen
+					sb.append("\t"+activity.getName()+" \n");//TODO test
 				}
 				
 			}

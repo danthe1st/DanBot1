@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @author Daniel Schmid
  */
 @BotCommand(aliases = "stop")
-public class CmdStop implements Command{//TODO make it only possible for specified Guilds
+public class CmdStop implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);	
