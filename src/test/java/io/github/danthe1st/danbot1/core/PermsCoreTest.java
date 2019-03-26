@@ -37,9 +37,9 @@ public class PermsCoreTest {
 		assertFalse(PermsCore.checkOwner(event));
 		assertFalse(PermsCore.check(event,someInvalidPermission));
 	}
-	private final String someInvalidPermission="oaefisfdouhbfosfhaweioöfdifabdsifbssuaidfdasu";
+	private final String someInvalidPermission="oaefisfdouhbfosfhaweioöfdifabdsifbssuaidfdasu";//some String(Users should not have the Permission explicitely)
 	private MessageReceivedEvent getSomeMsgRescEvent(JDA jda,Message msg) {
-		return new MessageReceivedEvent(jda, 0, msg);//some String(Admin should not have the Permission explicitely)
+		return new MessageReceivedEvent(jda, 0, msg);
 	}
 	private Message getMessage(TextChannel tc,boolean fromBotAdmin) {
 		for (Message msg : tc.getHistory().retrievePast(100).complete()) {
