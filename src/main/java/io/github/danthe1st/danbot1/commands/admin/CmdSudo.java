@@ -48,7 +48,7 @@ public class CmdSudo implements Command{
 		SudoMessage msg=new SudoMessage(event.getMessage(),raw, display, stripped,user);
 			
 		MessageReceivedEvent sudoEvent=new MessageReceivedEvent(event.getJDA(), event.getResponseNumber(), msg);
-		CommandHandler.handleCommand(CommandParser.parser(sudoEvent.getMessage().getContentRaw(), sudoEvent, STATIC.getPrefix(event.getGuild())));
+		CommandHandler.handleCommand(CommandParser.parser(sudoEvent, STATIC.getPrefix(event.getGuild())));
 	}
 
 	@Override

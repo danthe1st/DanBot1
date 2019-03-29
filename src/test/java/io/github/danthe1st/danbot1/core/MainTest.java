@@ -8,7 +8,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,18 +18,17 @@ import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
 import io.github.danthe1st.danbot1.Secreds;
+import io.github.danthe1st.danbot1.TestUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 
 @MainTest.AnnotationForTestAddAction
-public class MainTest {//TODO execute loadEverything() before all tests
+public class MainTest {
 	private static JDA jda=null;
-	private static boolean initiated=false;
 	@BeforeAll
 	public static void load() {
-		if (!initiated) {
+		if (jda==null) {
 			init();
-			initiated=true;
 		}
 	}
 	private static void init(){
@@ -43,10 +41,6 @@ public class MainTest {//TODO execute loadEverything() before all tests
 		});
 		jda=Main.getJda();
 	}
-	/*@AfterAll
-	public static void unloadEverything(){
-		jda.shutdown();
-	}*/
 	@Test
 	public void testBotData() {
 		Main.getJda().shutdown();
@@ -71,18 +65,14 @@ public class MainTest {//TODO execute loadEverything() before all tests
 			objects.add(obj.getClass());
 		};
 		Class<? extends Annotation> cl=AnnotationForTestAddAction.class;
-		invokeNotAccessibleMethod(Main.class, "addAction",new Class<?>[] {
+		TestUtils.invokeNotAccessibleMethod(Main.class, "addAction",new Class<?>[] {
 			Reflections.class,Class.class,BiConsumer.class
 		}, null, new Reflections("io.github.danthe1st.danbot1"),cl,toExec);
 		assertEquals(new ArrayList<Object>(Arrays.asList(getClass())),objects);
 	}
 	
 	
-	private Object invokeNotAccessibleMethod(Class<?> targetClass,String targetMethodName,Class<?>[] paramTypes, Object instanceOfClass, Object... params) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		Method method = targetClass.getDeclaredMethod(targetMethodName, paramTypes);
-		method.setAccessible(true);
-		return method.invoke(instanceOfClass, params);
-	}
+	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(value = ElementType.TYPE)
 	public @interface AnnotationForTestAddAction{

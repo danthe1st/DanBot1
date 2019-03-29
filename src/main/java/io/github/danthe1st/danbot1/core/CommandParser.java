@@ -14,29 +14,42 @@ public class CommandParser {
 	/**
 	 * zerlegt den Command und f�hrt ihn zu einem <code>CommandContainer</code> zusammen.
 	 * method to parse the Command
-	 * @param raw the Message Content as String
 	 * @param event the {@link MessageReceivedEvent} from the Message
 	 * @return the parsed Command
 	 */
-	public static CommandContainer parser(final String raw, final MessageReceivedEvent event) {
+	public static CommandContainer parser(final MessageReceivedEvent event) {
 		
-		return parser(raw, event, STATIC.getPrefix(event.getGuild()));
+		return parser(event, STATIC.getPrefix(event.getGuild()));
 	}
 	/**
 	 * zerlegt den Command und f�hrt ihn zu einem <code>CommandContainer</code> zusammen.
 	 * method to parse the Command
-	 * @param raw the Message Content as String
 	 * @param event the {@link MessageReceivedEvent} from the Message
 	 * @param prefix the {@link Guild} prefix
 	 * @return the parsed Command
 	 */
-	public static CommandContainer parser(final String raw, final MessageReceivedEvent event, final String prefix) {
+	public static CommandContainer parser(final MessageReceivedEvent event, final String prefix) {
+		final String raw=event.getMessage().getContentRaw();
 		final String beheaded=raw.replaceFirst(Pattern.quote(prefix), "");
 		final String[] splitBeheaded=beheaded.split(" ");
 		final String invoke=splitBeheaded[0];
 		final ArrayList<String> split=new ArrayList<String>();
-		for (final String s : splitBeheaded) {
-			split.add(s);
+		boolean inQuoute=false;
+		for (String s : splitBeheaded) {
+			if (inQuoute) {
+				split.add(split.remove(split.size()-1).concat(" ").concat(s.substring(0,s.length()-1)));
+				if (s.endsWith("\"")) {
+					inQuoute=false;
+				}
+			}else {
+				
+				if (s.startsWith("\"")) {
+					inQuoute=true;
+					s=s.substring(1);
+				}
+				split.add(s);
+			}
+			
 		}
 		final String[] args=new String[split.size()-1];
 		
