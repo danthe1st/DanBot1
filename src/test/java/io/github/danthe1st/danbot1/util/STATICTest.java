@@ -31,7 +31,6 @@ public class STATICTest {
 	public static void load() {
 		MainTest.load();
 	}
-	
 	@Test
 	public void testEscapeDiscordMarkup() {
 		assertEquals("\\*Hallo\\* \\_\\_Welt\\_\\_",STATIC.escapeDiscordMarkup("*Hallo* __Welt__"));

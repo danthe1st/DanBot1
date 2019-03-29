@@ -26,15 +26,15 @@ public class CommandListener extends ListenerAdapter {
 		}
 		
 		if(event.getMessage().getContentDisplay().startsWith("--prefix")&&!event.getAuthor().isBot()) {
-			CommandHandler.handleCommand(CommandParser.parser(event.getMessage().getContentRaw(), event,"--"));
+			CommandHandler.handleCommand(CommandParser.parser( event,"--"));
 			return;
 		}
 		if((event.getMessage().getMentionedUsers().size()==1)&&(event.getMessage().getContentDisplay().startsWith("@"))&&event.getMessage().getMentionedUsers().contains(event.getJDA().getSelfUser())&&!event.getMessage().getAuthor().isBot()) {
-			CommandHandler.handleCommand(CommandParser.parser(event.getMessage().getContentRaw(), event,event.getMessage().getContentRaw().split(" ")[0]+" "));
+			CommandHandler.handleCommand(CommandParser.parser(event,event.getMessage().getContentRaw().split(" ")[0]+" "));
 		}
 		//System.out.println(event.getAuthor().getName()+": "+event.getMessage().getContent());
 		if(event.getMessage().getContentDisplay().startsWith(STATIC.getPrefix(event.getGuild()))&&(!event.getMessage().getAuthor().isBot())) {
-			CommandHandler.handleCommand(CommandParser.parser(event.getMessage().getContentRaw(), event));
+			CommandHandler.handleCommand(CommandParser.parser(event));
 		}
 		
 	}
