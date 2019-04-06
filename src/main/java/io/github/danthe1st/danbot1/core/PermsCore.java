@@ -28,6 +28,7 @@ public class PermsCore {//TODO null checks
 		STD_PERMS.put("say", new String[] {"*"});
 		STD_PERMS.put("clearChat", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
 		STD_PERMS.put("playMusic", new String[] {"*"});
+		STD_PERMS.put("userphone", new String[] {"*"});
 		STD_PERMS.put("vote", new String[] {"*"});
 		STD_PERMS.put("vote.create", new String[] {"*"});
 		STD_PERMS.put("vote.vote", new String[] {"*"});
@@ -55,8 +56,6 @@ public class PermsCore {//TODO null checks
 		STD_PERMS.put("unnick", new String[] {"*"});
 		STD_PERMS.put("dice", new String[] {"*"});
 		STD_PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
-		STD_PERMS.put("nospam.see", new String[] {"*"});
-		STD_PERMS.put("nospam.change", new String[] {"Owner", "Admin"});
 	}
 	
 	

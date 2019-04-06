@@ -1,4 +1,4 @@
-package io.github.danthe1st.danbot1.commands.music;
+package io.github.danthe1st.danbot1.commands.audio.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
