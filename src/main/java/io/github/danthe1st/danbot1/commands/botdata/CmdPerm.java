@@ -1,6 +1,7 @@
 package io.github.danthe1st.danbot1.commands.botdata;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -10,7 +11,6 @@ import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 /**
  * Command forcguild-specified Bot-Permissions
@@ -34,7 +34,6 @@ public class CmdPerm implements Command{
 			if(!PermsCore.check(event, "perm.get")) {
 				return;
 			}
-			
 			EmbedBuilder msg=new EmbedBuilder()
 					.setColor(Color.GREEN)
 					.setDescription("**Permissions of Server "+event.getGuild().getName()+":**\n");
@@ -48,7 +47,6 @@ public class CmdPerm implements Command{
 					msg.appendDescription(getNameFromRoleId(event.getGuild(), string)+" ");
 					hasElementsBefore=true;
 				}
-				
 				msg.appendDescription("\n");
 			}
 					
@@ -63,15 +61,17 @@ public class CmdPerm implements Command{
 				STATIC.errmsg(event.getTextChannel(), "not enough arguments");
 				return;
 			}
-//			String[] groups = new String[args.length-2];
-			List<Role> roles=STATIC.getRolesFromMsg(event.getMessage());
+			List<String> roles=new ArrayList<>();
+			for (int i = 2; i < args.length; i++) {
+				String roleID=PermsCore.getRoleIDFromName(args[i], event.getGuild());
+				if (roleID!=null) {
+					roles.add(roleID);
+				}
+			}
 			String[] groups=new String[roles.size()];
 			for (int i = 0; i < groups.length; i++) {
-				groups[i]=roles.get(i).getId();
+				groups[i]=roles.get(i);
 			}
-//			for (int i = 2; i < args.length; i++) {
-//				groups[i-2] = args[i];
-//			}
 			PermsCore.setPerm(event.getGuild(), args[1],groups);
 			break;
 		}
@@ -107,11 +107,9 @@ public class CmdPerm implements Command{
 				if (PermsCore.getPerms(event.getGuild()).containsKey(args[1])) {
 					if (PermsCore.removePerm(event.getGuild(), args[1])) {
 						STATIC.msg(event.getTextChannel(), "removed Permission "+args[1]);
-						
 						return;
 					}
 					STATIC.errmsg(event.getTextChannel(), "cannot remove Permission "+args[1]);
-					
 					return;
 				}
 			}

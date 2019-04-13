@@ -1,6 +1,5 @@
 package io.github.danthe1st.danbot1.core;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -25,6 +24,7 @@ public class CommandParserTest {
 		testNormalCommand("--say \"Hello World\" Test", new String[] {"Hello World","Test"});
 		String someCommandArgs="fsd a fg sif  hdhg duish ud dfhd";
 		testNormalCommand("*fsdfds "+someCommandArgs, someCommandArgs.split(" "),"*");
+		testNormalCommand("--say \"Hello\" World", new String[] {"\"Hello\"","World"});
 	}
 	public void testNormalCommand(String cmd, String[] expected) {
 		Member member=Main.getJda().getGuilds().get(0).getMemberById(Main.getAdminId());

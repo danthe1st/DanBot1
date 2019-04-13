@@ -1,6 +1,6 @@
 # DanBot1
 a little Discord Chat Bot.<br>
-For a list of Commands and standard-permissions visit https://www.wwwmaster.at/daniel/data/DanBot1/
+For a list of Commands and standard-permissions visit https://danthe1st.github.io/DanBot1
 
 Programm your own Plugins:
 * Create a new Maven Project

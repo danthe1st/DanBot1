@@ -185,7 +185,7 @@ public class PermsCore {//TODO null checks
 			resetPerms(g);
 		}
 		
-		if (perms.get(g.getId()).containsKey(permName)) {
+		if (guildPerms.containsKey(permName)) {
 			if (STD_PERMS.containsKey(permName)) {
 				return false;
 			}
