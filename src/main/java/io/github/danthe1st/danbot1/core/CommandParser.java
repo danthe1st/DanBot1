@@ -43,7 +43,7 @@ public class CommandParser {
 				}
 			}else {
 				
-				if (s.startsWith("\"")) {
+				if (s.startsWith("\"")&&!s.endsWith("\"")) {
 					inQuoute=true;
 					s=s.substring(1);
 				}
@@ -56,7 +56,7 @@ public class CommandParser {
 		split.subList(1, split.size()).toArray(args);
 		
 		
-		return new CommandContainer(raw, beheaded, splitBeheaded, invoke, args, event);
+		return new CommandContainer(invoke, args, event);
 	}
 	/**
 	 * Container for parsed Commands
@@ -66,17 +66,11 @@ public class CommandParser {
 	 */
 	public static class CommandContainer {
 
-        public final String raw;
-        public final String beheaded;
-        public final String[] splitBeheaded;
         public final String invoke;
         public final String[] args;
         public final MessageReceivedEvent event;
 
-        public CommandContainer(final String rw, final String beheaded, final String[] splitBeheaded, final String invoke, final String[] args, final MessageReceivedEvent e) {
-            this.raw = rw;
-            this.beheaded = beheaded;
-            this.splitBeheaded = splitBeheaded;
+        public CommandContainer(final String invoke, final String[] args, final MessageReceivedEvent e) {
             this.invoke = invoke;
             this.args = args;
             this.event = e;
