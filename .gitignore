@@ -221,6 +221,9 @@ $RECYCLE.BIN/
 #Settings directory from the Bot
 SERVER_SETTINGS/
 
+#Windows batch files
+*.bat
+
 #other things
 /DanBot1/
 #javadoc
