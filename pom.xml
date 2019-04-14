@@ -139,6 +139,7 @@
 		        <version>1.11.1</version>
 		        <configuration>
 		          <connectionType>connection</connectionType>
+		          <pushChanges>true</pushChanges>
 		        </configuration>
 	      	</plugin>
 			  <plugin><!-- assembly (real JAR) -->
