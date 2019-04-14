@@ -1,8 +1,5 @@
 @echo off
 set REP_PATH=https://github.com/danthe1st/DanBot1.git
-::cd GIT
-
-:: git remote add origin %REP_PATH%
 git add .
 
 echo enter Commit name:
@@ -12,7 +9,7 @@ if "x%var%"=="x" (
 	set var=%TIME%
 )
 
-git commit -m "%var%"
-git push -u origin --all -f
-:: git remote remove origin
+:: git commit -m "%var%"
+::git push -u origin --all -f
+mvn scm:checkin -Dmessage="%var%"
 pause>nul
