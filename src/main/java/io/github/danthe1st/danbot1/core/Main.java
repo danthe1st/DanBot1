@@ -33,17 +33,12 @@ import org.reflections.util.ConfigurationBuilder;
  * @author Daniel Schmid
  */
 public class Main {
-	private static String game=System.getProperty("game");
-	private static OnlineStatus status=OnlineStatus.ONLINE;
 	private static String token=System.getProperty("token");
 	private static final Scanner scan=new Scanner(System.in);
 	private static String adminId="358291050957111296";
 	private static String[] args;
 	private static JDA jda=null;
 	static {
-		if (game==null) {
-			game="with you";
-		}
 		Runtime.getRuntime().addShutdownHook(new Thread(new ScanCloser(scan)));
 	}
 	/**
@@ -58,6 +53,16 @@ public class Main {
 	 * admin=&lt;id&gt; sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)</pre>
 	 */
 	public static void main(final String[] args) {
+		OnlineStatus statusWhenLoaded=OnlineStatus.ONLINE;//TODO doc...
+		OnlineStatus statusBeforeLoaded=OnlineStatus.IDLE;
+		String gameWhenLoaded=System.getProperty("game");
+		if (gameWhenLoaded==null) {
+			gameWhenLoaded="with you";
+		}
+		String gameBeforeLoaded=System.getProperty("initgame");
+		if (gameBeforeLoaded==null) {
+			gameBeforeLoaded="booting up - please wait";
+		}
 		Main.args=args;
 		for (String arg : args) {
 			try {
@@ -80,52 +85,32 @@ public class Main {
 					return;
 				default:
 					if (arg.toLowerCase().startsWith("game=")) {
-						game=arg.replaceAll("_", " ").substring(5);
-						if (game.equals("")) {
-							game="with you";
+						gameWhenLoaded=arg.replaceAll("_", " ").substring(5);
+						if (gameWhenLoaded.equals("")) {
+							gameWhenLoaded="with you";
 						}
 						break;
 					}
 					else if (arg.toLowerCase().startsWith("token=")) {
-						token=arg.substring(6);
+						//token=arg.substring(6);
+						token=getStringArgValue(arg, token);
 					}
 					else if (arg.toLowerCase().startsWith("admin=")) {
-						String newAdminId=arg.substring(6);
+						//String newAdminId=arg.substring(6);
+						String newAdminId=getStringArgValue(arg, null);
 						try {
-							if (!newAdminId.equals("")) {
+							if (!(newAdminId==null||newAdminId.equals(""))) {
 								Long.parseLong(adminId);
 								adminId=newAdminId;
 							}
-						} catch (NumberFormatException e) {
+						} catch (Exception e) {
 						}
 					}
 					else if (arg.toLowerCase().startsWith("status=")) {
-						String statusStr=arg.substring(7);
-						switch (statusStr.toLowerCase()) {
-						case "donotdisturb"://status=donotdisturb
-						case "do_not_disturb":
-							status=OnlineStatus.DO_NOT_DISTURB;
-							break;
-						case "idle":
-							status=OnlineStatus.IDLE;
-							break;
-						case "invisible":
-							status=OnlineStatus.INVISIBLE;
-							break;
-						case "online":
-							status=OnlineStatus.ONLINE;
-							break;
-						case "offline":
-							status=OnlineStatus.OFFLINE;
-							break;
-						case "?":
-						case "unknown":
-							status=OnlineStatus.UNKNOWN;
-							break;
-						default:
-							break;
-						}
-						break;
+						statusWhenLoaded=loadStatus(arg.substring(7), statusWhenLoaded);
+					}
+					else if (arg.toLowerCase().startsWith("initstatus=")) {
+						statusBeforeLoaded=loadStatus(arg.substring(11), statusBeforeLoaded);//TODO test
 					}
 				}
 			} catch (IndexOutOfBoundsException e) {
@@ -144,11 +129,11 @@ public class Main {
 			final JDABuilder builder=new JDABuilder(AccountType.BOT);
 			builder.setToken(token);	
 			builder.setAutoReconnect(true);
-			builder.setStatus(status);
-			if (game==null) {
-				game="with you";
+			builder.setStatus(statusBeforeLoaded);
+			if (gameWhenLoaded==null) {
+				gameWhenLoaded="with you";
 			}
-			builder.setActivity(Activity.playing(game));
+			builder.setActivity(Activity.playing(gameBeforeLoaded));
 			
 			builder.setRequestTimeoutRetry(true);
 			
@@ -162,6 +147,8 @@ public class Main {
 				jda.awaitReady();
 				Console.runConsole(scan, jda);
 				((JDAImpl) jda).getGuildSetupController().clearCache();
+				jda.getPresence().setStatus(statusWhenLoaded);
+				jda.getPresence().setActivity(Activity.playing(gameWhenLoaded));
 			} catch (final LoginException e) {
 				System.err.println("The entered token is not valid!");
 				token=null;
@@ -175,6 +162,32 @@ public class Main {
 			}
 			break;
 		}
+	}
+	private static OnlineStatus loadStatus(String statusStr, OnlineStatus defaultStatus) {
+		OnlineStatus status=null;
+		try {
+			status = OnlineStatus.valueOf(statusStr.toUpperCase());
+		} catch (Exception e) {
+			
+		}
+		if (status==null||status==OnlineStatus.UNKNOWN) {
+			status=OnlineStatus.fromKey(statusStr.toUpperCase());
+			if (status==OnlineStatus.UNKNOWN) {
+				status=defaultStatus;
+			}
+		}
+		return status;
+	}
+	private static String getStringArgValue(String argStr,String defaultArg) {
+		String newArg=null;
+		try {
+			newArg = argStr.substring(argStr.indexOf("=")+1);
+		} catch (Exception e) {
+		}
+		if (newArg==null) {
+			newArg=defaultArg;
+		}
+		return newArg;
 	}
 	/**
 	 * adds Commands and Listeners

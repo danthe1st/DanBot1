@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageActivity;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageReaction;
@@ -270,5 +271,10 @@ public class SudoMessage implements Message{
 	@Override
 	public OffsetDateTime getTimeEdited() {
 		return oldMsg.getTimeEdited();
+	}
+
+	@Override
+	public MessageActivity getActivity() {
+		return oldMsg.getActivity();
 	}
 }
