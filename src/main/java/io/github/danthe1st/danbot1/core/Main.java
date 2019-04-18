@@ -40,6 +40,12 @@ public class Main {
 	private static JDA jda=null;
 	static {
 		Runtime.getRuntime().addShutdownHook(new Thread(new ScanCloser(scan)));
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				jda.shutdown();
+			}
+		}));
 	}
 	/**
 	 * start-Method
