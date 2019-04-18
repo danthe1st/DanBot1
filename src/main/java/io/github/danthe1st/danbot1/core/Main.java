@@ -45,15 +45,16 @@ public class Main {
 	 * start-Method
 	 * @param args 
 	 * <pre> ?       show this help
-	 * noStop  sets the Bot unstoppable
-	 * game=&lt;name&gt;     Sets a game name
+	 * game=&lt;name&gt;     Sets the activity name
+	 * initgame=&lt;name&gt;     Sets the activity name before the Bot finished loading
 	 * token=&lt;Discord Bot token&gt; Sets the token of the Bot (you will be asked if it is not set)
 	 * status=&lt;status&gt; Sets a Discord-Status for the Bot
+	 * initstatus=&lt;status&gt; Sets a Discord-Status for the Bot before it finished loading
 	 * 		do_not_disturb, idle, invisible, online, offline, unknown
 	 * admin=&lt;id&gt; sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)</pre>
 	 */
 	public static void main(final String[] args) {
-		OnlineStatus statusWhenLoaded=OnlineStatus.ONLINE;//TODO doc...
+		OnlineStatus statusWhenLoaded=OnlineStatus.ONLINE;
 		OnlineStatus statusBeforeLoaded=OnlineStatus.IDLE;
 		String gameWhenLoaded=System.getProperty("game");
 		if (gameWhenLoaded==null) {
@@ -73,23 +74,23 @@ public class Main {
 				case "/help":
 				case "-help":
 					System.out.println("DanBot1 is a Discord Bot by Daniel Schmid\n"
-							+ "See http://wwwmaster.at/daniel/data/DanBot1 for a list of all Commands\n"
+							+ "See https://danthe1st.github.io/DanBot1/ for a list of all Commands\n"
 							+ "possible arguments:\n"
 							+ "\t?\tshow this help\n"
-							+ "\tnoStop\tsets the Bot unstoppable\n"
-							+ "\tgame=<name>\tSets a game name\n"
+							+ "\tgame=<name>\tSets the activity name\n"
+							+ "\tinitgame=<name>\tSets the activity name before the Bot finished loading\n"
 							+ "\ttoken=<Discord Bot token> Sets the token of the Bot (you will be asked if it is not set)\n"
 							+ "\tstatus=<status>\tSets a Discord-Status for the Bot\n"
-							+ 	"\t\tdo_not_disturb, idle, invisible, online, offline, unknown\n"
+							+ "\tinitstatus=<status>\tSets a Discord-Status for the Bot before it finished loading\n"
+							+ 	"\t\tdo_not_disturb, idle, invisible, online, offline\n"
 							+ "\tadmin=<id> sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)");
 					return;
 				default:
 					if (arg.toLowerCase().startsWith("game=")) {
-						gameWhenLoaded=arg.replaceAll("_", " ").substring(5);
-						if (gameWhenLoaded.equals("")) {
-							gameWhenLoaded="with you";
-						}
-						break;
+						gameWhenLoaded=getStringArgValue(arg, gameWhenLoaded);
+					}
+					else if (arg.toLowerCase().startsWith("initgame=")) {
+						gameBeforeLoaded=getStringArgValue(arg, gameBeforeLoaded);
 					}
 					else if (arg.toLowerCase().startsWith("token=")) {
 						//token=arg.substring(6);
