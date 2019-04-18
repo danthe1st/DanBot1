@@ -51,11 +51,6 @@ public class MainTest {
 				"admin=362282283048239104",
 				"status=idle"
 		});
-		/* Maybe a JDA Bug, it gets the old value(booting up - please wait), see https://github.com/DV8FromTheWorld/JDA/issues/990
-		 * String currentGame=jda.getGuilds().get(0).getMember(jda.getSelfUser()).getActivities().get(0).getName();
-		 * assertEquals("Unit testing", currentGame);
-		 */
-		
 		assertEquals("362282283048239104", Main.getAdminId());
 		assertEquals(OnlineStatus.IDLE, jda.getGuilds().get(0).getMember(jda.getSelfUser()).getOnlineStatus());
 		Main.getJda().shutdown();
