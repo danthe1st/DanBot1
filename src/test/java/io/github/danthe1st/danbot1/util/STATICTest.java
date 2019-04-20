@@ -15,6 +15,7 @@ import java.util.Collections;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import io.github.danthe1st.danbot1.TestConfig;
 import io.github.danthe1st.danbot1.commands.admin.SudoMessage;
 import io.github.danthe1st.danbot1.core.Main;
 import io.github.danthe1st.danbot1.core.MainTest;
@@ -39,7 +40,7 @@ public class STATICTest {
 	public void sendAMessage() throws InterruptedException {
 		assertTimeout(Duration.ofMillis(STATIC.INFO_TIMEOUT*4), () -> {
 			JDA jda=Main.getJda();
-			TextChannel tc=jda.getTextChannelById("542372060366766091");
+			TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
 			String msgContent="Hello, this is a Unit-Test Message that should be deleted automatically by the Unit-Test";
 			STATIC.msg(tc, msgContent);
 			Thread.sleep(STATIC.INFO_TIMEOUT*2);
@@ -48,12 +49,13 @@ public class STATICTest {
 				for (Message msg : tc.getHistory().retrievePast(100).complete()) {
 					if (msg.getAuthor().equals(jda.getSelfUser())) {
 						for (MessageEmbed embed : msg.getEmbeds()) {
-							if (embed.getDescription().equals(msgContent)) {
+							String desc=embed.getDescription();
+							if (desc!=null&&desc.equals(msgContent)) {
 								msg.delete().queue();
 								hasMessage=true;
+								break;
 							}
 						}
-						
 					}
 				}
 				assertTrue(hasMessage);
@@ -66,7 +68,7 @@ public class STATICTest {
 	public void sendAnErrorMessage() throws InterruptedException {
 		assertTimeout(Duration.ofMillis(STATIC.INFO_TIMEOUT*4), () -> {
 			JDA jda=Main.getJda();
-			TextChannel tc=jda.getTextChannelById("542372060366766091");
+			TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
 			String msgContent="Hello, this is a Unit-Test error Message that should be deleted automatically by the System";
 			STATIC.errmsg(tc, msgContent);
 			Thread.sleep(STATIC.INFO_TIMEOUT*2);
@@ -75,7 +77,8 @@ public class STATICTest {
 			for (Message msg : tc.getHistory().retrievePast(100).complete()) {
 				if (msg.getAuthor().equals(jda.getSelfUser())) {
 					for (MessageEmbed embed : msg.getEmbeds()) {
-						if (embed.getDescription().equals(msgContent)) {
+						String desc=embed.getDescription();
+						if (desc!=null&&desc.equals(msgContent)) {
 							msg.delete().queue();
 							hasMessage=true;
 						}
@@ -94,9 +97,9 @@ public class STATICTest {
 		sb.append("Hello ");//some String
 		sb.append(jda.getSelfUser().getId());
 		sb.append(" ");
-		sb.append(jda.getUserById("358291050957111296").getName());
+		sb.append(jda.getUserById(TestConfig.ADMIN_ID).getName());
 		Message msg=jda.getTextChannels().get(0).getHistory().retrievePast(1).complete().get(0);
-		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()),g.getMemberById("358291050957111296")), STATIC.getMembersFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
+		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()),g.getMemberById(TestConfig.ADMIN_ID)), STATIC.getMembersFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
 		String msgContent="ufshuifgbs dsfhui ghuifg sfhdgu dfhs ug hdfs gusd gdhu ufd";
 		assertEquals(Collections.emptyList(), STATIC.getMembersFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail
 	}
@@ -108,9 +111,9 @@ public class STATICTest {
 		sb.append("Hello ");//some String
 		sb.append(g.getMember(jda.getSelfUser()).getRoles().get(0).getId());
 		sb.append(" ");
-		sb.append(g.getMemberById("358291050957111296").getRoles().get(0).getName());
+		sb.append(g.getMemberById(TestConfig.ADMIN_ID).getRoles().get(0).getName());
 		Message msg=jda.getTextChannels().get(0).getHistory().retrievePast(1).complete().get(0);
-		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()).getRoles().get(0),g.getMemberById("358291050957111296").getRoles().get(0)), STATIC.getRolesFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
+		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()).getRoles().get(0),g.getMemberById(TestConfig.ADMIN_ID).getRoles().get(0)), STATIC.getRolesFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
 		String msgContent="ufshuifgbs dsfhui ghuifg sfhdgu dfhs ug hdfs gusd gdhu ufd";
 		assertEquals(Collections.emptyList(), STATIC.getRolesFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail
 	}

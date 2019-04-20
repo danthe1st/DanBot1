@@ -14,6 +14,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import io.github.danthe1st.danbot1.TestConfig;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -51,8 +52,8 @@ public class PermsCoreTest {
 	}
 	private void checkPermission(String permName) {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById("371027043355197470");
-		TextChannel tc=jda.getTextChannelById("542372060366766091");
+		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
+		TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		PermsCore.setPerm(g, permName, new String[] {"*"});
 		assertTrue(PermsCore.check(getSomeMsgRescEvent(jda, getMessage(tc, false)), permName,false));
@@ -78,7 +79,7 @@ public class PermsCoreTest {
 		testGetSetRemovePerm("");
 	}
 	private void testGetSetRemovePerm(String permName) {
-		Guild g=Main.getJda().getGuildById("371027043355197470");
+		Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		assertTrue(Arrays.equals(new String[0], PermsCore.getPerm(g, permName)));
 		PermsCore.setPerm(g, permName, new String[0]);
@@ -96,7 +97,7 @@ public class PermsCoreTest {
 	}
 	@Test
 	public void testResetPerms() {
-		final Guild g=Main.getJda().getGuildById("371027043355197470");
+		final Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		PermsCore.resetPerms(g);
 		testAllEquals(PermsCore.getStdPermsAsIds(g), PermsCore.getPerms(g));
@@ -108,7 +109,7 @@ public class PermsCoreTest {
 	}
 	@Test
 	public void testChRole() {
-		Guild g=Main.getJda().getGuildById("371027043355197470");
+		Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		PermsCore.chRole(g, "Admin", "Owner");
 		bkpPerms.forEach((k,v)->{
@@ -133,15 +134,15 @@ public class PermsCoreTest {
 	
 	@Test
 	public void testgetRoleIDFromName() {
-		assertEquals("*", PermsCore.getRoleIDFromName("*", Main.getJda().getGuildById("371027043355197470")));
-		assertNull(PermsCore.getRoleIDFromName(null, Main.getJda().getGuildById("371027043355197470")));
-		assertNull(PermsCore.getRoleIDFromName("", Main.getJda().getGuildById("371027043355197470")));
-		assertNull(PermsCore.getRoleIDFromName("afugshusdfhfudsgkbusdfhufsuöhf", Main.getJda().getGuildById("371027043355197470")));
-		assertEquals("371030589970579456", PermsCore.getRoleIDFromName("Owner", Main.getJda().getGuildById("371027043355197470")));
+		assertEquals("*", PermsCore.getRoleIDFromName("*", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
+		assertNull(PermsCore.getRoleIDFromName(null, Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
+		assertNull(PermsCore.getRoleIDFromName("", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
+		assertNull(PermsCore.getRoleIDFromName("afugshusdfhfudsgkbusdfhufsuöhf", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
+		assertEquals(TestConfig.GUILD_OWNER_ROLE, PermsCore.getRoleIDFromName("Owner", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
 	}
 	@Test
 	public void testgetRoleIDsFromNames() {
-		assertTrue(Arrays.equals(new String[] {"*","371030589970579456"}, PermsCore.getRoleIDsFromNames(new String[] {"*",null,"","afugshusdfhfudsgkbusdfhufsuöhf","Owner"}, Main.getJda().getGuildById("371027043355197470"))));
+		assertTrue(Arrays.equals(new String[] {"*",TestConfig.GUILD_OWNER_ROLE}, PermsCore.getRoleIDsFromNames(new String[] {"*",null,"","afugshusdfhfudsgkbusdfhufsuöhf","Owner"}, Main.getJda().getGuildById(TestConfig.TESTING_GUILD))));
 	}
 	private void testAllEquals(Map<String, String[]> expected,Map<String, String[]> real) {
 		real.forEach((k,v)->{
@@ -150,7 +151,7 @@ public class PermsCoreTest {
 	}
 	@Test
 	public void testGetStdPermsAsIdsWithResetPerms() {
-		Guild g=Main.getJda().getGuildById("371027043355197470");
+		Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
 		Map<String, String[]> bkpPerms=PermsCore.getPerms(g);
 		final Map<String, String[]> stdPerms=PermsCore.getStdPermsAsIds(g);
 		PermsCore.resetPerms(g);
