@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
-import io.github.danthe1st.danbot1.Secreds;
+import io.github.danthe1st.danbot1.TestConfig;
 import io.github.danthe1st.danbot1.TestUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -26,17 +26,16 @@ import net.dv8tion.jda.api.OnlineStatus;
 public class MainTest {
 	private static JDA jda=null;
 	@BeforeAll
-	public static void load() {
+	public static synchronized void load() {
 		if (jda==null) {
 			init();
 		}
 	}
 	private static void init(){
 		Main.main(new String[] {
-				
 				"game=Unit_testing",
-				"token="+Secreds.token,
-				"admin=358291050957111296",
+				"token="+TestConfig.TOKEN,
+				"admin="+TestConfig.ADMIN_ID,
 				"status=idle"
 		});
 		jda=Main.getJda();
@@ -45,10 +44,9 @@ public class MainTest {
 	public void testBotData() {
 		Main.getJda().shutdown();
 		Main.main(new String[] {
-				
 				"game=Unit_testing",
-				"token="+Secreds.token,
-				"admin=362282283048239104",
+				"token="+TestConfig.TOKEN,
+				"admin="+TestConfig.ADMIN_ID_SECONDARY,
 				"status=idle"
 		});
 		assertEquals("362282283048239104", Main.getAdminId());

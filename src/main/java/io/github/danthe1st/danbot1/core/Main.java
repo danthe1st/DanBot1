@@ -117,7 +117,7 @@ public class Main {
 						statusWhenLoaded=loadStatus(arg.substring(7), statusWhenLoaded);
 					}
 					else if (arg.toLowerCase().startsWith("initstatus=")) {
-						statusBeforeLoaded=loadStatus(arg.substring(11), statusBeforeLoaded);//TODO test
+						statusBeforeLoaded=loadStatus(arg.substring(11), statusBeforeLoaded);
 					}
 				}
 			} catch (IndexOutOfBoundsException e) {

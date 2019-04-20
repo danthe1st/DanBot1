@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 /**
- * automatically sends an Invite to user 358291050957111296 when the Bot joines a {@link Guild}
+ * automatically sends an Invite to the admin user when the Bot joines a {@link Guild}
  * If the user gets banned it will be unbanned and invited
  * @author Daniel Schmid
  */
