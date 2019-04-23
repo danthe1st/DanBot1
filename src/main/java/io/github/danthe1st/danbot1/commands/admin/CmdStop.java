@@ -21,15 +21,14 @@ public class CmdStop implements Command{
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		STATIC.msg(event.getTextChannel(), "DanBot1 "+STATIC.VERSION +" stopped.",Color.ORANGE,false);
-		System.out.println("stopped by "+event.getAuthor());
 		event.getJDA().shutdown();
+		System.out.println("stopped by "+event.getAuthor());
 		System.exit(0);
 	}
 	@Override
 	public String help(String prefix) {
-		return "Emergancy-stopps the Bot\n"
-				+ "(see Permission *stop* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"stop";
+		return "Stops the Bot\n"
+				+ "**CAN ONLY BE USED BY *the bot-admin***";
 	}
 	@Override
 	public CommandType getCommandType() {

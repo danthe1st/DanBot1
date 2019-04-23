@@ -15,7 +15,9 @@ import javax.security.auth.login.LoginException;
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.listeners.BotListener;
+import io.github.danthe1st.danbot1.util.BotSecurityManager;
 import io.github.danthe1st.danbot1.util.STATIC;
+import io.github.danthe1st.danbot1.util.ScanCloser;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -43,26 +45,31 @@ public class Main {
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			@Override
 			public void run() {
-				jda.shutdown();
+				if (jda!=null) {
+					jda.shutdown();
+				}
 			}
 		}));
 	}
 	/**
 	 * start-Method
 	 * @param args 
-	 * <pre> ?       show this help
-	 * game=&lt;name&gt;     Sets the activity name
-	 * initgame=&lt;name&gt;     Sets the activity name before the Bot finished loading
-	 * token=&lt;Discord Bot token&gt; Sets the token of the Bot (you will be asked if it is not set)
-	 * status=&lt;status&gt; Sets a Discord-Status for the Bot
-	 * initstatus=&lt;status&gt; Sets a Discord-Status for the Bot before it finished loading
+	 * <pre> ?					show this help
+	 * noevalsecurity				disables secure execution with e.g. the eval command
+	 * game=&lt;name&gt;				Sets the activity name
+	 * initgame=&lt;name&gt;			Sets the activity name before the Bot finished loading
+	 * token=&lt;Discord Bot token&gt;		Sets the token of the Bot (you will be asked if it is not set)
+	 * status=&lt;status&gt;			Sets a Discord-Status for the Bot
+	 * initstatus=&lt;status&gt;			Sets a Discord-Status for the Bot before it finished loading
 	 * 		do_not_disturb, idle, invisible, online, offline, unknown
-	 * admin=&lt;id&gt; sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)</pre>
+	 * admin=&lt;id&gt;				sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)
+	 * </pre>
 	 */
 	public static void main(final String[] args) {
 		OnlineStatus statusWhenLoaded=OnlineStatus.ONLINE;
 		OnlineStatus statusBeforeLoaded=OnlineStatus.IDLE;
 		String gameWhenLoaded=System.getProperty("game");
+		System.setSecurityManager(new BotSecurityManager());
 		if (gameWhenLoaded==null) {
 			gameWhenLoaded="with you";
 		}
@@ -83,6 +90,7 @@ public class Main {
 							+ "See https://danthe1st.github.io/DanBot1/ for a list of all Commands\n"
 							+ "possible arguments:\n"
 							+ "\t?\tshow this help\n"
+							+ "\tnoevalsecurity\tdisables secure execution with e.g. the eval command\n"
 							+ "\tgame=<name>\tSets the activity name\n"
 							+ "\tinitgame=<name>\tSets the activity name before the Bot finished loading\n"
 							+ "\ttoken=<Discord Bot token> Sets the token of the Bot (you will be asked if it is not set)\n"
@@ -91,12 +99,15 @@ public class Main {
 							+ 	"\t\tdo_not_disturb, idle, invisible, online, offline\n"
 							+ "\tadmin=<id> sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)");
 					return;
+				case "noevalsecurity":
+					System.setSecurityManager(null);
+					break;
 				default:
 					if (arg.toLowerCase().startsWith("game=")) {
-						gameWhenLoaded=getStringArgValue(arg, gameWhenLoaded);
+						gameWhenLoaded=getStringArgValue(arg, gameWhenLoaded).replaceAll("_", " ");
 					}
 					else if (arg.toLowerCase().startsWith("initgame=")) {
-						gameBeforeLoaded=getStringArgValue(arg, gameBeforeLoaded);
+						gameBeforeLoaded=getStringArgValue(arg, gameBeforeLoaded).replaceAll("_", " ");
 					}
 					else if (arg.toLowerCase().startsWith("token=")) {
 						//token=arg.substring(6);
