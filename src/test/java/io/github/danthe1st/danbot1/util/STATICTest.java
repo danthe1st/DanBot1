@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +32,10 @@ public class STATICTest {
 	@BeforeAll
 	public static void load() {
 		MainTest.load();
+	}
+	@AfterAll
+	public static void finish() {
+		System.setSecurityManager(null);
 	}
 	@Test
 	public void testEscapeDiscordMarkup() {
@@ -62,7 +67,6 @@ public class STATICTest {
 			} catch (IllegalArgumentException e) {
 			}
 		});
-		
 	}
 	@Test
 	public void sendAnErrorMessage() throws InterruptedException {
@@ -128,7 +132,7 @@ public class STATICTest {
 		STATIC.setPrefix(g, bkpPrefix);
 	}
 	@Test
-	public void testLoadDateShouldNotThrowException() {
+	public void testLoadDataShouldNotThrowException() {
 		assertDoesNotThrow(()->STATIC.loadData(Main.getJda()));
 	}
 	@Test

@@ -1,4 +1,4 @@
-package io.github.danthe1st.danbot1.core;
+package io.github.danthe1st.danbot1.util;
 
 import java.util.Scanner;
 /**
