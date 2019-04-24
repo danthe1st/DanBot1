@@ -5,12 +5,11 @@ import java.security.Permission;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BotSecurityManager extends SecurityManager {
 	private Set<Thread> sensitiveThreads=new HashSet<>();
-	private Set<String> allowedRuntimePermissions= Stream.of("createClassLoader","accessClassInPackage.jdk.nashorn.internal.scripts","accessClassInPackage.jdk.nashorn.internal.runtime","accessClassInPackage.jdk.nashorn.internal.runtime.linker","accessDeclaredMembers","suppressAccessChecks").collect(Collectors.toSet());
+	private String[] allowedRuntimePermissions={"createClassLoader","accessClassInPackage.jdk.nashorn.internal.","accessDeclaredMembers","suppressAccessChecks"};
+	
 	private boolean isCurrentThreadSensitive() {
 		return sensitiveThreads.contains(Thread.currentThread());
 	}
@@ -33,8 +32,15 @@ public class BotSecurityManager extends SecurityManager {
 	public void checkPermission(Permission perm) {
 		if (isCurrentThreadSensitive()) {
 			if (perm instanceof RuntimePermission) {
-				
-				if (!allowedRuntimePermissions.contains(perm.getName())) {
+				String name=perm.getName();
+				boolean allow=false;
+				for (String allowed : allowedRuntimePermissions) {
+					if (name.startsWith(allowed)) {
+						allow=true;
+						break;
+					}
+				}
+				if (!allow) {
 					throw new SecurityException("missing permission: "+perm.getName());
 				}
 			}else if (perm instanceof ReflectPermission&&perm.getName().equals("suppressAccessChecks")) {
