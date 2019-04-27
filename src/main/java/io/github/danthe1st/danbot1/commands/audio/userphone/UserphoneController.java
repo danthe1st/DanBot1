@@ -3,6 +3,7 @@ package io.github.danthe1st.danbot1.commands.audio.userphone;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.danthe1st.danbot1.commands.audio.AudioHolderController;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
@@ -13,27 +14,28 @@ public class UserphoneController{
 			@Override
 			public void run() {
 				for (Guild g : handlers.keySet()) {
-					closeUserphoneConnection(g);
+					closeConnection(g);
 				}
 			}
 		}));
 	}
 	public static void openUserphoneConnection(VoiceChannel vc) {
 		if (canOpenConnection(vc.getGuild())) {
-			vc.getGuild().getAudioManager().openAudioConnection(vc);
 			AudioHandler handler=new AudioHandler(vc.getGuild());
 			handlers.put(vc.getGuild(),handler);
+			AudioHolderController.reserverHolder(vc.getGuild(), handler);
+			vc.getGuild().getAudioManager().openAudioConnection(vc);
 			vc.getGuild().getAudioManager().setReceivingHandler(handler);
 			vc.getGuild().getAudioManager().setSendingHandler(handler);
 		}
 	}
 	public static boolean canOpenConnection(Guild g) {
-		return !g.getAudioManager().isConnected();
+		return !handlers.containsKey(g);
 	}
 	public static boolean canCloseConnection(Guild g) {
 		return handlers.containsKey(g);
 	}
-	public static void closeUserphoneConnection(Guild g) {
+	public static void closeConnection(Guild g) {
 		g.getAudioManager().closeAudioConnection();
 		handlers.remove(g);
 	}

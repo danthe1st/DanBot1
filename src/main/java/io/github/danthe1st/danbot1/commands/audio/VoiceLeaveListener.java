@@ -1,6 +1,5 @@
 package io.github.danthe1st.danbot1.commands.audio;
 
-import io.github.danthe1st.danbot1.commands.audio.userphone.UserphoneController;
 import io.github.danthe1st.danbot1.listeners.BotListener;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -18,10 +17,7 @@ public class VoiceLeaveListener extends ListenerAdapter{
 					return;
 				}
 			}
-			event.getGuild().getAudioManager().closeAudioConnection();
-			if (UserphoneController.canCloseConnection(event.getGuild())) {
-				UserphoneController.closeUserphoneConnection(event.getGuild());
-			}
+			AudioHolderController.informOfLeave(event.getGuild());
 		}
 	}
 }

@@ -3,13 +3,15 @@ package io.github.danthe1st.danbot1.commands.audio.userphone;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import io.github.danthe1st.danbot1.commands.audio.AudioHolder;
+import io.github.danthe1st.danbot1.commands.audio.AudioHolderController;
 import net.dv8tion.jda.api.audio.AudioReceiveHandler;
 import net.dv8tion.jda.api.audio.AudioSendHandler;
 import net.dv8tion.jda.api.audio.CombinedAudio;
 import net.dv8tion.jda.api.audio.UserAudio;
 import net.dv8tion.jda.api.entities.Guild;
 
-public class AudioHandler implements AudioReceiveHandler, AudioSendHandler {
+public class AudioHandler implements AudioReceiveHandler, AudioSendHandler, AudioHolder {
 	private static final double VOLUME = 1;
 	private ConcurrentLinkedQueue<byte[]> buffer;
 	private Guild g;
@@ -51,4 +53,17 @@ public class AudioHandler implements AudioReceiveHandler, AudioSendHandler {
 	public void addAudio(byte[] data) {
 		buffer.offer(data);
 	}
+
+	@Override
+	public void closeConnection(Guild g) {
+		if (UserphoneController.canCloseConnection(g)) {
+			UserphoneController.closeConnection(g);
+		}
+	}
+	@Override
+	public void onEverybodyLeave(Guild g) {
+		closeConnection(g);
+		AudioHolderController.giveHolderFree(g);
+	}
+	
 }

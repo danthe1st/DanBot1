@@ -29,7 +29,7 @@ public class CmdUserphone implements Command{
 			break;
 		case "close":
 			if (UserphoneController.canCloseConnection(event.getGuild())) {
-				UserphoneController.closeUserphoneConnection(event.getGuild());
+				UserphoneController.closeConnection(event.getGuild());
 			}
 			break;
 		default:
