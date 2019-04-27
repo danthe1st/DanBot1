@@ -13,6 +13,8 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
+import io.github.danthe1st.danbot1.commands.audio.AudioHolder;
+import io.github.danthe1st.danbot1.commands.audio.AudioHolderController;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -24,11 +26,12 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 public class TrackManager extends AudioEventAdapter{
 	private final AudioPlayer PLAYER;
 	private final Queue<AudioInfo> queue;
+	private final AudioHolder holder;
 	
-	
-	public TrackManager(final AudioPlayer player) {
+	public TrackManager(final AudioHolder holder, final AudioPlayer player) {
 		this.PLAYER=player;
 		this.queue=new LinkedBlockingQueue<>();
+		this.holder=holder;
 	}
 	/**
 	 * adds a Track
@@ -86,7 +89,9 @@ public class TrackManager extends AudioEventAdapter{
 			STATIC.errmsg(info.getTextChannel(), info.getAuthor().getAsMention()+" Cannot play because you are not in a Voice Channel");
 		}
 		else {
+			AudioHolderController.reserverHolder(info.getAuthor().getGuild(),holder);
 			info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
+			
 		}
 	}
 	/**
