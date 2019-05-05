@@ -79,8 +79,7 @@ public class CmdRestart implements Command{
 	@Override
 	public String help(String prefix) {
 		return "restarts the bot\n"
-				+ "(see Permission *restart* in Command perm get)\n"
-				+ "*Syntax*: "+prefix+"restart";
+				+ "**CAN ONLY BE USED BY *the bot-admin***";
 	}
 	@Override
 	public void executed(boolean success, MessageReceivedEvent event) {

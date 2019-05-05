@@ -29,14 +29,14 @@ public class CmdHelp implements Command{
 		});
 		EmbedBuilder eb=new EmbedBuilder();
 		eb.setDescription("\t**Bot Help**\n"
-						+ "for a complete Description visit *https://www.wwwmaster.at/daniel/data/DanBot1/*\n\n");
+						+ "for a complete Description visit *https://danthe1st.github.io/DanBot1/*\n\n");
 		commandTypes.forEach((typeName,commands)->{
 			eb.appendDescription("`"+typeName+"`:\n")
 			.setColor(Color.GREEN);
 			
 			commands.forEach((name,command)->{
 				EmbedBuilder backUp=new EmbedBuilder(eb);
-				if (command.getCommandType()==null) {
+				if (command.getCommandType()!=null) {
 					String help="**"+STATIC.getPrefix(event.getGuild()) +name+"**:\n"+command.help(STATIC.getPrefixEscaped(event.getGuild()))+"\n\n";
 					try {
 						eb.appendDescription(help);
