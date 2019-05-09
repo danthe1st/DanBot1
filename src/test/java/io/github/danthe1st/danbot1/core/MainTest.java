@@ -25,10 +25,13 @@ import net.dv8tion.jda.api.OnlineStatus;
 @MainTest.AnnotationForTestAddAction
 public class MainTest {
 	private static JDA jda=null;
+	private static final Object MONITOR=new Object();
 	@BeforeAll
-	public static synchronized void load() {
-		if (jda==null) {
-			init();
+	public static void load() {
+		synchronized (MONITOR) {
+			if (jda==null) {
+				init();
+			}
 		}
 	}
 	private static void init(){
@@ -42,17 +45,19 @@ public class MainTest {
 	}
 	@Test
 	public void testBotData() {
-		Main.getJda().shutdown();
-		Main.main(new String[] {
-				"game=Unit_testing",
-				"token="+TestConfig.TOKEN,
-				"admin="+TestConfig.ADMIN_ID_SECONDARY,
-				"status=idle","noevalsecurity"
-		});
-		assertEquals("362282283048239104", Main.getAdminId());
-		assertEquals(OnlineStatus.IDLE, jda.getGuilds().get(0).getMember(jda.getSelfUser()).getOnlineStatus());
-		Main.getJda().shutdown();
-		init();
+		synchronized (MONITOR) {
+			Main.getJda().shutdown();
+			Main.main(new String[] {
+					"game=Unit_testing",
+					"token="+TestConfig.TOKEN,
+					"admin="+TestConfig.ADMIN_ID_SECONDARY,
+					"status=idle","noevalsecurity"
+			});
+			assertEquals("362282283048239104", Main.getAdminId());
+			assertEquals(OnlineStatus.IDLE, jda.getGuilds().get(0).getMember(jda.getSelfUser()).getOnlineStatus());
+			Main.getJda().shutdown();
+			init();
+		}
 	}
 	@Test
 	public void testAddAction() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {

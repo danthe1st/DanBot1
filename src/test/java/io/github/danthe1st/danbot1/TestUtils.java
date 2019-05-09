@@ -18,6 +18,9 @@ public class TestUtils {
 		}
 		return null;
 	}
+	public static Message getMessage(TextChannel tc) {
+		return tc.getHistory().retrievePast(1).complete().get(0);
+	}
 	public static Message getMessage(TextChannel tc,Member member) {
 		return getMessage(tc, msg->msg.getMember().equals(member));
 	}

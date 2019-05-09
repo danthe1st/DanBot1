@@ -285,7 +285,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
                 <configuration>
-                	<parallel>false</parallel>
+                	<parallel>all</parallel>
                 </configuration>
             </plugin>
         </plugins>
