@@ -10,8 +10,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -180,9 +182,9 @@ public final class STATIC {
 	 * @param msg the Message
 	 * @return a {@link List} of {@link Member}s
 	 */
-	public static List<Member> getMembersFromMsg(Message msg){
+	public static Set<Member> getMembersFromMsg(Message msg){
 		String[] args=msg.getContentRaw().split(" ");
-		List<Member> members=new ArrayList<>();
+		Set<Member> members=new HashSet<>();
 		for (User user : msg.getMentionedUsers()) {
 			members.add(msg.getGuild().getMember(user));
 		}

@@ -1,6 +1,6 @@
 package io.github.danthe1st.danbot1.commands.moderation;
 
-import java.util.List;
+import java.util.Set;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
@@ -24,7 +24,7 @@ public class CmdVoiceKick implements Command{
 	}
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		List<Member> toKick=STATIC.getMembersFromMsg(event.getMessage());
+		Set<Member> toKick=STATIC.getMembersFromMsg(event.getMessage());
 		try {
 			for (Member member : toKick) {
 				if (member.getVoiceState().inVoiceChannel()) {

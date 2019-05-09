@@ -1,7 +1,7 @@
 package io.github.danthe1st.danbot1.commands.utils;
 
 import java.awt.Color;
-import java.util.List;
+import java.util.Set;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
@@ -27,7 +27,7 @@ public class CmdUser implements Command{
 			STATIC.errmsg(event.getTextChannel(), "Not anough arguments.");
 			return;
 		}
-		List<Member> users=STATIC.getMembersFromMsg(event.getMessage());
+		Set<Member> users=STATIC.getMembersFromMsg(event.getMessage());
 		if (users.isEmpty()) {
 			STATIC.errmsg(event.getTextChannel(), "User not found");
 				

@@ -79,9 +79,8 @@ public class Console implements Runnable{
 				if(!parse(msg)) {
 					eval(msg);
 				}
-			} catch (Throwable problem) {
-				problem.printStackTrace();
-				System.err.println("unknown Error: "+problem.getMessage());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

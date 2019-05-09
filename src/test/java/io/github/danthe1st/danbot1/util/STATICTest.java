@@ -11,12 +11,14 @@ import java.io.File;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import io.github.danthe1st.danbot1.TestConfig;
+import io.github.danthe1st.danbot1.TestUtils;
 import io.github.danthe1st.danbot1.commands.admin.SudoMessage;
 import io.github.danthe1st.danbot1.core.Main;
 import io.github.danthe1st.danbot1.core.MainTest;
@@ -96,27 +98,27 @@ public class STATICTest {
 	@Test
 	public void testGetMembersFromMsg() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuilds().get(0);
+		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
 		StringBuilder sb=new StringBuilder();
 		sb.append("Hello ");//some String
 		sb.append(jda.getSelfUser().getId());
 		sb.append(" ");
 		sb.append(jda.getUserById(TestConfig.ADMIN_ID).getName());
-		Message msg=jda.getTextChannels().get(0).getHistory().retrievePast(1).complete().get(0);
-		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()),g.getMemberById(TestConfig.ADMIN_ID)), STATIC.getMembersFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
+		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.TESTING_CHANNEL),(message)->STATIC.getRolesFromMsg(message).isEmpty());
+		assertEquals(new HashSet<>(Arrays.asList(g.getMember(jda.getSelfUser()),g.getMemberById(TestConfig.ADMIN_ID))), STATIC.getMembersFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
 		String msgContent="ufshuifgbs dsfhui ghuifg sfhdgu dfhs ug hdfs gusd gdhu ufd";
-		assertEquals(Collections.emptyList(), STATIC.getMembersFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail
+		assertEquals(Collections.emptySet(), STATIC.getMembersFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail
 	}
 	@Test
 	public void testGetRolesFromMsg() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuilds().get(0);
+		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
 		StringBuilder sb=new StringBuilder();
 		sb.append("Hello ");//some String
 		sb.append(g.getMember(jda.getSelfUser()).getRoles().get(0).getId());
 		sb.append(" ");
 		sb.append(g.getMemberById(TestConfig.ADMIN_ID).getRoles().get(0).getName());
-		Message msg=jda.getTextChannels().get(0).getHistory().retrievePast(1).complete().get(0);
+		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.TESTING_CHANNEL));
 		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()).getRoles().get(0),g.getMemberById(TestConfig.ADMIN_ID).getRoles().get(0)), STATIC.getRolesFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
 		String msgContent="ufshuifgbs dsfhui ghuifg sfhdgu dfhs ug hdfs gusd gdhu ufd";
 		assertEquals(Collections.emptyList(), STATIC.getRolesFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail
@@ -124,7 +126,7 @@ public class STATICTest {
 	@Test
 	public void testPrefix() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuilds().get(0);
+		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
 		String bkpPrefix=STATIC.getPrefix(g);
 		assertNotNull(bkpPrefix);
 		STATIC.setPrefix(g, "**");
@@ -138,7 +140,7 @@ public class STATICTest {
 	@Test
 	public void testGetCmdLogger() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuilds().get(0);
+		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
 		String bkpCmdLogger=STATIC.getCmdLogger(g);
 		assertNotNull(bkpCmdLogger);
 		STATIC.setCmdLogger(g, "Hello World");
@@ -148,7 +150,7 @@ public class STATICTest {
 	@Test
 	public void testGetServerData() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuilds().get(0);
+		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
 		String gData=STATIC.getServerData(g);
 		assertTrue(gData.contains(g.getName()));
 		assertTrue(gData.contains(g.getId()));
@@ -156,7 +158,7 @@ public class STATICTest {
 	@Test
 	public void testCreateInvite() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuilds().get(0);
+		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
 		assertNotNull(STATIC.createInvite(g));
 	}
 	@Test
