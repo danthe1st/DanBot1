@@ -39,7 +39,9 @@ public class MainTest {
 				"game=Unit_testing",
 				"token="+TestConfig.TOKEN,
 				"admin="+TestConfig.ADMIN_ID,
-				"status=idle","noevalsecurity"
+				"status=idle",
+				"noevalsecurity",
+				"settings="+TestConfig.SETTINGS_DIR
 		});
 		jda=Main.getJda();
 	}
@@ -51,7 +53,9 @@ public class MainTest {
 					"game=Unit_testing",
 					"token="+TestConfig.TOKEN,
 					"admin="+TestConfig.ADMIN_ID_SECONDARY,
-					"status=idle","noevalsecurity"
+					"status=idle",
+					"noevalsecurity",
+					"settings="+TestConfig.SETTINGS_DIR
 			});
 			assertEquals("362282283048239104", Main.getAdminId());
 			assertEquals(OnlineStatus.IDLE, jda.getGuilds().get(0).getMember(jda.getSelfUser()).getOnlineStatus());

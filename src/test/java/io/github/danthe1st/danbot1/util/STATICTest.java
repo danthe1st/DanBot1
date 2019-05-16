@@ -44,7 +44,7 @@ public class STATICTest {
 		assertEquals("\\*Hallo\\* \\_\\_Welt\\_\\_",STATIC.escapeDiscordMarkup("*Hallo* __Welt__"));
 	}
 	@Test
-	public void sendAMessage() throws InterruptedException {
+	public void testSendMessage() throws InterruptedException {
 		assertTimeout(Duration.ofMillis(STATIC.INFO_TIMEOUT*4), () -> {
 			JDA jda=Main.getJda();
 			TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
@@ -71,7 +71,7 @@ public class STATICTest {
 		});
 	}
 	@Test
-	public void sendAnErrorMessage() throws InterruptedException {
+	public void testSendErrorMessage() throws InterruptedException {
 		assertTimeout(Duration.ofMillis(STATIC.INFO_TIMEOUT*4), () -> {
 			JDA jda=Main.getJda();
 			TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
@@ -162,7 +162,14 @@ public class STATICTest {
 		assertNotNull(STATIC.createInvite(g));
 	}
 	@Test
-	public void testGetSettingsDir() {
+	public void testSetGetSettingsDir() {
 		assertTrue(new File(STATIC.getSettingsDir()).isDirectory());
+		assertEquals(TestConfig.SETTINGS_DIR, STATIC.getSettingsDir());
+		new File(STATIC.getSettingsDir()).delete();
+		assertTrue(new File(STATIC.getSettingsDir()).isDirectory());
+		String testFileName="__UnitTest__autodelete__";
+		STATIC.setSettingsDir(testFileName);
+		assertTrue(new File(testFileName).delete());
+		STATIC.setSettingsDir(TestConfig.SETTINGS_DIR);
 	}
 }

@@ -46,7 +46,7 @@ public final class STATIC {
 	private static final String PREFIX="--";
 	
 	public static final String VERSION="v3.0 - Living";
-	public static final String SETTINGS_DIR="./SERVER_SETTINGS";
+	private static String settingsDir="./SERVER_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;
 	private static final String STD_CMD_LOGGER_NAME="cmdLog";
@@ -483,10 +483,24 @@ public final class STATIC {
 	 * @return the Path for Botdata Files
 	 */
 	public static String getSettingsDir() {
-		File dir=new File(SETTINGS_DIR);
+		File dir=new File(settingsDir);
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
-		return SETTINGS_DIR;
+		return settingsDir;
+	}
+	/**
+	 * sets the Path for Files to save/load and creates it (if nessecery)
+	 * @param dir the Path for Botdata Files
+	 */
+	public static void setSettingsDir(String directory) {
+		if (directory==null) {
+			return;
+		}
+		File dir=new File(directory);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		settingsDir=directory;
 	}
 }
