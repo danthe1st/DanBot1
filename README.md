@@ -1,8 +1,8 @@
 # DanBot1
 a little Discord Chat Bot.<br>
-For a list of Commands and standard-permissions visit https://danthe1st.github.io/DanBot1
+For a list of Commands and standard-permissions visit [https://danthe1st.github.io/DanBot1](https://danthe1st.github.io/DanBot1)
 
-Programm your own Plugins:
+Program your own Plugins:
 * Create a new Maven Project
 * Make sure that you are using Java 1.8
 * add DanBot1 to the Dependencies (replace VERSION with [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1)):
@@ -16,13 +16,13 @@ Programm your own Plugins:
 	</dependency>
 </dependencies>
 ```
-* Commands for the Bot have to be annotated with @io.github.danthe1st.danbot1.commands.BotCommand
+* Commands for the Bot have to be annotated with `@io.github.danthe1st.danbot1.commands.BotCommand`
 * Commands should have a no-args-Constructor
-* the field aliases in @BotCommand mean the Command aliases (should be at least one)
-* Commands should implement the Interface commands.BotCommand
-* Listeners should be annotated with @io.github.danthe1st.danbot1.listeners.BotListener
+* the field *aliases* in `@BotCommand` mean the Command aliases (should be at least one)
+* Commands should implement the Interface `io.github.danthe1st.danbot1.commands.Command`
+* Listeners should be annotated with `@io.github.danthe1st.danbot1.listeners.BotListener`
 * Listeners should have a no-args-Constructor
-* Listeners should extend net.dv8tion.jda.api.hooks.ListenerAdapter
+* Listeners should extend `net.dv8tion.jda.api.hooks.ListenerAdapter`
 * You can run the Bot by executing io.github.danthe1st.danbot1.core.Main.main(String[] args);
 * you can export the plugin as a normal JAR File or use a maven export(mvn package), but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
 

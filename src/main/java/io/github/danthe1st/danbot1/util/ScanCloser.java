@@ -14,7 +14,18 @@ public class ScanCloser implements Runnable{
 	
 	@Override
 	public void run() {
-		scan.close();
+		if (scan!=null) {
+			scan.close();
+		}
+		
 	}
-
+	@Override
+	protected void finalize() throws Throwable {
+		
+		try {
+			run();
+		}finally {
+			super.finalize();	
+		}
+	}
 }

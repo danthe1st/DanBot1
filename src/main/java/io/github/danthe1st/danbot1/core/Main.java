@@ -63,6 +63,7 @@ public class Main {
 	 * initstatus=&lt;status&gt;			Sets a Discord-Status for the Bot before it finished loading
 	 * 		do_not_disturb, idle, invisible, online, offline, unknown
 	 * admin=&lt;id&gt;				sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)
+	 * settings=&lt;directory&gt;			Sets the storage directory for the Bot
 	 * </pre>
 	 */
 	public static void main(final String[] args) {
@@ -97,7 +98,8 @@ public class Main {
 							+ "\tstatus=<status>\tSets a Discord-Status for the Bot\n"
 							+ "\tinitstatus=<status>\tSets a Discord-Status for the Bot before it finished loading\n"
 							+ 	"\t\tdo_not_disturb, idle, invisible, online, offline\n"
-							+ "\tadmin=<id> sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)");
+							+ "\tadmin=<id> sets the Bot admin to a specified user(you need the ID(ISnowfake ID) of the user)"
+							+ "\tsettings=<directory>\tSets the storage directory for the Bot\n");
 					return;
 				case "noevalsecurity":
 					System.setSecurityManager(null);
@@ -110,11 +112,12 @@ public class Main {
 						gameBeforeLoaded=getStringArgValue(arg, gameBeforeLoaded).replaceAll("_", " ");
 					}
 					else if (arg.toLowerCase().startsWith("token=")) {
-						//token=arg.substring(6);
 						token=getStringArgValue(arg, token);
 					}
+					else if (arg.toLowerCase().startsWith("settings=")) {
+						STATIC.setSettingsDir(getStringArgValue(arg, null));
+					}
 					else if (arg.toLowerCase().startsWith("admin=")) {
-						//String newAdminId=arg.substring(6);
 						String newAdminId=getStringArgValue(arg, null);
 						try {
 							if (!(newAdminId==null||newAdminId.equals(""))) {
@@ -130,6 +133,7 @@ public class Main {
 					else if (arg.toLowerCase().startsWith("initstatus=")) {
 						statusBeforeLoaded=loadStatus(arg.substring(11), statusBeforeLoaded);
 					}
+					
 				}
 			} catch (IndexOutOfBoundsException e) {
 			}
