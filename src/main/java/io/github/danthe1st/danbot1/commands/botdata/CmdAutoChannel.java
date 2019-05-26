@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.botdata;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,7 +27,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 /**
  * Command for AutoChannels
  * @author Daniel Schmid
- *
  */
 @BotCommand(aliases = {"autoc","autochannel"})
 public class CmdAutoChannel implements Command, Serializable {
@@ -51,16 +52,15 @@ public class CmdAutoChannel implements Command, Serializable {
 	private void setChannel(final String id, final Guild g, final TextChannel tc) {
 		final VoiceChannel vc=getVoiceChannel(id, g);
 		if (vc==null) {
-			
-			STATIC.errmsg(tc, "Please enter a valid channel ID!");
+			STATIC.errmsg(tc, translate(g,"errInvalidChannelID"));
 		}
 		else if(autoChannels.containsKey(vc)) {
-			STATIC.errmsg(tc, "This channel is still registered as a auto channel.");
+			STATIC.errmsg(tc, translate(g,"alreadyAutoChannel"));
 		}
 		else {
 			autoChannels.put(vc, g);
 			save();
-			STATIC.msg(tc, String.format("Successfully set channel \'%s\' as an auto channel", vc.getName()));
+			STATIC.msg(tc, String.format(translate(g,"setAsAutoChannel"), vc.getName()));
 		}
 		
 	}
@@ -73,15 +73,15 @@ public class CmdAutoChannel implements Command, Serializable {
 	private void unsetChan(final String id, final Guild g, final TextChannel tc) {
 		final VoiceChannel vc=getVoiceChannel(id, g);
 		if(vc==null) {
-			STATIC.errmsg(tc, "Please enter a valid channel ID!");
+			STATIC.errmsg(tc, translate(g,"errInvalidChannelID"));
 		}
 		else if (!autoChannels.containsKey(vc)) {
-			STATIC.errmsg(tc, "This channel is not set as an auto channel");
+			STATIC.errmsg(tc, translate(g,"noAutoChannel"));
 		}
 		else {
 			autoChannels.remove(vc);
 			save();
-			STATIC.msg(tc, String.format("Successfully unset autoChannel \'%s.\'", vc.getName()));
+			STATIC.msg(tc, String.format(translate(g,"unsetAsAutoChannel"), vc.getName()));
 		}
 	}
 	/**
@@ -98,7 +98,7 @@ public class CmdAutoChannel implements Command, Serializable {
 	 * @param tc Der {@link TextChannel} for responses
 	 */
 	private void listChans(final TextChannel tc) {
-		final StringBuilder sb=new StringBuilder().append("**AUTO CHANNELS:\n\n**");
+		final StringBuilder sb=new StringBuilder().append(translate(tc.getGuild(),"listAutoChannelsTitle"));
 		autoChannels.keySet().stream()
 			.filter(vc->autoChannels.get(vc).equals(tc.getGuild()))
 			.forEach(vc->sb.append(String.format(":white_small_square: \'%s\' *(%s)\n", vc.getName(), vc.getId())));
@@ -156,14 +156,14 @@ public class CmdAutoChannel implements Command, Serializable {
 	}
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
-		return PermsCore.check(event, "autoChannel");//TODO test
+		return PermsCore.check(event, "autoChannel");
 	}
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		final Guild g=event.getGuild();
 		final TextChannel tc=event.getTextChannel();
 		if(args.length<1) {
-			STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
+			STATIC.errmsg(tc, translate(event.getGuild(),help()).replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		switch (args[0]) {
@@ -173,7 +173,7 @@ public class CmdAutoChannel implements Command, Serializable {
 		case "set":
 		case "add":
 			if(args.length<2) {
-				STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
+				STATIC.errmsg(tc, translate(event.getGuild(),help()).replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 				return;
 			}
 			setChannel(args[1], g, tc);
@@ -184,21 +184,20 @@ public class CmdAutoChannel implements Command, Serializable {
 		case "delete":
 		case "del":
 			if(args.length<2) {
-				STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
+				STATIC.errmsg(tc, translate(event.getGuild(),help()).replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 				return;
 			}
 			unsetChan(args[1], g, tc);
 			break;
 		default:
-			STATIC.errmsg(tc, help(STATIC.getPrefixEscaped(g)));
+			STATIC.errmsg(tc, translate(event.getGuild(),help()).replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			break;
 		}
 		
 	}
 	@Override
-	public String help(String prefix) {
-		return "Set or unset or list channels which are duplicated when somebody joins\n(see Permission *autochannel* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"autochannel set/add <ID of the AutoChannel>, remove/unset/rem/delete/del <ID of the AutoChannel>, list";
+	public String help() {
+		return "autoChannelHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

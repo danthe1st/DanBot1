@@ -1,4 +1,6 @@
 package io.github.danthe1st.danbot1.commands.admin;
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
@@ -8,6 +10,7 @@ import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command for executing Commands as another user
  * @author Daniel Schmid
@@ -21,7 +24,7 @@ public class CmdSudo implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (args.length<2) {
-			STATIC.errmsg(event.getTextChannel(), "not anough arguments!");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		Member user=null;
@@ -52,9 +55,8 @@ public class CmdSudo implements Command{
 	}
 
 	@Override
-	public String help(String prefix) {
-		return "executes Commands as another User\n"
-				+ "**CAN ONLY BE USED BY *the bot-admin***";
+	public String help() {
+		return "sudoHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

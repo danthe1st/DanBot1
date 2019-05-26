@@ -1,6 +1,5 @@
 package io.github.danthe1st.danbot1.commands.utils.spam;
 
-
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +11,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+
 /**
  * Class for the Spammer Thread
  * @author Daniel Schmid
@@ -26,14 +26,15 @@ public class MsgSpammer implements Runnable{
 		spams=new HashMap<Guild, MsgSpammer.SpamWrapper>();
 		spammerThread=null;
 	}
-	
+	/**
+	 * starts the spamming
+	 */
 	@Override
 	public synchronized void run() {
-		while (!spams.isEmpty()) {
+		while (!Thread.currentThread().isInterrupted()&&!spams.isEmpty()) {
 			try {
 				Set<Guild> toRemove=new HashSet<>();
 				spams.forEach((k,v)->{
-					
 					STATIC.msg(v.channel, new EmbedBuilder()
 							.setDescription(v.msg)
 							.setFooter("spam-command -> "+v.commander.getName(), v.commander.getAvatarUrl())
@@ -50,9 +51,10 @@ public class MsgSpammer implements Runnable{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 		}
-		spammerThread=null;
+		if (spammerThread==Thread.currentThread()) {
+			spammerThread=null;
+		}
 	}
 	/**
 	 * adds messages to be spammed

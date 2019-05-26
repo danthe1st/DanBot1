@@ -2,6 +2,8 @@ package io.github.danthe1st.danbot1.commands.moderation.ban;
 
 import net.dv8tion.jda.api.entities.Member;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.List;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -10,10 +12,10 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to ban a {@link Member}
  * @author Daniel Schmid
- *
  */
 @BotCommand(aliases = "ban")
 public class CmdBan implements Command{
@@ -23,7 +25,7 @@ public class CmdBan implements Command{
 	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), "missing args!");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 			List<Member> users= event.getGuild().getMembersByName(args[0], true);
@@ -42,16 +44,15 @@ public class CmdBan implements Command{
 				try {
 					event.getGuild().getController().ban(user,time, reason).queue();
 				} catch (Exception e) {
-					STATIC.errmsg(event.getTextChannel(), "unknown Error banning user "+user.getNickname());
+					STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotBan")+user.getNickname());
 				}
 				
 		}
 		
 		
 	}
-	public String help(String prefix) {
-		return "bans a user (see Permission *ban* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"ban <victim> (<reason>)";
+	public String help() {
+		return "banHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

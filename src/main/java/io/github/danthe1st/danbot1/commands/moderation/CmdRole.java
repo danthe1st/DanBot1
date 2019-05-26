@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.moderation;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.List;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -10,6 +12,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to Change Guild-Roles
  * @author Daniel Schmid
@@ -38,23 +41,21 @@ public class CmdRole implements Command{
 			return;
 		}
 		if (args.length<2) {
-			STATIC.errmsg(event.getTextChannel(), "missing args!");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		final List<Role> roles = event.getGuild().getRolesByName(args[0], true);
 		final List<Member> members = event.getGuild().getMembersByName(args[1], true);
 		if (roles.isEmpty()) {
-			STATIC.errmsg(event.getTextChannel(), "Role not found: "+args[0]);
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errRoleNotFound")+args[0]);
 		}
 		if (members.isEmpty()) {
-			STATIC.errmsg(event.getTextChannel(), "User not found: "+args[1]);
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errUserNotFound")+args[1]);
 		}
 		event.getGuild().getController().addRolesToMember(members.get(0), roles).queue();
 	}
-	public String help(String prefix) {
-		return "Let a user join a role\n"
-				+ "(see Permission *role* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"role <group> [<user>]";
+	public String help() {
+		return "roleHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

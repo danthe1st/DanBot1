@@ -18,7 +18,6 @@ public class CommandListener extends ListenerAdapter {
 	 * @see CommandParser
 	 * @see CommandHandler
 	 */
-	
 	public void onMessageReceived(final MessageReceivedEvent event) {
 		if(!event.isFromGuild()){
 			return;
@@ -33,7 +32,6 @@ public class CommandListener extends ListenerAdapter {
 		if((event.getMessage().getMentionedUsers().size()==1)&&(event.getMessage().getContentDisplay().startsWith("@"))&&event.getMessage().getMentionedUsers().contains(event.getJDA().getSelfUser())&&!event.getMessage().getAuthor().isBot()) {
 			CommandHandler.handleCommand(CommandParser.parser(event,event.getMessage().getContentRaw().split(" ")[0]+" "));
 		}
-		//System.out.println(event.getAuthor().getName()+": "+event.getMessage().getContent());
 		if(event.getMessage().getContentDisplay().startsWith(STATIC.getPrefix(event.getGuild()))&&(!event.getMessage().getAuthor().isBot())) {
 			CommandHandler.handleCommand(CommandParser.parser(event));
 		}

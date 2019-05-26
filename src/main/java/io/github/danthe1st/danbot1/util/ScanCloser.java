@@ -7,21 +7,17 @@ import java.util.Scanner;
  */
 public class ScanCloser implements Runnable{
 	private Scanner scan;
-	
 	public ScanCloser(Scanner scan) {
 		this.scan=scan;
 	}
-	
 	@Override
 	public void run() {
 		if (scan!=null) {
 			scan.close();
 		}
-		
 	}
 	@Override
 	protected void finalize() throws Throwable {
-		
 		try {
 			run();
 		}finally {

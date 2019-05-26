@@ -2,6 +2,8 @@ package io.github.danthe1st.danbot1.commands.moderation.ban;
 
 import net.dv8tion.jda.api.entities.Member;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -12,6 +14,7 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to ban a {@link Member} until a specified time expires
  * @author Daniel Schmid
@@ -67,9 +70,9 @@ public class CmdTimeBan implements Command{
 			
 			
 			//get h-String
-			String sSek="";
+			String sSec="";
 			try {
-				sSek=time.substring(posAnfang,posEnde);
+				sSec=time.substring(posAnfang,posEnde);
 			} catch (StringIndexOutOfBoundsException e) {
 			}
 			catch (Exception e) {
@@ -77,7 +80,7 @@ public class CmdTimeBan implements Command{
 			//parse h-String
 			
 			try {
-				h=Integer.parseInt(sSek);
+				h=Integer.parseInt(sSec);
 			} catch (NumberFormatException e) {
 			}
 			catch (Exception e) {
@@ -116,12 +119,12 @@ public class CmdTimeBan implements Command{
 			return;
 		}		
 		if (args.length<2) {
-			STATIC.errmsg(event.getTextChannel(), "missing args!");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		long time=getBanTime(args[0]);
 		if (time==-1) {
-			STATIC.errmsg(event.getTextChannel(), "invalid time definition");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errArgNoTime"));
 		}
 		
 		List<Member> users= event.getGuild().getMembersByName(args[1], true);
@@ -136,7 +139,7 @@ public class CmdTimeBan implements Command{
 		if (reason==null||reason.equals("")) {
 			DateFormat format=new SimpleDateFormat("dd.MM.YYYY,HH:mm:ss");
 			
-			reason="timeban from user "+event.getAuthor().getName()+", expires: "+format.format(time);
+			reason=String.format(translate(event.getGuild(),"timebanReason"),event.getAuthor().getName(),format.format(time));
 		}
 		for (Member user : users) {
 			
@@ -144,14 +147,12 @@ public class CmdTimeBan implements Command{
 				event.getGuild().getController().ban(user,0, reason).queue();
 				AutoUnbanner.addUnBan(event.getGuild(), user.getUser(), time);
 			} catch (Exception e) {
-				STATIC.errmsg(event.getTextChannel(), "unknown Error banning user "+user.getEffectiveName());
+				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotBan")+user.getEffectiveName());
 			}
 		}
 	}
-	public String help(String prefix) {
-		return "bans a user (see Permission *ban* in Command perm get)\n"
-				+ "the time should be in the format *days*, *days:hours* or *days:hours:minutes* without whitespaces(only numbers and colons).\n"
-				+"*Syntax*: "+prefix+"tban <time> <victim> (<reason>)";
+	public String help() {
+		return "tbanHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

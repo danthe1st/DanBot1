@@ -17,7 +17,7 @@ public class VoiceLeaveListener extends ListenerAdapter{
 					return;
 				}
 			}
-			AudioHolderController.informOfLeave(event.getGuild());
+			AudioHolderController.informOfLeave(event.getChannelLeft());
 		}
 	}
 }

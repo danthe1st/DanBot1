@@ -1,11 +1,14 @@
 package io.github.danthe1st.danbot1.commands.utils;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to echo a Message
  * @author Daniel Schmid
@@ -21,7 +24,7 @@ public class CmdSay implements Command {
 			return;
 		}		
 		if(args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), "not anough arguments");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 		}
 		String msg="";
 		for (final String string : args) {
@@ -29,10 +32,8 @@ public class CmdSay implements Command {
 		}
 		STATIC.msg(event.getTextChannel(), msg);
 	}
-	public String help(String prefix) {
-		return "Write a message in the chat"
-				+ "(see Permission *say* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"say <message>";
+	public String help() {
+		return "sayHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

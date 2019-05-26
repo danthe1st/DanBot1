@@ -14,6 +14,7 @@ import javax.security.auth.login.LoginException;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
+import io.github.danthe1st.danbot1.console.Console;
 import io.github.danthe1st.danbot1.listeners.BotListener;
 import io.github.danthe1st.danbot1.util.BotSecurityManager;
 import io.github.danthe1st.danbot1.util.STATIC;

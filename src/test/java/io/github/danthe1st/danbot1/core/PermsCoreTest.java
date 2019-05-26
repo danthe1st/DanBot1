@@ -30,7 +30,6 @@ public class PermsCoreTest {
 	public void testCheckInvalidPermissionAndCheckOwner() {
 		JDA jda=Main.getJda();
 		TextChannel tc=jda.getTextChannelById("542372060366766091");
-		tc.getHistory().retrievePast(100);
 		MessageReceivedEvent event=getSomeMsgRescEvent(jda, getMessage(tc, true));
 		assertTrue(PermsCore.checkOwner(event));
 		assertTrue(PermsCore.check(event,someInvalidPermission));

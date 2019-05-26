@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.utils;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.List;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -10,14 +12,13 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to delete the Chat-History (min 2, max 100 Messages)
  * @author Daniel Schmid 
  */
 @BotCommand(aliases = {"cls","clear"})
 public class CmdClear implements Command {
-
-	
 	/**
 	 * parses {@link String} to int
 	 * @param str Der String to be parsed
@@ -26,7 +27,7 @@ public class CmdClear implements Command {
 	private int getInt(final String str) {
 		try {
 			return Integer.parseInt(str);
-		} catch (final Exception e) {
+		} catch (final NumberFormatException e) {
 			return 0;
 		}
 	}
@@ -42,13 +43,13 @@ public class CmdClear implements Command {
 				try {
 					final MessageHistory history=new MessageHistory(event.getTextChannel());
 					List<Message>msgs;
-					event.getMessage().delete().reason("autodelete").queue();
+					event.getMessage().delete().reason(translate(event.getGuild(),"ClearReason")).queue();
 					
 					msgs=history.retrievePast(num).complete();
 					int numMsgs=msgs.size();
 					try {
 						event.getTextChannel().deleteMessages(msgs).queue();
-						STATIC.msg(event.getTextChannel(), "Deleted "+numMsgs+" messages", true);
+						STATIC.msg(event.getTextChannel(), String.format(translate(event.getGuild(),"MsgsDeleted"),numMsgs), true);
 					} catch (final IllegalArgumentException e) {
 						STATIC.errmsg(event.getTextChannel(),e.getLocalizedMessage());
 					} 
@@ -59,18 +60,16 @@ public class CmdClear implements Command {
 			 }
 			 else {
 				 
-				STATIC.errmsg(event.getTextChannel(), "enter a number beetween 2 and 100");
+				STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"needIntInRange"),2,100));
 			}
 		}
 		else {
-			STATIC.errmsg(event.getTextChannel(),"Not enough arguments, a number is needed.");
+			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"missingArgs"));
 		}
 	}
 	@Override
-	public String help(String prefix) { 
-		return "Clears minimal 2 and maximum 100 Messages in the current text Channel(the messages should not be older then 2 weeks\n"
-				+ "(see Permission *clearChat* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"clear <number of messages>";
+	public String help() { 
+		return "clearHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

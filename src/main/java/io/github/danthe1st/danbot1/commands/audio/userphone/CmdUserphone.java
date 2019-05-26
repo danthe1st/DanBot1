@@ -1,12 +1,17 @@
 package io.github.danthe1st.danbot1.commands.audio.userphone;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
+/**
+ * Command to open or close an userphone connection
+ * @author Daniel Schmid
+ */
 @BotCommand(aliases = {"userphone","vbridge"})
 public class CmdUserphone implements Command{
 
@@ -18,7 +23,7 @@ public class CmdUserphone implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), "not anough arguments");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		switch (args[0].toLowerCase()) {
@@ -38,10 +43,8 @@ public class CmdUserphone implements Command{
 	}
 
 	@Override
-	public String help(String prefix) {
-		return "opens/closes an userphone connection\n"
-				+ "(see Permission *userphone* in Command perm get)\n"
-				+ "*Syntax*: "+prefix+"userphone open/close";
+	public String help() {
+		return "userphoneHelp";
 	}
 
 	@Override

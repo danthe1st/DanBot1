@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.moderation.ban;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +21,9 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
+
 /**
- * Class for automatically unbanning a user(timeban)
+ * Class for automatically unbanning a user (timeban)
  * @author Daniel Schmid
  */
 public class AutoUnbanner {
@@ -40,7 +43,7 @@ public class AutoUnbanner {
 		synchronized (unbans) {
 			unbans.forEach((k,v)->{
 				if (k.longValue()<System.currentTimeMillis()) {
-					for (String user : v.user()) {
+					for (String user : v.getUsers()) {
 						//v.guild(jda).getController().unban(user).queue();
 						unban(v.guild(jda), user);
 						toRemove.add(k);
@@ -70,23 +73,18 @@ public class AutoUnbanner {
 			timer=new Timer();
 			long delay=time-System.currentTimeMillis();
 			if (delay<0) {
-				for (String user : unban.user()) {
-					//unban.guild(jda).getController().unban(user).queue();
+				for (String user : unban.getUsers()) {
 					unban(unban.guild(jda), user);
-					
-					
 				}
 			}
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					for (String user : unban.user()) {
-						//unban.guild(jda).getController().unban(user).queue();
+					for (String user : unban.getUsers()) {
 						unban(unban.guild(jda), user);
 					}
 					unbans.remove(time);
 					saveUnBans();
-					
 				}
 			},delay);
 		}
@@ -102,9 +100,9 @@ public class AutoUnbanner {
 		User JDAUser=jda.getUserById(user);
 		String inv=STATIC.createInvite(g);
 		if (JDAUser!=null) {
-			String msg="Your timeban from the Server "+g.getName()+" ran out";
+			String msg=String.format(translate(g,"tbanEnd"),g.getName());
 			if (inv!=null) {
-				msg+="Invite: "+inv;
+				msg+=translate(g,"invite")+inv;
 			}
 			JDAUser.openPrivateChannel().complete().sendMessage(msg).queue();
 		}
@@ -119,9 +117,9 @@ public class AutoUnbanner {
 		
 		Unban unban=new Unban(g, user);
 		boolean needreload;
-		getUnbanner(user.getJDA());
+		getInstance(user.getJDA());
 		synchronized (unbanner.unbans) {
-			getUnbanner(g.getJDA()).unbans.put(Long.valueOf(systime), unban);
+			getInstance(g.getJDA()).unbans.put(Long.valueOf(systime), unban);
 			needreload=unbanner.unbans.get(unbanner.unbans.firstKey())==unban;
 		}
 		if (!unbanner.unbans.isEmpty()&& needreload) {
@@ -134,7 +132,7 @@ public class AutoUnbanner {
 	 * @param jda The JDA Object
 	 * @return the {@link AutoUnbanner}
 	 */
-	private static synchronized AutoUnbanner getUnbanner(JDA jda) {
+	private static synchronized AutoUnbanner getInstance(JDA jda) {
 		
 		if (unbanner==null) {
 			unbanner=new AutoUnbanner(jda);
@@ -157,7 +155,7 @@ public class AutoUnbanner {
 		        // Reading XML from the file and unmarshalling.
 			@SuppressWarnings("unchecked")
 			MapWrapper<Long,Unban> data = (MapWrapper<Long,Unban>) um.unmarshal(file);
-			getUnbanner(jda).unbans=new TreeMap<>(data.getData());
+			getInstance(jda).unbans=new TreeMap<>(data.getData());
 			if (!unbanner.unbans.isEmpty()) {
 				unbanner.reloadTimer();
 			}

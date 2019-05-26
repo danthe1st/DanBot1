@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.admin;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.io.File;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -9,6 +11,7 @@ import io.github.danthe1st.danbot1.core.Main;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to restart the Bot
  * @author Daniel Schmid
@@ -22,7 +25,7 @@ public class CmdRestart implements Command{
 	}
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
-		STATIC.msg(event.getTextChannel(), "restarting DanBot1 "+STATIC.VERSION, false);		
+		STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"restarting")+STATIC.VERSION, false);		
 		Command.super.executed(true, event);
 		event.getJDA().shutdown();
 		String restartCommand=getRestartCommand();
@@ -77,14 +80,11 @@ public class CmdRestart implements Command{
 		return null;
 	}
 	@Override
-	public String help(String prefix) {
-		return "restarts the bot\n"
-				+ "**CAN ONLY BE USED BY *the bot-admin***";
+	public String help() {
+		return "restartHelp";
 	}
 	@Override
-	public void executed(boolean success, MessageReceivedEvent event) {
-		return;
-	}
+	public void executed(boolean success, MessageReceivedEvent event) {}
 	@Override
 	public CommandType getCommandType() {
 		return CommandType.ADMIN;

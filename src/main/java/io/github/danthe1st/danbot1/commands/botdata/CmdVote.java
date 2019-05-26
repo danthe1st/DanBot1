@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.botdata;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +27,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command for Polls in a Guild
  * @author Daniel Schmid
@@ -64,8 +67,7 @@ public class CmdVote implements Command, Serializable{
 		}
 	}
 	/**
-	 * returns a Poll as {@link EmbedBuilder}
-	 * 
+	 * parses a Poll to an {@link EmbedBuilder}
 	 * @param poll The Poll
 	 * @param g The Guild(Discord-Server)
 	 * @return Poll as {@link EmbedBuilder}
@@ -75,14 +77,14 @@ public class CmdVote implements Command, Serializable{
 		final AtomicInteger count=new AtomicInteger();
 		poll.answers.forEach(s->{
 			final long votescount = poll.votes.keySet().stream().filter(k -> poll.votes.get(k).equals(count.get() + 1)).count();
-            ansStr.append(EMOTI[count.get()] + "  -  " + s + "  -  Votes: `" + votescount + "` \n");
+            ansStr.append(EMOTI[count.get()] + "  -  " + s + "  -  "+translate(g,"votes")+": `" + votescount + "` \n");
             count.addAndGet(1);
 			
 		});
 		return new EmbedBuilder()
-				.setAuthor(poll.getCreator(g).getEffectiveName()+"\'s Poll", null, poll.getCreator(g).getUser().getAvatarUrl())
+				.setAuthor(poll.getCreator(g).getEffectiveName()+"\'s "+translate(g,"poll"), null, poll.getCreator(g).getUser().getAvatarUrl())
 				.setDescription(":pencil:   "+poll.heading+"\n\n"+ansStr.toString())
-				.setFooter("Enter \'"+STATIC.getPrefix(g)+"vote v <number>\' to vote!", null)
+				.setFooter(translate(g,"enterCmdToVote").replace("--", STATIC.getPrefixEscaped(g)), null)
 				.setColor(Color.cyan);
 	}
 	/**
@@ -93,7 +95,7 @@ public class CmdVote implements Command, Serializable{
 	private void craetePoll(final String[] args, final MessageReceivedEvent event) {
 		TextChannel channel=event.getTextChannel();
 		if (polls.containsKey(event.getGuild())) {
-			STATIC.msg(event.getTextChannel(), "There is already a poll running on this guild");
+			STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"errPollActive"));
 			return;
 		}
 		final String argsStr=String.join(" ", new ArrayList<>(Arrays.asList(args).subList(1, args.length)));
@@ -112,7 +114,7 @@ public class CmdVote implements Command, Serializable{
 	 */
 	private void votePoll(final String[] args, final MessageReceivedEvent event) {
 		if (!polls.containsKey(event.getGuild())) {
-			STATIC.errmsg(event.getTextChannel(), "There is currently no poll running to vote for");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errNoPoll"));
 			return;
 		}
 		final Poll poll=polls.get(event.getGuild());
@@ -123,11 +125,11 @@ public class CmdVote implements Command, Serializable{
 				throw new NumberFormatException("Number is out of range ");
 			}
 		} catch (final Exception e) {
-			STATIC.errmsg(event.getTextChannel(), "Please enter a valic number to vote for!");
+			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"errInvalidVoteNum"));
 			return;
 		}
 		if (poll.votes.containsKey(event.getAuthor().getId())) {
-			STATIC.errmsg(event.getTextChannel(), "Sorry, but you can only **vote** once for a Poll");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errDuplicateVoteDenied"));
 			return;
 		}
 		poll.votes.put(event.getAuthor().getId(), vote);
@@ -141,7 +143,7 @@ public class CmdVote implements Command, Serializable{
 	private void voteStats(final MessageReceivedEvent event) {
 		TextChannel channel=event.getTextChannel();
 		if (!polls.containsKey(event.getGuild())) {
-			STATIC.errmsg(event.getTextChannel(), "There is currently no poll running to show");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errNoPollToShow"));
 			return;
 		}
 		channel.sendMessage(getParsedPoll(polls.get(event.getGuild()), event.getGuild()).build()).queue();
@@ -154,14 +156,14 @@ public class CmdVote implements Command, Serializable{
 	private void closeVote(final MessageReceivedEvent event) {
 		TextChannel channel=event.getTextChannel();
 		if (!polls.containsKey(event.getGuild())) {
-			STATIC.errmsg(event.getTextChannel(), "There is currently no poll running to close");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errNoPollToClose"));
 			return;
 		}
 		final Poll poll=polls.get(event.getGuild());
 		
 		polls.remove(event.getGuild());
 		channel.sendMessage(getParsedPoll(poll, event.getGuild()).build()).queue();
-		STATIC.msg(event.getTextChannel(), "Poll closed by "+ event.getAuthor().getAsMention()+".");
+		STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"pollClosed")+ event.getAuthor().getAsMention()+".");
 	}
 	/**
 	 * saves a Poll
@@ -177,12 +179,8 @@ public class CmdVote implements Command, Serializable{
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/vote.dat";
 		final Poll poll=polls.get(guild);
-		
-		 
 		final FileOutputStream fos=new FileOutputStream(saveFile);
-		
 		final ObjectOutputStream oos=new ObjectOutputStream(fos);
-		
 		oos.writeObject(poll);
 		oos.close();
 	}
@@ -198,7 +196,6 @@ public class CmdVote implements Command, Serializable{
 			return null;
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+g.getId()+"/vote.dat";
-		
 		final FileInputStream fis=new FileInputStream(saveFile);
 		final ObjectInputStream ois=new ObjectInputStream(fis);
 		final Poll out=(Poll)ois.readObject();
@@ -229,7 +226,7 @@ public class CmdVote implements Command, Serializable{
 	public synchronized void action(final String[] args, final MessageReceivedEvent event) {
 		TextChannel channel=event.getTextChannel();
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(event.getGuild())));
+			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		switch (args[0]) {
@@ -266,7 +263,7 @@ public class CmdVote implements Command, Serializable{
 			}
 			break;
 		default:
-			STATIC.errmsg(channel, help(STATIC.getPrefixEscaped(event.getGuild())));
+			STATIC.errmsg(channel, help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		polls.forEach((guild, poll)->{
@@ -284,13 +281,8 @@ public class CmdVote implements Command, Serializable{
 
 
 	@Override
-	public String help(String prefix) {
-		return "Creates a poll OR\n"
-				+ "vote for the poll OR\n"
-				+ "show the stats of the poll OR\n"
-				+ "close the poll\n"
-				+ "(see *vote* Permissions in Command perm get)\n"
-				+"*Syntax*: "+prefix+"vote create <Poll: Question|answer 1|answer 2|...>, v/vote <number of answer you want to vote>, stats/s, close";
+	public String help() {
+		return "voteHelp";
 	}
 	@Override
 	public CommandType getCommandType() {
