@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.utils;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,10 +10,12 @@ import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.CommandHandler;
+import io.github.danthe1st.danbot1.util.LanguageController;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * prints help for all Commands
  * @author Daniel Schmid
@@ -28,16 +32,14 @@ public class CmdHelp implements Command{
 			commandTypes.get(v.getCommandType()).put(k,v);
 		});
 		EmbedBuilder eb=new EmbedBuilder();
-		eb.setDescription("\t**Bot Help**\n"
-						+ "for a complete Description visit *https://danthe1st.github.io/DanBot1/*\n\n");
+		eb.setDescription(translate(event.getGuild(),"helpTitle"));
 		commandTypes.forEach((typeName,commands)->{
-			eb.appendDescription("`"+typeName+"`:\n")
+			eb.appendDescription("`"+translate(event.getGuild(),"cmdType_"+typeName.name())+"`:\n")
 			.setColor(Color.GREEN);
-			
 			commands.forEach((name,command)->{
-				EmbedBuilder backUp=new EmbedBuilder(eb);
 				if (command.getCommandType()!=null) {
-					String help="**"+STATIC.getPrefix(event.getGuild()) +name+"**:\n"+command.help(STATIC.getPrefixEscaped(event.getGuild()))+"\n\n";
+					EmbedBuilder backUp=new EmbedBuilder(eb);
+					String help="**"+STATIC.getPrefix(event.getGuild()) +name+"**:\n"+LanguageController.translate(event.getGuild(), command.help()).replace("--",STATIC.getPrefixEscaped(event.getGuild()))+"\n\n";
 					try {
 						eb.appendDescription(help);
 						if (!(eb.isValidLength(AccountType.CLIENT)/*&&eb.isValidLength(AccountType.BOT)*/)) {
@@ -51,19 +53,14 @@ public class CmdHelp implements Command{
 						eb.appendDescription(help);
 					}
 				}
-				
-				
-				
 			});
 			event.getAuthor().openPrivateChannel().complete().sendMessage(eb.build()).queue();
-			
 			eb.clear();
 		});
 	}
 	@Override
-	public String help(String prefix) {
-		return "Show this help\n"
-				+"*Syntax*: "+prefix+"help";
+	public String help() {
+		return "helpHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

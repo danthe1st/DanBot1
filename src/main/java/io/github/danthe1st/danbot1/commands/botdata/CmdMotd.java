@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.botdata;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,18 +12,16 @@ import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command for getting/setting a guild-specified Message of the day(standard: invite link for the Bot and the Support Server)
  * @author Daniel Schmid
- *
  */
 @BotCommand(aliases = "motd")
 public class CmdMotd implements Command{
 
 	private static Map<Guild, String> motd=new HashMap<Guild, String>();
-	private static final String stdMotd="Invite: https://discordapp.com/api/oauth2/authorize?client_id=371042228891549707&permissions=8&scope=bot\n"
-			+ "Support-Server: https://discord.io/DanBot1\n"
-			+ "Website: https://danthe1st.github.io/DanBot1/";
+	private static final String stdMotd="stdMOTD";
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
 		return PermsCore.check(event, "motd");
@@ -39,7 +39,7 @@ public class CmdMotd implements Command{
 				
 			}
 			if (motd==null) {
-				motd=stdMotd;
+				motd=translate(event.getGuild(),stdMotd);
 			}
 		}
 			
@@ -55,7 +55,7 @@ public class CmdMotd implements Command{
 		}
 		switch (args[0]) {
 		case "reset":
-			motd=stdMotd;
+			motd=translate(event.getGuild(),stdMotd);
 			STATIC.save(event.getGuild().getId()+"/motd.dat", motd);
 			break;
 		case "set":{
@@ -81,10 +81,8 @@ public class CmdMotd implements Command{
 		}
 		
 	}
-	public String help(String prefix) {
-		return "displays or sets the message of the day!\n"
-				+ "(see Permission *motd(.show/.set)* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"motd ((set )<new motd>)";
+	public String help() {
+		return "motdHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

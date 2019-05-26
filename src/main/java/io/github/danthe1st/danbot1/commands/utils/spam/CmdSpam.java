@@ -1,13 +1,16 @@
 package io.github.danthe1st.danbot1.commands.utils.spam;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
- * Command to spam a Message
+ * Command to spam messages
  * @author Daniel Schmid
  */
 @BotCommand(aliases = "spam")
@@ -24,13 +27,13 @@ public class CmdSpam implements Command {
 			return;
 		}
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(event.getGuild())));
+			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		try {
 			int count=Integer.parseInt(args[0]);
 			if (count!=0&&args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(event.getGuild())));
+				STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 				return;
 			}
 			String spamMsg=args[1];
@@ -40,20 +43,17 @@ public class CmdSpam implements Command {
 			}
 			
 			if (count>MAX_MSG_NUMBER_PER_SPAM) {
-				STATIC.errmsg(event.getTextChannel(), "Spamming more than "+MAX_MSG_NUMBER_PER_SPAM+" Messages at once is not allowed.");
+				STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"spamLimitExceed"),MAX_MSG_NUMBER_PER_SPAM));
 				return;
 			}
 			MsgSpammer.addMsgSpam(count, event.getTextChannel(), spamMsg,event.getAuthor());
 		} catch (NumberFormatException e) {
-			STATIC.errmsg(event.getTextChannel(), "Please use a number as argument 1!");
+			STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"errArgNoInt"), 1));
 		}
 	}
 	@Override
-	public String help(String prefix) {
-		return "Spams a number of messages\n"
-				+ "the spam can be stopped with "+prefix+"spam 0\n"
-				+ "(see Permission *spam* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"spam <number of messages> <message>";
+	public String help() {
+		return "spamHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

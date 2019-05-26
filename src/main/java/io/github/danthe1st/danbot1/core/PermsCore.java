@@ -12,11 +12,12 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 /**
  * Core Class for Permission System
  * @author Daniel Schmid
  */
-public class PermsCore {//TODO null checks
+public class PermsCore {
 	//					gId				Perm	Role
 	private static final Map<String, Map<String, String[]>> perms=new HashMap<>();
 	private static final HashMap<String, String[]> STD_PERMS =new HashMap<String, String[]>();
@@ -57,8 +58,6 @@ public class PermsCore {//TODO null checks
 		STD_PERMS.put("dice", new String[] {"*"});
 		STD_PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
 	}
-	
-	
 	/**
 	 * tests if the who executed the Command is permitted to execute it
 	 * if forbidden an errormessage will be sent.
@@ -99,7 +98,7 @@ public class PermsCore {//TODO null checks
 			}
 		}
 		if (doErrMsg) {
-			STATIC.errmsg(event.getTextChannel(), event.getAuthor().getAsMention()+"doesn't have the permission "+permissionName);
+			STATIC.errmsg(event.getTextChannel(), event.getAuthor().getAsMention()+translate(event.getGuild(),"errMissingPermission")+permissionName);
 			
 		}
 		return false;
@@ -125,7 +124,7 @@ public class PermsCore {//TODO null checks
 			return true;
 		}
 		if (doErrMsg) {
-			STATIC.errmsg(event.getTextChannel(),"You need to be the Bot-Admin to do this!");
+			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"errNoBotAdmin"));
 		}
 		return false;
 	}
@@ -183,8 +182,8 @@ public class PermsCore {//TODO null checks
 		
 		if (guildPerms==null) {
 			resetPerms(g);
+			guildPerms=perms.get(g.getId());
 		}
-		
 		if (guildPerms.containsKey(permName)) {
 			if (STD_PERMS.containsKey(permName)) {
 				return false;
@@ -212,9 +211,7 @@ public class PermsCore {//TODO null checks
 		Map<String, String[]> guildPerms = perms.get(g.getId());
 		if (guildPerms==null) {
 			resetPerms(g);
-			
 		}
-		
 		for (String[] perm : perms.get(g.getId()).values()) {
 			for (int i = 0; i < perm.length; i++) {
 				if (perm[i].equals(roleToChange)) {
@@ -269,7 +266,6 @@ public class PermsCore {//TODO null checks
 					}
 				}
 				String[] permsNew=new String[num];
-				
 				for (int i = 0,j=0; i < perm.length; i++) {
 					if (perm[i]!=null) {
 						permsNew[j]=perm[i];

@@ -1,4 +1,4 @@
-package io.github.danthe1st.danbot1.consoleCmd;
+package io.github.danthe1st.danbot1.console;
 
 import net.dv8tion.jda.api.JDA;
 /**

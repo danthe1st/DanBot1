@@ -2,6 +2,8 @@ package io.github.danthe1st.danbot1.commands.moderation;
 
 import net.dv8tion.jda.api.entities.Member;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.List;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -10,6 +12,7 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to kick a {@link Member}
  * @author Daniel Schmid
@@ -23,7 +26,7 @@ public class CmdKick implements Command{
 	}
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), "missing args!");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 			List<Member> users= event.getGuild().getMembersByName(args[0], true);
@@ -39,17 +42,15 @@ public class CmdKick implements Command{
 				try {
 					event.getGuild().getController().kick(user, reason).queue();
 				} catch (Exception e) {
-					STATIC.errmsg(event.getTextChannel(), "unknown Error kicking user "+user.getNickname());
+					STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotKick")+user.getNickname());
 				}
 				
 		}
 		
 		
 	}
-	public String help(String prefix) {
-		return "kicks a user\n"
-				+ "(see Permission *kick* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"kick <victim>";
+	public String help() {
+		return "kickHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

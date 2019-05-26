@@ -1,5 +1,6 @@
 package io.github.danthe1st.danbot1.commands.botdata;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
@@ -7,6 +8,7 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 /**
  * Command to change/show the Bot prefix
  * @author Daniel Schmid
@@ -20,7 +22,7 @@ public class CmdPrefix implements Command{
 	@Override
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		if(args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), "Not anough arguments.");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		switch (args[0]) {
@@ -35,21 +37,19 @@ public class CmdPrefix implements Command{
 				return;
 			}
 			if(args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), "Not anough arguments.");
+				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 				return;
 			}
 			STATIC.setPrefix(event.getGuild(),args[1]);
 			break;
 		default:
-			STATIC.errmsg(event.getTextChannel(), "wrong arguments");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"invalidArgs"));
 			break;
 		}
 	}
 	@Override
-	public String help(String prefix) {
-		return "set or show the preifx\n"
-				+ "(see Permissions *perfix(.show/set)* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"prefix show, set <new Prefix>";
+	public String help() {
+		return "prefixHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

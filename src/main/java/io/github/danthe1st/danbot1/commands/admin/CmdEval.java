@@ -2,6 +2,8 @@ package io.github.danthe1st.danbot1.commands.admin;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -12,6 +14,7 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.BotSecurityManager;
 import io.github.danthe1st.danbot1.util.STATIC;
+
 /**
  * Command to Evaluate Code
  * @author Daniel Schmid
@@ -52,7 +55,7 @@ public class CmdEval implements Command{
 					try {
 						return se.eval(x);
 					} catch (ScriptException e) {
-						STATIC.errmsg(event.getTextChannel(), "Sorry, it didn't work\n"+e.getMessage());
+						STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(), "evalNotWork")+"\n"+e.getMessage());
 						se.put(LATEST_EXCEPTION_KEY_NAME, e);
 					}
 					return null;
@@ -60,7 +63,7 @@ public class CmdEval implements Command{
     		}
 			
 		} catch (Throwable e) {
-			STATIC.errmsg(event.getTextChannel(), "An unknown Error occured ("+e.getClass().getName()+")\n"+e.getMessage());
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"evalUnknownError")+" ("+e.getClass().getName()+")\n"+e.getMessage());
 			se.put(LATEST_EXCEPTION_KEY_NAME, e);
 		}
         if (result != null) {
@@ -68,9 +71,8 @@ public class CmdEval implements Command{
 		}
 	}
 	@Override
-	public String help(String prefix) {
-		return "Command to evaluate Code\n"
-				+ "**CAN ONLY BE USED BY *the bot-admin***";
+	public String help() {
+		return "evalHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

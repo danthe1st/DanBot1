@@ -10,7 +10,12 @@ import net.dv8tion.jda.api.audio.AudioSendHandler;
 import net.dv8tion.jda.api.audio.CombinedAudio;
 import net.dv8tion.jda.api.audio.UserAudio;
 import net.dv8tion.jda.api.entities.Guild;
-
+import net.dv8tion.jda.api.entities.VoiceChannel;
+/**
+ * Core-Class or the userphone Command<br>
+ * saves rescieved audio and sends it after that
+ * @author Daniel Schmid
+ */
 public class AudioHandler implements AudioReceiveHandler, AudioSendHandler, AudioHolder {
 	private static final double VOLUME = 1;
 	private ConcurrentLinkedQueue<byte[]> buffer;
@@ -61,7 +66,8 @@ public class AudioHandler implements AudioReceiveHandler, AudioSendHandler, Audi
 		}
 	}
 	@Override
-	public void onEverybodyLeave(Guild g) {
+	public void onEverybodyLeave(VoiceChannel vc) {
+		Guild g=vc.getGuild();
 		closeConnection(g);
 		AudioHolderController.giveHolderFree(g);
 	}

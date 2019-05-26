@@ -25,7 +25,8 @@ import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 /**
- * {@link Message} used for the sudo-Command
+ * {@link Message} used for the sudo-Command<br>
+ * A {@link SudoMessage} contains another {@link Message} where specified attributes are changed.
  * @author Daniel Schmid
  */
 public class SudoMessage implements Message{

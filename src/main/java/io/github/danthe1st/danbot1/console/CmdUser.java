@@ -1,4 +1,4 @@
-package io.github.danthe1st.danbot1.consoleCmd;
+package io.github.danthe1st.danbot1.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.entities.User;
  * @author Daniel Schmid
  */
 public class CmdUser implements Command{
-
 	@Override
 	public void execute(JDA jda, String[] args) {
 		if(args.length<1) {
@@ -24,13 +23,11 @@ public class CmdUser implements Command{
 		}
 		List<User> users=new ArrayList<>();
 		for (String uname : args) {
-			
 			for (Guild guild : jda.getGuilds()) {
 				for (Member member : guild.getMembersByEffectiveName(uname, true)) {
 					if (!users.contains(member.getUser())) {
 						users.add(member.getUser());
 					}
-					
 				}
 				for (Member member : guild.getMembersByName(uname, true)) {
 					if (!users.contains(member.getUser())) {
@@ -46,10 +43,8 @@ public class CmdUser implements Command{
 					if (!users.contains(jda.getUserById(uname))) {
 						users.add(jda.getUserById(uname));
 					}
-					
 				} catch (NumberFormatException e) {
 				}
-				
 			}
 		}
 		
@@ -57,7 +52,6 @@ public class CmdUser implements Command{
 				System.err.println(("User not found"));
 				return;
 		}
-		
 		StringBuilder sb=new StringBuilder();
 		boolean first=true;
 		for (User user : users) {
@@ -110,7 +104,7 @@ public class CmdUser implements Command{
 			if (activities!=null&&!activities.isEmpty()) {
 				sb.append("Games:");
 				for (Activity activity : activities) {
-					sb.append("\t"+activity.getName()+" \n");//TODO test
+					sb.append("\t"+activity.getName()+" \n");
 				}
 				
 			}
@@ -129,10 +123,7 @@ public class CmdUser implements Command{
 					}
 				}
 			}
-			
-			
 			first=false;
-			
 		}
 		System.out.println(sb.toString());
 	}
@@ -142,5 +133,4 @@ public class CmdUser implements Command{
 		return "gets information about users\n"
 				+ "Syntax: user <Username/Nickname/ID of first user> <Username/Nickname/ID of second user> ...";
 	}
-
 }

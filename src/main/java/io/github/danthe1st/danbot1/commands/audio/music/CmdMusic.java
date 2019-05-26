@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.audio.music;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +31,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 /**
  * The music Command
@@ -117,7 +120,6 @@ public class CmdMusic implements Command,AudioHolder{
 			}
 			@Override
 			public void playlistLoaded(final AudioPlaylist playlist) {
-				//getManager(guild).queue(playlist.getTracks().get(0), author);
 				for (int i = 0; i < numTracksToLoad&&i<MAX_NUM_TRACKS; i++) {
 					if (playlist.getTracks().size()<i) {
 						return;
@@ -127,12 +129,12 @@ public class CmdMusic implements Command,AudioHolder{
 			}
 			@Override
 			public void noMatches() {
-				STATIC.errmsg(msg.getTextChannel(), "no tracks found");
+				STATIC.errmsg(msg.getTextChannel(), translate(msg.getGuild(),"trackNotFound"));
 			}
 			
 			@Override
 			public void loadFailed(final FriendlyException exception) {
-				STATIC.errmsg(msg.getTextChannel(), "Cannot load Track");
+				STATIC.errmsg(msg.getTextChannel(), translate(msg.getGuild(),"unloadable"));
 			}
 		});
 		
@@ -179,7 +181,7 @@ public class CmdMusic implements Command,AudioHolder{
 	public void action(final String[] args, final MessageReceivedEvent event) {
 		Guild guild=event.getGuild();
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(guild)));
+			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		switch (args[0].toLowerCase()) {
@@ -187,7 +189,7 @@ public class CmdMusic implements Command,AudioHolder{
 		case "p":
 			
 			if (args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), "please Enter a valid source");
+				STATIC.errmsg(event.getTextChannel(), translate(guild,"noQueryString"));
 				return;
 			}
 			numTracksToLoad=1;
@@ -235,9 +237,9 @@ public class CmdMusic implements Command,AudioHolder{
 				final AudioTrack track=getPlayer(guild).getPlayingTrack();
 				final AudioTrackInfo info=track.getInfo();
 				event.getTextChannel().sendMessage(
-						new EmbedBuilder().setDescription("**CURRENT TRACK INFO:**").addField("Title",info.title, false)
-						.addField("Duration", "\'["+getTimeStamp(track.getPosition())+"/"+getTimeStamp(track.getDuration())+"]\'", false)
-						.addField("Author:", info.author, false)
+						new EmbedBuilder().setDescription(translate(guild,"trackInfoTitle")).addField(translate(guild,"Title"),info.title, false)
+						.addField(translate(guild,"trackInfoField.duration"), "\'["+getTimeStamp(track.getPosition())+"/"+getTimeStamp(track.getDuration())+"]\'", false)
+						.addField(translate(guild,"trackInfoField.author"), info.author, false)
 						.build()
 						).queue();
 				
@@ -245,41 +247,29 @@ public class CmdMusic implements Command,AudioHolder{
 			if (isIdle(guild)) {
 				return;
 			}
-			final int sideNum=args.length>1?Integer.parseInt(args[1]):1;
+			final int pageNum=args.length>1?Integer.parseInt(args[1]):1;
 			final List<String> tracks=new ArrayList<>();
 			List<String> trackSublist;
 			getManager(guild).getQueue().forEach(audioInfo->tracks.add(buildQueueMessage(audioInfo)));
 			if (tracks.size()>20) {
-				trackSublist = tracks.subList((sideNum-1)*20, (sideNum-1)*20+20);
+				trackSublist = tracks.subList((pageNum-1)*20, (pageNum-1)*20+20);
 			}
 			else {
 				trackSublist=tracks;
 			}
 			final String out=trackSublist.stream().collect(Collectors.joining("\n"));
-			final int sideNumAll=tracks.size()>=20?tracks.size()/20:1;
-			STATIC.msg(event.getTextChannel(), "**CURRENT QUEUE:**\n"+
-									"*["+getManager(guild).getQueue().size()+" Tracks | Side "+sideNum+" / "+sideNumAll+"]*"+out);
+			final int pageNumAll=tracks.size()>=20?tracks.size()/20:1;
+			STATIC.msg(event.getTextChannel(), translate(guild,"trackQueueInfoTitle")+
+									"*["+getManager(guild).getQueue().size()+translate(guild,"tracksAndPage")+pageNum+" / "+pageNumAll+"]*"+out);
 			break;
 		default:
-			STATIC.errmsg(event.getTextChannel(), help(STATIC.getPrefixEscaped(guild)));
+			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			break;
 		}
 	}
-
-	
-	/**
-	 * hilfe: gibt Hilfe zu diesem Command als String zur�ck
-	 */
 	@Override
-	public String help(String prefix) {
-		return "Play one or more youTube video in the audio channel you are OR\n"
-				+ "go to the next music in the Queue OR\n"
-				+ "stop the music OR\n"
-				+ "shuffle the music OR\n"
-				+ "get info about the track you are listening OR\n"
-				+ "list the queue\n"
-				+ "(see Permission *playMusic* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"music play/p (<number of Tracks you want to Play>) <URL of the video>/<search term>, skip/s, stop, shuffle, now/info, queue";
+	public String help() {
+		return "musicHelp";
 	}
 
 	@Override
@@ -291,7 +281,8 @@ public class CmdMusic implements Command,AudioHolder{
 		g.getAudioManager().closeAudioConnection();
 	}
 	@Override
-	public void onEverybodyLeave(Guild g) {
+	public void onEverybodyLeave(VoiceChannel vc) {
+		Guild g=vc.getGuild();
 		closeConnection(g);
 		AudioHolderController.giveHolderFree(g);
 	}

@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.utils;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.List;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -27,8 +29,6 @@ public class CmdClearPMs implements Command {
 	public void action(String[] args, MessageReceivedEvent event) {
 		if(args.length>0) {
 			int num=getInt(args[0]);
-			
-			
 			if(num>1&&num<=100) {
 				try {
 					final MessageHistory history=new MessageHistory(event.getAuthor().openPrivateChannel().complete());
@@ -39,30 +39,29 @@ public class CmdClearPMs implements Command {
 					int numMsgs=0;
 					for (Message message : msgs) {
 						try {
-							message.delete().reason("commanded by user").queue();
+							message.delete().reason(translate(event.getGuild(),"ClearPMReason")).queue();
 							numMsgs++;
 						} catch (Exception e) {
 						}
 					}
-					STATIC.msg(event.getTextChannel(), "Deleting "+numMsgs+" messages", true);
+					STATIC.msg(event.getTextChannel(), String.format(translate(event.getGuild(),"MsgsDeleted"),numMsgs), true);
 				}
 				catch (final Exception e) {
 					e.printStackTrace();
 				}
 			 }
 			 else {
-				STATIC.errmsg(event.getTextChannel(), "enter a number beetween 2 and 100");
+				STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"needIntInRange"),2,100));
 			 }
 		}
 		else {
-			STATIC.errmsg(event.getTextChannel(),"Not enough arguments, a number is needed.");
+			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"missingArgs"));
 		}
 	}
 
 	@Override
-	public String help(String prefix) {
-		return "Clears minimal 2 and maximum 100 Messages in private Channel with the Bot\n"
-				+"*Syntax*: "+prefix+"clearPM <number of messages>";
+	public String help() {
+		return "clearPMHelp";
 	}
 
 	@Override

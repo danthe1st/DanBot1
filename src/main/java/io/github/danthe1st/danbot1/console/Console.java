@@ -1,4 +1,4 @@
-package io.github.danthe1st.danbot1.core;
+package io.github.danthe1st.danbot1.console;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,11 +9,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import io.github.danthe1st.danbot1.consoleCmd.CmdHelp;
-import io.github.danthe1st.danbot1.consoleCmd.CmdList;
-import io.github.danthe1st.danbot1.consoleCmd.CmdMsg;
-import io.github.danthe1st.danbot1.consoleCmd.CmdUser;
-import io.github.danthe1st.danbot1.consoleCmd.Command;
 import net.dv8tion.jda.api.JDA;
 /**
  * Core Class for the Console, for entering Commands with {@link System#in}
@@ -59,16 +54,29 @@ public class Console implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * adds the standard console Commands
+	 */
 	private void addCommands() {
-		commands.put("list", new CmdList());
-		commands.put("msg", new CmdMsg());
-		commands.put("user", new CmdUser());
-		commands.put("help", new CmdHelp(commands));
+		addCommand("list", new CmdList());
+		addCommand("msg", new CmdMsg());
+		addCommand("user", new CmdUser());
+		addCommand("help", new  CmdHelp(commands));
 	}
-
+	/**
+	 * add a Console Command
+	 * @param alias the name of the Command
+	 * @param command the Command Object
+	 */
+	public void addCommand(String alias, Command command) {
+		commands.put(alias, command);
+	}
+	/**
+	 * runs the Console
+	 */
 	@Override
 	public void run() {
-		while (true) {
+		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				String msg;
 				try {
@@ -84,9 +92,12 @@ public class Console implements Runnable{
 			}
 		}
 	}
-	
+	/**
+	 * parses a Command
+	 * @param msg the input String
+	 * @return <code>true</code>if the Command was found and executed successfully, else <code>false</code>
+	 */
 	private boolean parse(String msg) {
-		
 		String[] splitted=msg.split(" ");
 		String cmdName=splitted[0];
 		String[] args=new String[splitted.length-1];
@@ -95,20 +106,26 @@ public class Console implements Runnable{
 				args[i]=splitted[i+1];
 			}
 		}
-		
 		for (String currentCmdName : commands.keySet()) {
 			if (currentCmdName.equalsIgnoreCase(cmdName)) {
 				Command cmd=commands.get(currentCmdName);
-				cmd.execute(jda, args);
-				return true;
+				try {
+					cmd.execute(jda, args);
+					return true;
+				}catch (Exception e) {
+					return false;
+				}
 			}
 			continue;
 		}
 		return false;
 	}
+	/**
+	 * evaluates code using the Nashorn js Engine
+	 * @param code
+	 */
 	private void eval(String code) {
         try {
-        	
 			Object ergebnis=se.eval(code);
 			if (ergebnis != null) {
 				System.out.println(ergebnis);
@@ -116,7 +133,6 @@ public class Console implements Runnable{
 			
 		} catch (ScriptException e) {
 			System.err.println("Sorry, it didn't work:"+e.getMessage());
-			
 		}
 	}
 }

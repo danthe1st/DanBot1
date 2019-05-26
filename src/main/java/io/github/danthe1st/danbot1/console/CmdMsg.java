@@ -1,4 +1,4 @@
-package io.github.danthe1st.danbot1.consoleCmd;
+package io.github.danthe1st.danbot1.console;
 
 import java.awt.Color;
 
@@ -6,12 +6,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 /**
- * Console Command to write a Message
+ * Console Command to send a Message
  * @author Daniel Schmid
- *
  */
 public class CmdMsg implements Command{
-
 	@Override
 	public void execute(JDA jda, String[] args) {
 		if (args.length<2) {

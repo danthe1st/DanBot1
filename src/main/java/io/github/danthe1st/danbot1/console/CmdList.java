@@ -1,4 +1,4 @@
-package io.github.danthe1st.danbot1.consoleCmd;
+package io.github.danthe1st.danbot1.console;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,8 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 /**
  * Console Command to List Guilds/Channels
  * @author Daniel Schmid
- *
  */
 public class CmdList implements Command{
-
 	@Override
 	public void execute(JDA jda, String[] args) {
 		boolean vchan=false;
@@ -23,8 +21,6 @@ public class CmdList implements Command{
 		for (String arg : args) {
 			String tmpguildId=arg;
 			try {
-				
-			
 				if(jda.getGuildById(tmpguildId)!=null) {
 					if (guilds==null) {
 						guilds=new ArrayList<>();
@@ -39,21 +35,11 @@ public class CmdList implements Command{
 			}
 			if (!vchan) {
 				vchan=(arg.equalsIgnoreCase("*")||arg.startsWith("v"));
-				
 			}
 			if (!tchan) {
 				tchan=(arg.equalsIgnoreCase("*")||arg.startsWith("t"));
 			}
-			
 		}
-		
-		
-		
-		
-//		if (guildId!=null&&!guildId.equals("")) {
-//			guilds=new ArrayList<>();
-//			guilds.add(jda.getGuildById(guildId));
-//		}
 		StringBuilder sb=new StringBuilder();
 		if (guilds==null||guilds.isEmpty()) {
 			guilds=jda.getGuilds();
@@ -88,7 +74,4 @@ public class CmdList implements Command{
 				+ "Can list all channels in the guilds, the TextChannnels or the VoiceChannels\n"
 				+ "Syntax: list (<*|v|t>) (<IDs of the Guilds where you want to list channels>)";
 	}
-
-	
-	
 }

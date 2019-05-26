@@ -1,5 +1,6 @@
 package io.github.danthe1st.danbot1.commands.utils;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
+
 /**
  * Command to unnick a {@link Member}
  * @author Daniel Schmid
@@ -28,7 +30,7 @@ public class CmdUnNick implements Command{
 			try {
 				event.getGuild().getController().setNickname(event.getGuild().getMember(event.getAuthor()), null).queue();
 			} catch (InsufficientPermissionException e) {
-				STATIC.errmsg(event.getTextChannel(), "I don't have the permission to unnick "+event.getGuild().getMember(event.getAuthor()).getEffectiveName()+", please contact an Administrator");
+				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
 			}
 			
 			return;
@@ -48,16 +50,13 @@ public class CmdUnNick implements Command{
 			try {
 				event.getGuild().getController().setNickname(member, null).queue();
 			} catch (InsufficientPermissionException e) {
-				STATIC.errmsg(event.getTextChannel(), "I don't have the permission to unnick "+member.getEffectiveName()+", please contact an Administrator");
+				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
 			}
 		}
 	}
 	@Override
-	public String help(String prefix) {
-		return "Unnicks Players\n"
-				+ "if there are no players given the Author will be unnicked\n"
-				+ "(see Permission *unnick(.others)* in Command perm get)\n"
-				+ "*Syntax*: "+prefix+"unnick (<Player names>)";
+	public String help() {
+		return "unnickHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

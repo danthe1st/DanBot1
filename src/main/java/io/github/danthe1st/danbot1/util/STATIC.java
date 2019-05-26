@@ -42,10 +42,10 @@ import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
  */
 public final class STATIC {
 	private STATIC(){}
-	private static HashMap<Guild, String> prefixe=new HashMap<>();
+	private static HashMap<Guild, String> prefixes=new HashMap<>();
 	private static final String PREFIX="--";
 	
-	public static final String VERSION="v3.0 - Living";
+	public static final String VERSION="v3.1 - Living";
 	private static String settingsDir="./SERVER_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;
@@ -125,8 +125,6 @@ public final class STATIC {
 							msg.delete().queue();
 						} catch (IllegalArgumentException e) {
 						}
-						
-						
 					}
 				}, STATIC.INFO_TIMEOUT);
 			}
@@ -157,13 +155,9 @@ public final class STATIC {
 		
 		for (int i = 1; i < args.length; i++) {
 			Role role=null;
-			
 			try {
 				role=msg.getGuild().getRoleById(args[i]);
-			} catch (NumberFormatException e) {
-				
-			}
-			
+			} catch (NumberFormatException e) {}
 			if (role==null) {
 				List<Role> rolesLocal=msg.getGuild().getRolesByName(args[i], true);
 				if (!rolesLocal.isEmpty()) {
@@ -173,7 +167,6 @@ public final class STATIC {
 			if (role!=null) {
 				roles.add(role);
 			}
-			
 		}
 		return roles;
 	}
@@ -188,16 +181,11 @@ public final class STATIC {
 		for (User user : msg.getMentionedUsers()) {
 			members.add(msg.getGuild().getMember(user));
 		}
-		
 		for (int i = 1; i < args.length; i++) {
 			Member member=null;
-			
 			try {
 				member=msg.getGuild().getMemberById(args[i]);
-			} catch (NumberFormatException e) {
-				
-			}
-			
+			} catch (NumberFormatException e) {}
 			if (member==null) {
 				List<Member> membersLocal=msg.getGuild().getMembersByEffectiveName(args[i], true);
 				if (membersLocal.isEmpty()) {
@@ -219,7 +207,7 @@ public final class STATIC {
 	 * @return the Prefix of the Guild
 	 */
 	public static String getPrefix(final Guild g) {
-		final String prefix=prefixe.get(g);
+		final String prefix=prefixes.get(g);
 		if(prefix==null) {
 			return PREFIX;
 		}
@@ -255,7 +243,7 @@ public final class STATIC {
 	 * @param prefix the prefix to set
 	 */
 	public static void setPrefix(final Guild g, final String prefix) {
-		prefixe.put(g, prefix);
+		prefixes.put(g, prefix);
 		savePrefix(g);
 	}
 	/**
@@ -267,7 +255,7 @@ public final class STATIC {
 			new File(STATIC.getSettingsDir()+"/"+guild.getId()).mkdirs();
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/prefix.dat";
-		if(!prefixe.containsKey(guild)) {
+		if(!prefixes.containsKey(guild)) {
 			final File f=new File(saveFile);
 			f.delete();
 			return;
@@ -285,7 +273,7 @@ public final class STATIC {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		final String prefix=prefixe.get(guild);
+		final String prefix=prefixes.get(guild);
 		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(file);
@@ -309,7 +297,7 @@ public final class STATIC {
 			try {
 				final FileInputStream fis=new FileInputStream(file);
 				final ObjectInputStream ois=new ObjectInputStream(fis);
-				prefixe.put(g, (String) ois.readObject());
+				prefixes.put(g, (String) ois.readObject());
 				ois.close();
 			} catch (IOException|ClassNotFoundException e) {
 				e.printStackTrace();
@@ -358,12 +346,10 @@ public final class STATIC {
 	 * @return the URL of the {@link Invite} or <code>null</code> if there is no {@link Invite}
 	 */
 	public static String getActiveInvite(Guild g) {
-		
 		try {		
 			for (Invite inv : g.retrieveInvites().complete()) {
 				return inv.getUrl();
 			}
-			
 		} catch (InsufficientPermissionException e) {
 			try {
 				for (TextChannel channel : g.getTextChannels()) {
@@ -378,9 +364,7 @@ public final class STATIC {
 				}
 			} catch (InsufficientPermissionException e2) {
 			}
-			
 		}
-		
 		return "";
 	}
 	/**
@@ -416,7 +400,6 @@ public final class STATIC {
 				return channel.createInvite().setMaxAge(maxAge).complete().getUrl();
 			} catch (Exception e) {}
 		}
-		
 		for (VoiceChannel channel : g.getVoiceChannels()) {
 			try {
 				return channel.createInvite().setMaxAge(maxAge).complete().getUrl();
@@ -491,7 +474,7 @@ public final class STATIC {
 	}
 	/**
 	 * sets the Path for Files to save/load and creates it (if nessecery)
-	 * @param dir the Path for Botdata Files
+	 * @param directory the Path for Botdata Files
 	 */
 	public static void setSettingsDir(String directory) {
 		if (directory==null) {

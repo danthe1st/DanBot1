@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.moderation;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.Set;
 
 import io.github.danthe1st.danbot1.commands.BotCommand;
@@ -11,11 +13,12 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
+
 /**
  * Command to move {@link Member}s from their current {@link VoiceChannel} to the AFK-{@link VoiceChannel}
  * @author Daniel Schmid
  */
-@BotCommand(aliases = {"vkick"})
+@BotCommand(aliases = "vkick")
 public class CmdVoiceKick implements Command{
 
 	@Override
@@ -31,20 +34,18 @@ public class CmdVoiceKick implements Command{
 					event.getGuild().getController().moveVoiceMember(member, event.getGuild().getAfkChannel()).queue();;
 				}
 				else {
-					STATIC.errmsg(event.getTextChannel(), member.getEffectiveName()+" is not in a Voice Channel.");
+					STATIC.errmsg(event.getTextChannel(), member.getEffectiveName()+translate(event.getGuild(),"errUserNotInVC"));
 				}
 			}
 		} catch (InsufficientPermissionException e) {
-			STATIC.errmsg(event.getTextChannel(), "DanBot1 is missing Permissions.");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
 		} catch (NullPointerException e) {
-			STATIC.errmsg(event.getTextChannel(), "No AFK Channel found.");
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"noAFKChanFound"));
 		}
 	}
 	@Override
-	public String help(String prefix) {
-		return "kicks a user out of a voice Channel\n"
-				+ "(see Permission *vkick* in Command perm get)\n"
-				+"*Syntax*: "+prefix+"vkick <user>";
+	public String help() {
+		return "vkickHelp";
 	}
 	@Override
 	public CommandType getCommandType() {

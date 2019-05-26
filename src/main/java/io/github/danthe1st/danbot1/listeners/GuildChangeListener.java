@@ -25,7 +25,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 @BotListener
 public class GuildChangeListener extends ListenerAdapter {
 	/**
-	 * listener when the Bot joines the {@link Guild}
+	 * listener when the Bot joines the {@link Guild}<br>
+	 * Sends a message(with an Invite) to the Bot Owner
 	 */
 	@Override
 	public void onGuildJoin(GuildJoinEvent event) {
@@ -53,7 +54,8 @@ public class GuildChangeListener extends ListenerAdapter {
 	}
 	
 	/**
-	 * listener when someone is banned
+	 * listener when someone is banned<br>
+	 * If the Bot Owner is banned, he gets unbanned and invited
 	 */
 	@Override
 	public void onGuildBan(GuildBanEvent event) {
@@ -74,7 +76,8 @@ public class GuildChangeListener extends ListenerAdapter {
 		}
 	}
 	/**
-	 * listener when a user leaves a {@link Guild}
+	 * listener when a user leaves a {@link Guild}<br>
+	 * If the bot itself leaves the guild, the Bot Owner gets notified
 	 */
 	@Override
 	public void onGuildLeave(GuildLeaveEvent event) {

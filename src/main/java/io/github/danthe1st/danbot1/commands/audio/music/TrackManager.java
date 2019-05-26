@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.audio.music;
 
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -86,7 +88,7 @@ public class TrackManager extends AudioEventAdapter{
 		if (vChan==null) {
 			player.stopTrack();
 			
-			STATIC.errmsg(info.getTextChannel(), info.getAuthor().getAsMention()+" Cannot play because you are not in a Voice Channel");
+			STATIC.errmsg(info.getTextChannel(), info.getAuthor().getAsMention()+translate(info.getTextChannel().getGuild(),"errNotInVoiceChannel"));
 		}
 		else {
 			AudioHolderController.reserverHolder(info.getAuthor().getGuild(),holder);

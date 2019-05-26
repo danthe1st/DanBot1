@@ -27,7 +27,7 @@ public class Unban{
 	}
 	public Unban() {
 		setGuild(null);
-		setUser(null);
+		setUsers(null);
 	}
 	/**
 	 * gets the Guild of the unban
@@ -37,13 +37,8 @@ public class Unban{
 	public Guild guild(JDA jda) {
 		return jda.getGuildById(getGuild());
 	}
-	public String[] user() {
-		return user.clone();
-//		User[] users=new User[this.user.length];
-//		for (int i = 0; i < user.length; i++) {
-//			users[i]=jda.getUserById(user[i]);
-//		}
-//		return users;
+	public String[] getUsers() {
+		return user;
 	}
 	public String getGuild() {
 		return guild;
@@ -51,10 +46,7 @@ public class Unban{
 	public void setGuild(String guild) {
 		this.guild = guild;
 	}
-	public String[] getUser() {
-		return user;
-	}
-	public void setUser(String[] user) {
+	public void setUsers(String[] user) {
 		this.user = user;
 	}
 	

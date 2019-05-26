@@ -1,8 +1,11 @@
 package io.github.danthe1st.danbot1.commands.admin;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +36,9 @@ public class CmdBlacklist implements Command{
 	}
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
+		Guild g=event.getGuild();
         if (args.length==0) {
-			StringBuilder sb=new StringBuilder("Blacklisted Users:\n");
+			StringBuilder sb=new StringBuilder(translate(g, "UsersBlacklisted")+":\n");
 			for (String string : blacklist) {
 				if (event.getJDA().getUserById(string)==null) {
 					sb.append(string);
@@ -75,18 +79,15 @@ public class CmdBlacklist implements Command{
 			blacklist.remove(user.getId());
 			rembuilder.append(user+"\n");
 		}
-        STATIC.msg(event.getTextChannel(), "added "+toAdd.size()+" and removed "+toRemove.size()+" Users from the Blacklist\n"
-        		+ "users **added**:\n"
-        		+ addbuilder.toString()
-        		+ "users **removed:\n**"
-        		+ rembuilder.toString());
+        STATIC.msg(event.getTextChannel(), 
+        		String.format(translate(g,"addedRemovedUsersFromBlacklist"),
+        				toAdd.size(),toRemove.size(),addbuilder.toString(),rembuilder.toString()));
         saveBlacklist();
 	}
 
 	@Override
-	public String help(String prefix) {
-		return "Command to prevent users from using the bot **globally**\n"
-				+ "**CAN ONLY BE USED BY *the bot-admin***";
+	public String help() {
+		return "blacklistHelp";
 	}
 	@Override
 	public CommandType getCommandType() {
@@ -102,7 +103,10 @@ public class CmdBlacklist implements Command{
 	}
 	
 	
-	
+	/**
+	 * loads the blacklist data
+	 * @param jda the JDA instance
+	 */
 	public static void loadBlacklist(JDA jda) {
 		try {
 			final File file=new File(STATIC.getSettingsDir()+"/blacklist.xml");
@@ -116,6 +120,9 @@ public class CmdBlacklist implements Command{
 		} catch (JAXBException e) {
 		}
 	}
+	/**
+	 * saves the blacklist data
+	 */
 	private static void saveBlacklist() {
 		File file=new File(STATIC.getSettingsDir()+"/blacklist.xml");
 		if (!file.exists()) {
