@@ -33,11 +33,13 @@ public class CmdHelp implements Command{
 		});
 		EmbedBuilder eb=new EmbedBuilder();
 		eb.setDescription(translate(event.getGuild(),"helpTitle"));
-		commandTypes.forEach((typeName,commands)->{
-			eb.appendDescription("`"+translate(event.getGuild(),"cmdType_"+typeName.name())+"`:\n")
-			.setColor(Color.GREEN);
+		commandTypes.forEach((commandType,commands)->{
+			if (commandType!=null) {
+				eb.appendDescription("`"+translate(event.getGuild(),"cmdType_"+commandType.name())+"`:\n")
+				.setColor(Color.GREEN);
+			}
 			commands.forEach((name,command)->{
-				if (command.getCommandType()!=null) {
+				if (commandType!=null) {
 					EmbedBuilder backUp=new EmbedBuilder(eb);
 					String help="**"+STATIC.getPrefix(event.getGuild()) +name+"**:\n"+LanguageController.translate(event.getGuild(), command.help()).replace("--",STATIC.getPrefixEscaped(event.getGuild()))+"\n\n";
 					try {
@@ -54,8 +56,10 @@ public class CmdHelp implements Command{
 					}
 				}
 			});
-			event.getAuthor().openPrivateChannel().complete().sendMessage(eb.build()).queue();
-			eb.clear();
+			if (!eb.isEmpty()) {
+				event.getAuthor().openPrivateChannel().complete().sendMessage(eb.build()).queue();
+				eb.clear();
+			}
 		});
 	}
 	@Override
