@@ -39,7 +39,7 @@ public class CmdHelp implements Command{
 				.setColor(Color.GREEN);
 			}
 			commands.forEach((name,command)->{
-				if (commandType!=null) {
+				if (commandType!=null&&command.help()!=null) {
 					EmbedBuilder backUp=new EmbedBuilder(eb);
 					String help="**"+STATIC.getPrefix(event.getGuild()) +name+"**:\n"+LanguageController.translate(event.getGuild(), command.help()).replace("--",STATIC.getPrefixEscaped(event.getGuild()))+"\n\n";
 					try {

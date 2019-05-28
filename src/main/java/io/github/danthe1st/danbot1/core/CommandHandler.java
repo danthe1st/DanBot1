@@ -29,7 +29,7 @@ public class CommandHandler {
 			if(save) {
 				try {
 					commands.get(cmd.invoke.toLowerCase()).action(cmd.args, cmd.event);
-				} catch (Exception e) {
+				} catch (Exception e) {e.printStackTrace();
 					save=false;
 				}
 			}
