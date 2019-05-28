@@ -104,7 +104,7 @@ public class STATICTest {
 		sb.append(jda.getSelfUser().getId());
 		sb.append(" ");
 		sb.append(jda.getUserById(TestConfig.ADMIN_ID).getName());
-		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.TESTING_CHANNEL),(message)->STATIC.getRolesFromMsg(message).isEmpty());
+		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.TESTING_CHANNEL),(message)->STATIC.getRolesFromMsg(message).isEmpty()&&message.getMentionedUsers().isEmpty());
 		assertEquals(new HashSet<>(Arrays.asList(g.getMember(jda.getSelfUser()),g.getMemberById(TestConfig.ADMIN_ID))), STATIC.getMembersFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
 		String msgContent="ufshuifgbs dsfhui ghuifg sfhdgu dfhs ug hdfs gusd gdhu ufd";
 		assertEquals(Collections.emptySet(), STATIC.getMembersFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail

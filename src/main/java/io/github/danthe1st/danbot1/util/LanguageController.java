@@ -14,9 +14,12 @@ import net.dv8tion.jda.api.entities.Guild;
  */
 public class LanguageController {
 	private static final String baseName="languages.DanBot1";
-	private static final ResourceBundle DEFAULT_BUNDLE=ResourceBundle.getBundle(baseName,Locale.ENGLISH);
+	private static final ResourceBundle DEFAULT_BUNDLE=ResourceBundle.getBundle(baseName);
 	private static Map<Guild, ResourceBundle> bundles=new HashMap<>();
-	private static ResourceBundle getResourceBundle(Guild g) {
+	static {
+		Locale.setDefault(Locale.ENGLISH);
+	}
+	public static ResourceBundle getResourceBundle(Guild g) {
 		if (g!=null&&bundles.containsKey(g)) {
 			return bundles.get(g);
 		}else {
@@ -26,7 +29,7 @@ public class LanguageController {
 	public static Locale getLocale(Guild g) {
 		return getResourceBundle(g).getLocale();
 	}
-	public static void setLocale(Guild g,Locale locale) {//TODO command for editing Locale per Guild
+	public static void setLocale(Guild g,Locale locale) {
 		bundles.put(g, ResourceBundle.getBundle(baseName,locale));
 	}
 	public static String translate(Guild g,String s) {
