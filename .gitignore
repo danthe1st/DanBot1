@@ -227,5 +227,3 @@ SERVER_SETTINGS/
 /DanBot1/
 #javadoc
 javadoc.xml
-#class with Constants: "TOKEN" (Bot Token), "ADMIN_ID" (Id of the Bot Admin), "ADMIN_ID_SECONDARY" (id of the secondary Bot Admin (for MainTest)), "TESTING_CHANNEL" (channel for test Messages...), "TESTING_GUILD" (Guild for test Messages...), "GUILD_OWNER_ROLE" (a Role named Owner (for the Permission System)
-src/test/java/io/github/danthe1st/danbot1/TestConfig.java

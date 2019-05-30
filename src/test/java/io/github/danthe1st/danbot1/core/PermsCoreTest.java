@@ -51,8 +51,8 @@ public class PermsCoreTest {
 	}
 	private void checkPermission(String permName) {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
-		TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
+		Guild g=jda.getGuildById(TestConfig.getGuild());
+		TextChannel tc=jda.getTextChannelById(TestConfig.getChannel());
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		PermsCore.setPerm(g, permName, new String[] {"*"});
 		assertTrue(PermsCore.check(getSomeMsgRescEvent(jda, getMessage(tc, false)), permName,false));
@@ -78,7 +78,7 @@ public class PermsCoreTest {
 		testGetSetRemovePerm("");
 	}
 	private void testGetSetRemovePerm(String permName) {
-		Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=Main.getJda().getGuildById(TestConfig.getGuild());
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		assertTrue(Arrays.equals(new String[0], PermsCore.getPerm(g, permName)));
 		PermsCore.setPerm(g, permName, new String[0]);
@@ -96,7 +96,7 @@ public class PermsCoreTest {
 	}
 	@Test
 	public void testResetPerms() {
-		final Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
+		final Guild g=Main.getJda().getGuildById(TestConfig.getGuild());
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		PermsCore.resetPerms(g);
 		testAllEquals(PermsCore.getStdPermsAsIds(g), PermsCore.getPerms(g));
@@ -108,7 +108,7 @@ public class PermsCoreTest {
 	}
 	@Test
 	public void testChRole() {
-		Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=Main.getJda().getGuildById(TestConfig.getGuild());
 		Map<String, String[]> bkpPerms=new HashMap<>(PermsCore.getPerms(g));
 		PermsCore.chRole(g, "Admin", "Owner");
 		bkpPerms.forEach((k,v)->{
@@ -133,15 +133,15 @@ public class PermsCoreTest {
 	
 	@Test
 	public void testgetRoleIDFromName() {
-		assertEquals("*", PermsCore.getRoleIDFromName("*", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
-		assertNull(PermsCore.getRoleIDFromName(null, Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
-		assertNull(PermsCore.getRoleIDFromName("", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
-		assertNull(PermsCore.getRoleIDFromName("afugshusdfhfudsgkbusdfhufsuöhf", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
-		assertEquals(TestConfig.GUILD_OWNER_ROLE, PermsCore.getRoleIDFromName("Owner", Main.getJda().getGuildById(TestConfig.TESTING_GUILD)));
+		assertEquals("*", PermsCore.getRoleIDFromName("*", Main.getJda().getGuildById(TestConfig.getGuild())));
+		assertNull(PermsCore.getRoleIDFromName(null, Main.getJda().getGuildById(TestConfig.getGuild())));
+		assertNull(PermsCore.getRoleIDFromName("", Main.getJda().getGuildById(TestConfig.getGuild())));
+		assertNull(PermsCore.getRoleIDFromName("afugshusdfhfudsgkbusdfhufsuöhf", Main.getJda().getGuildById(TestConfig.getGuild())));
+		assertEquals(TestConfig.getGuildOwnerRole(), PermsCore.getRoleIDFromName("Owner", Main.getJda().getGuildById(TestConfig.getGuild())));
 	}
 	@Test
 	public void testgetRoleIDsFromNames() {
-		assertTrue(Arrays.equals(new String[] {"*",TestConfig.GUILD_OWNER_ROLE}, PermsCore.getRoleIDsFromNames(new String[] {"*",null,"","afugshusdfhfudsgkbusdfhufsuöhf","Owner"}, Main.getJda().getGuildById(TestConfig.TESTING_GUILD))));
+		assertTrue(Arrays.equals(new String[] {"*",TestConfig.getGuildOwnerRole()}, PermsCore.getRoleIDsFromNames(new String[] {"*",null,"","afugshusdfhfudsgkbusdfhufsuöhf","Owner"}, Main.getJda().getGuildById(TestConfig.getGuild()))));
 	}
 	private void testAllEquals(Map<String, String[]> expected,Map<String, String[]> real) {
 		real.forEach((k,v)->{
@@ -150,7 +150,7 @@ public class PermsCoreTest {
 	}
 	@Test
 	public void testGetStdPermsAsIdsWithResetPerms() {
-		Guild g=Main.getJda().getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=Main.getJda().getGuildById(TestConfig.getGuild());
 		Map<String, String[]> bkpPerms=PermsCore.getPerms(g);
 		final Map<String, String[]> stdPerms=PermsCore.getStdPermsAsIds(g);
 		PermsCore.resetPerms(g);
