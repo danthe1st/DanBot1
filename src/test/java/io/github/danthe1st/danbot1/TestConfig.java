@@ -16,8 +16,8 @@ public class TestConfig {
 			
 		}
 		System.getenv().forEach((k,v)->{
-			if(k.startsWith("DanBot1.testProp.")) {
-				props.setProperty(k.substring("DanBot1.testProp.".length()),v);
+			if(k.startsWith("DanBot1_testProp_")) {
+				props.setProperty(k.substring("DanBot1_testProp_".length()),v);
 			}
 		});
 	}
