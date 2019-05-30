@@ -37,11 +37,11 @@ public class MainTest {
 	private static void init(){
 		Main.main(new String[] {
 				"game=Unit_testing",
-				"token="+TestConfig.TOKEN,
-				"admin="+TestConfig.ADMIN_ID,
+				"token="+TestConfig.getToken(),
+				"admin="+TestConfig.getAdminID(),
 				"status=idle",
 				"noevalsecurity",
-				"settings="+TestConfig.SETTINGS_DIR
+				"settings="+TestConfig.getTestingSettingDir()
 		});
 		jda=Main.getJda();
 	}
@@ -51,11 +51,11 @@ public class MainTest {
 			Main.getJda().shutdown();
 			Main.main(new String[] {
 					"game=Unit_testing",
-					"token="+TestConfig.TOKEN,
-					"admin="+TestConfig.ADMIN_ID_SECONDARY,
+					"token="+TestConfig.getToken(),
+					"admin="+TestConfig.getSecondaryAdminID(),
 					"status=idle",
 					"noevalsecurity",
-					"settings="+TestConfig.SETTINGS_DIR
+					"settings="+TestConfig.getTestingSettingDir()
 			});
 			assertEquals("362282283048239104", Main.getAdminId());
 			assertEquals(OnlineStatus.IDLE, jda.getGuilds().get(0).getMember(jda.getSelfUser()).getOnlineStatus());

@@ -47,7 +47,7 @@ public class STATICTest {
 	public void testSendMessage() throws InterruptedException {
 		assertTimeout(Duration.ofMillis(STATIC.INFO_TIMEOUT*4), () -> {
 			JDA jda=Main.getJda();
-			TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
+			TextChannel tc=jda.getTextChannelById(TestConfig.getChannel());
 			String msgContent="Hello, this is a Unit-Test Message that should be deleted automatically by the Unit-Test";
 			STATIC.msg(tc, msgContent);
 			Thread.sleep(STATIC.INFO_TIMEOUT*2);
@@ -74,7 +74,7 @@ public class STATICTest {
 	public void testSendErrorMessage() throws InterruptedException {
 		assertTimeout(Duration.ofMillis(STATIC.INFO_TIMEOUT*4), () -> {
 			JDA jda=Main.getJda();
-			TextChannel tc=jda.getTextChannelById(TestConfig.TESTING_CHANNEL);
+			TextChannel tc=jda.getTextChannelById(TestConfig.getChannel());
 			String msgContent="Hello, this is a Unit-Test error Message that should be deleted automatically by the System";
 			STATIC.errmsg(tc, msgContent);
 			Thread.sleep(STATIC.INFO_TIMEOUT*2);
@@ -98,35 +98,35 @@ public class STATICTest {
 	@Test
 	public void testGetMembersFromMsg() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=jda.getGuildById(TestConfig.getGuild());
 		StringBuilder sb=new StringBuilder();
 		sb.append("Hello ");//some String
 		sb.append(jda.getSelfUser().getId());
 		sb.append(" ");
-		sb.append(jda.getUserById(TestConfig.ADMIN_ID).getName());
-		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.TESTING_CHANNEL),(message)->STATIC.getRolesFromMsg(message).isEmpty()&&message.getMentionedUsers().isEmpty());
-		assertEquals(new HashSet<>(Arrays.asList(g.getMember(jda.getSelfUser()),g.getMemberById(TestConfig.ADMIN_ID))), STATIC.getMembersFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
+		sb.append(jda.getUserById(TestConfig.getAdminID()).getName());
+		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.getChannel()),(message)->STATIC.getRolesFromMsg(message).isEmpty()&&message.getMentionedUsers().isEmpty());
+		assertEquals(new HashSet<>(Arrays.asList(g.getMember(jda.getSelfUser()),g.getMemberById(TestConfig.getAdminID()))), STATIC.getMembersFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
 		String msgContent="ufshuifgbs dsfhui ghuifg sfhdgu dfhs ug hdfs gusd gdhu ufd";
 		assertEquals(Collections.emptySet(), STATIC.getMembersFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail
 	}
 	@Test
 	public void testGetRolesFromMsg() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=jda.getGuildById(TestConfig.getGuild());
 		StringBuilder sb=new StringBuilder();
 		sb.append("Hello ");//some String
 		sb.append(g.getMember(jda.getSelfUser()).getRoles().get(0).getId());
 		sb.append(" ");
-		sb.append(g.getMemberById(TestConfig.ADMIN_ID).getRoles().get(0).getName());
-		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.TESTING_CHANNEL));
-		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()).getRoles().get(0),g.getMemberById(TestConfig.ADMIN_ID).getRoles().get(0)), STATIC.getRolesFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
+		sb.append(g.getMemberById(TestConfig.getAdminID()).getRoles().get(0).getName());
+		Message msg=TestUtils.getMessage(jda.getTextChannelById(TestConfig.getChannel()));
+		assertEquals(Arrays.asList(g.getMember(jda.getSelfUser()).getRoles().get(0),g.getMemberById(TestConfig.getAdminID()).getRoles().get(0)), STATIC.getRolesFromMsg(new SudoMessage(msg, sb.toString(), sb.toString(), sb.toString(), g.getMember(jda.getSelfUser()))));
 		String msgContent="ufshuifgbs dsfhui ghuifg sfhdgu dfhs ug hdfs gusd gdhu ufd";
 		assertEquals(Collections.emptyList(), STATIC.getRolesFromMsg(new SudoMessage(msg, msgContent,msgContent,msgContent, g.getMember(jda.getSelfUser()))));//nobody should have these Roles(else the Unit Test should fail
 	}
 	@Test
 	public void testPrefix() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=jda.getGuildById(TestConfig.getGuild());
 		String bkpPrefix=STATIC.getPrefix(g);
 		assertNotNull(bkpPrefix);
 		STATIC.setPrefix(g, "**");
@@ -140,7 +140,7 @@ public class STATICTest {
 	@Test
 	public void testGetCmdLogger() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=jda.getGuildById(TestConfig.getGuild());
 		String bkpCmdLogger=STATIC.getCmdLogger(g);
 		assertNotNull(bkpCmdLogger);
 		STATIC.setCmdLogger(g, "Hello World");
@@ -150,7 +150,7 @@ public class STATICTest {
 	@Test
 	public void testGetServerData() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=jda.getGuildById(TestConfig.getGuild());
 		String gData=STATIC.getServerData(g);
 		assertTrue(gData.contains(g.getName()));
 		assertTrue(gData.contains(g.getId()));
@@ -158,18 +158,18 @@ public class STATICTest {
 	@Test
 	public void testCreateInvite() {
 		JDA jda=Main.getJda();
-		Guild g=jda.getGuildById(TestConfig.TESTING_GUILD);
+		Guild g=jda.getGuildById(TestConfig.getGuild());
 		assertNotNull(STATIC.createInvite(g));
 	}
 	@Test
 	public void testSetGetSettingsDir() {
 		assertTrue(new File(STATIC.getSettingsDir()).isDirectory());
-		assertEquals(TestConfig.SETTINGS_DIR, STATIC.getSettingsDir());
+		assertEquals(TestConfig.getTestingSettingDir(), STATIC.getSettingsDir());
 		new File(STATIC.getSettingsDir()).delete();
 		assertTrue(new File(STATIC.getSettingsDir()).isDirectory());
 		String testFileName="__UnitTest__autodelete__";
 		STATIC.setSettingsDir(testFileName);
 		assertTrue(new File(testFileName).delete());
-		STATIC.setSettingsDir(TestConfig.SETTINGS_DIR);
+		STATIC.setSettingsDir(TestConfig.getTestingSettingDir());
 	}
 }
