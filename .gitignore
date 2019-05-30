@@ -227,3 +227,6 @@ SERVER_SETTINGS/
 /DanBot1/
 #javadoc
 javadoc.xml
+
+# specifics
+src/test/resources/GuildSpecific.properties
