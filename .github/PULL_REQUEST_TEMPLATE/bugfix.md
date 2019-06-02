@@ -1,8 +1,8 @@
 ## Requirements for Contributing
 
-* The changed and/or added Code should be documented and understandable.
-* The changed and/or added Code should follow the Code Conventions.
-* This Pull Request fixes one or more bugs.
+* [ ] The changed and/or added Code should be documented and understandable.
+* [ ] The changed and/or added Code should follow the Code Conventions.
+* [ ] This Pull Request fixes one or more bugs.
 
 ## Description of the bug(s) fixed
 
