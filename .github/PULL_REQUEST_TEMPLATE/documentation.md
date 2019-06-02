@@ -1,8 +1,8 @@
 ## Requirements for Contributing
 
-* The changed and/or added Code should be documented and understandable.
-* The changed and/or added Code should follow the Code Conventions.
-* This Pull Request does only provide additional documentation like Inline-Code-Documentation, JavaDocs or Markdown files.
+* [ ] The changed and/or added Code should be documented and understandable.
+* [ ] The changed and/or added Code should follow the Code Conventions.
+* [ ] This Pull Request does only provide additional documentation like Inline-Code-Documentation, JavaDocs or Markdown files.
 
 ## Description of the Changes
 
