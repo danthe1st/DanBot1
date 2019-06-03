@@ -26,9 +26,13 @@ Program your own Plugins:
 * You can run the Bot by executing io.github.danthe1st.danbot1.core.Main.main(String[] args);
 * you can export the plugin as a normal JAR File or use a maven export(mvn package), but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
 
-used Libraries
+used Libraries:
 * [unirest-java](https://github.com/Kong/unirest-java/)
 * [JDA](https://github.com/DV8FromTheWorld/JDA/)
 * [lavaplayer](https://github.com/sedmelluq/lavaplayer/)
 * [slf4j](https://github.com/qos-ch/slf4j/)
 * [reflections](https://github.com/ronmamo/reflections)
+
+Dev-Libraries(used for testing/used in development):
+* JUnit
+* Spotbugs

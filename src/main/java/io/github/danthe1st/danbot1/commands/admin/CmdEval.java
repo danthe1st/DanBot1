@@ -44,9 +44,9 @@ public class CmdEval implements Command{
         se.put("guild", event.getGuild());
         se.put("channel", event.getChannel());
        
-        String script="";
+        StringBuilder scriptBuilder=new StringBuilder();
         for (String string : args) {
-			script+=string+" ";
+			scriptBuilder.append(string).append(" ");
 		}
         Object result=null;
         try {
@@ -59,7 +59,7 @@ public class CmdEval implements Command{
 						se.put(LATEST_EXCEPTION_KEY_NAME, e);
 					}
 					return null;
-				}, script);
+				}, scriptBuilder.toString());
     		}
 			
 		} catch (Throwable e) {

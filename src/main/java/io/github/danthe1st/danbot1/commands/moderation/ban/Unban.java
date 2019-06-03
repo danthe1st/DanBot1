@@ -1,5 +1,7 @@
 package io.github.danthe1st.danbot1.commands.moderation.ban;
 
+import java.util.Arrays;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
@@ -27,7 +29,7 @@ public class Unban{
 	}
 	public Unban() {
 		setGuild(null);
-		setUsers(null);
+		setUsers(new String[0]);
 	}
 	/**
 	 * gets the Guild of the unban
@@ -38,7 +40,7 @@ public class Unban{
 		return jda.getGuildById(getGuild());
 	}
 	public String[] getUsers() {
-		return user;
+		return Arrays.copyOf(user,user.length);
 	}
 	public String getGuild() {
 		return guild;
@@ -46,8 +48,8 @@ public class Unban{
 	public void setGuild(String guild) {
 		this.guild = guild;
 	}
-	public void setUsers(String[] user) {
-		this.user = user;
+	public void setUsers(String[] users) {
+		this.user = users.clone();
 	}
 	
 }

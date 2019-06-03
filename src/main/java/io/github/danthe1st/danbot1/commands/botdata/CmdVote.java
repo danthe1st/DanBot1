@@ -33,11 +33,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @author Daniel Schmid
  */
 @BotCommand(aliases = {"v","vote"})
-public class CmdVote implements Command, Serializable{
-
-
-	private static final long serialVersionUID = 1L;
-
+public class CmdVote implements Command,Serializable{
+	private static final long serialVersionUID = -1L;
 	private static HashMap<Guild, Poll> polls=new HashMap<>();
 	private static final String[] EMOTI= {":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":keycap_ten:"};
 	/**
@@ -49,7 +46,7 @@ public class CmdVote implements Command, Serializable{
 	 *  a number how often every answer was taken
 	 * @author Daniel Schmid
 	 */
-	private class Poll implements Serializable{
+	private static class Poll implements Serializable{
 		private static final long serialVersionUID = 1L;
 		private final String creator;
 		private final String heading;
@@ -174,7 +171,9 @@ public class CmdVote implements Command, Serializable{
 		if(!polls.containsKey(guild)) {
 			final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/vote.dat";
 			final File f=new File(saveFile);
-			f.delete();
+			if(!f.delete()&&f.exists()) {
+				System.err.println("cannot delete file: "+f.getAbsolutePath());
+			}
 			return;
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/vote.dat";
@@ -268,13 +267,20 @@ public class CmdVote implements Command, Serializable{
 		}
 		polls.forEach((guild, poll)->{
 			final File path=new File(STATIC.getSettingsDir()+"/"+guild.getId()+"/");
+			boolean exists;
 			if(!path.exists()) {
-				path.mkdirs();
+				exists=path.mkdirs();
+			}else {
+				exists=true;
 			}
-			try {
-				savePoll(guild);
-			} catch (final IOException e) {
-				e.printStackTrace();
+			if (exists) {
+				System.err.println("cannot create directory: "+path.getAbsolutePath());
+			}else {
+				try {
+					savePoll(guild);
+				} catch (final IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}

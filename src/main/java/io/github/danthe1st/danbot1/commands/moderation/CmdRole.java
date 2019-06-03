@@ -37,7 +37,10 @@ public class CmdRole implements Command{
 				}
 				
 			}
-			event.getGuild().getController().addRolesToMember(event.getGuild().getMember(event.getAuthor()), roles).queue();
+			Member member=event.getGuild().getMember(event.getAuthor());
+			for (Role role : roles) {
+				event.getGuild().addRoleToMember(member, role).queue();
+			}
 			return;
 		}
 		if (args.length<2) {
@@ -52,7 +55,10 @@ public class CmdRole implements Command{
 		if (members.isEmpty()) {
 			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errUserNotFound")+args[1]);
 		}
-		event.getGuild().getController().addRolesToMember(members.get(0), roles).queue();
+		Member member=members.get(0);
+		for (Role role : roles) {
+			event.getGuild().addRoleToMember(member, role).queue();
+		}
 	}
 	public String help() {
 		return "roleHelp";

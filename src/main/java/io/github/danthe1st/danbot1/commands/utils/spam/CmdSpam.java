@@ -36,17 +36,17 @@ public class CmdSpam implements Command {
 				STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 				return;
 			}
-			String spamMsg=args[1];
+			StringBuilder spamMsg=new StringBuilder(args[1]);
 			for (int i = 2; i < args.length; i++) {
-				spamMsg+=" ";
-				spamMsg+=args[i];
+				spamMsg.append(" ");
+				spamMsg.append(args[i]);
 			}
 			
 			if (count>MAX_MSG_NUMBER_PER_SPAM) {
 				STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"spamLimitExceed"),MAX_MSG_NUMBER_PER_SPAM));
 				return;
 			}
-			MsgSpammer.addMsgSpam(count, event.getTextChannel(), spamMsg,event.getAuthor());
+			MsgSpammer.addMsgSpam(count, event.getTextChannel(), spamMsg.toString(),event.getAuthor());
 		} catch (NumberFormatException e) {
 			STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"errArgNoInt"), 1));
 		}

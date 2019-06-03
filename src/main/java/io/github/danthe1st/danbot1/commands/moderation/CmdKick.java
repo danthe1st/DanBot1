@@ -32,15 +32,15 @@ public class CmdKick implements Command{
 			List<Member> users= event.getGuild().getMembersByName(args[0], true);
 			String reason=null;
 			if (args.length>1) {
-				reason="";
+				StringBuilder reasonBuilder=new StringBuilder();
 				for (int i = 1; i < args.length; i++) {
-					reason=reason+args[i];
-					
+					reasonBuilder.append(args[i]);
 				}
+				reason=reasonBuilder.toString();
 			}
 			for (Member user : users) {
 				try {
-					event.getGuild().getController().kick(user, reason).queue();
+					event.getGuild().kick(user, reason).queue();
 				} catch (Exception e) {
 					STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotKick")+user.getNickname());
 				}

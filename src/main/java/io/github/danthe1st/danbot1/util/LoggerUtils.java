@@ -7,9 +7,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.io.output.FileWriterWithEncoding;
+
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -42,7 +43,9 @@ public class LoggerUtils extends ListenerAdapter {
     public static void logCommand(MessageReceivedEvent event) {
 		File path=new File(STATIC.getSettingsDir() +"/"+event.getGuild().getId());
 		if (!path.exists()) {
-			path.mkdirs();
+			if(!path.mkdirs()) {
+				System.err.println("cannot create directory: "+path.getAbsolutePath());
+			}
 		}
 		String s=String.format( "%s '%s' executed by %s in Channel %s (in Guild %s)", getCurrentSystemTime(), event.getMessage().getContentDisplay(), event.getMessage().getAuthor().getName(), event.getTextChannel().getName(),event.getGuild().getName());
 		//server-local Log-File
@@ -63,9 +66,11 @@ public class LoggerUtils extends ListenerAdapter {
     	try {
 			File file=new File(filepath);
 			if (!file.exists()) {
-				file.createNewFile();
+				if(!file.createNewFile()) {
+					throw new IOException("cannot create File: "+file.getAbsolutePath());
+				}
 			}
-            try(BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))){
+            try(BufferedWriter bw = new BufferedWriter(new FileWriterWithEncoding(file,java.nio.charset.StandardCharsets.UTF_8,true))){
             	for (String string : text) {
                 	bw.write(string);
                     bw.newLine();

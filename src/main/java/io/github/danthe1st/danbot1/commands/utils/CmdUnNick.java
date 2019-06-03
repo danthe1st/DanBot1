@@ -28,7 +28,7 @@ public class CmdUnNick implements Command{
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (args.length==0) {
 			try {
-				event.getGuild().getController().setNickname(event.getGuild().getMember(event.getAuthor()), null).queue();
+				event.getGuild().modifyNickname(event.getGuild().getMember(event.getAuthor()), null).queue();
 			} catch (InsufficientPermissionException e) {
 				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
 			}
@@ -48,7 +48,7 @@ public class CmdUnNick implements Command{
 		}
 		for (Member member : toNick) {
 			try {
-				event.getGuild().getController().setNickname(member, null).queue();
+				event.getGuild().modifyNickname(member, null).queue();
 			} catch (InsufficientPermissionException e) {
 				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
 			}

@@ -25,7 +25,7 @@ public class CmdHelp implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		Map<CommandType, Map<String,Command>> commandTypes=new HashMap<>();
-		CommandHandler.commands.forEach((k,v)->{
+		CommandHandler.getCommands().forEach((k,v)->{
 			if (!commandTypes.containsKey(v.getCommandType())) {
 				commandTypes.put(v.getCommandType(), new HashMap<>());
 			}

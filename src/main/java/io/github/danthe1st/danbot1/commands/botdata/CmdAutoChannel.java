@@ -101,7 +101,7 @@ public class CmdAutoChannel implements Command, Serializable {
 		final StringBuilder sb=new StringBuilder().append(translate(tc.getGuild(),"listAutoChannelsTitle"));
 		autoChannels.keySet().stream()
 			.filter(vc->autoChannels.get(vc).equals(tc.getGuild()))
-			.forEach(vc->sb.append(String.format(":white_small_square: \'%s\' *(%s)\n", vc.getName(), vc.getId())));
+			.forEach(vc->sb.append(String.format(":white_small_square: \'%s\' *(%s)%n", vc.getName(), vc.getId())));
 		
 		STATIC.msg(tc, sb.toString());
 	}

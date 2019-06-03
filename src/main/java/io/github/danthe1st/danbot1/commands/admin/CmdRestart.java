@@ -4,6 +4,7 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import java.io.File;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
@@ -17,6 +18,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @author Daniel Schmid
  */
 @BotCommand(aliases = "restart")
+@SuppressFBWarnings(
+		value="DM_EXIT", 
+	    justification="I want to exit when restarting the program")
 public class CmdRestart implements Command{
 	private static String[] startfiles=new String[] {"DanBot1.bat","DanBot1.sh"};
 	@Override
@@ -35,7 +39,6 @@ public class CmdRestart implements Command{
 				System.out.println("restarting with following: "+restartCommand);
 				Runtime.getRuntime().exec(restartCommand);
 				System.exit(0);
-		            
 			} catch (Exception e) {
 				System.out.println("Cannot restart this way.");
 			}
@@ -65,12 +68,11 @@ public class CmdRestart implements Command{
 			}
 			currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 			if (currentJar.getName().endsWith(".jar")) {
-				command= "java -jar "+currentJar.getAbsolutePath();
+				StringBuilder commandBuilder=new StringBuilder("java -jar ").append(currentJar.getAbsolutePath());
 				for (String arg : Main.getArgs()) {
-					command+=" "+arg;
-					
+					commandBuilder.append(" ").append(arg);
 				}
-				return command;
+				return commandBuilder.toString();
 			}
 			
 			

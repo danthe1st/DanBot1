@@ -33,16 +33,16 @@ public class CmdBan implements Command{
 			int time=0;
 			int argCount=1;
 			if (args.length>argCount) {
-				reason="";
-				for (int i = argCount; i < args.length; i++) {
-					reason=reason+args[i];
-					
+				StringBuilder reasonBuilder=new StringBuilder();
+				for (int i = 1; i < args.length; i++) {
+					reasonBuilder.append(args[i]);
 				}
+				reason=reasonBuilder.toString();
 			}
 			for (Member user : users) {
 				
 				try {
-					event.getGuild().getController().ban(user,time, reason).queue();
+					event.getGuild().ban(user,time, reason).queue();
 				} catch (Exception e) {
 					STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotBan")+user.getNickname());
 				}

@@ -234,11 +234,11 @@ public class PermsCore {
 			PermsCore.perms.put(g.getId(), getStdPermsAsIds(g));
 			return;
 		}
-		for (String permName : STD_PERMS.keySet()) {
+		STD_PERMS.forEach((permName,perm)->{
 			if (!(perms.containsKey(permName))) {
-				perms.put(permName,getRoleIDsFromNames(STD_PERMS.get(permName),g));
+				perms.put(permName,getRoleIDsFromNames(perm,g));
 			}
-		}
+		});
 		savePerms(g);
 	}
 	
@@ -292,7 +292,9 @@ public class PermsCore {
 		}
 		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
 		if (!dir.exists()) {
-			dir.mkdirs();
+			if(!dir.mkdirs()) {
+				System.err.println("cannot create directory: "+dir.getAbsolutePath());
+			}
 		}
 		File file=new File(dir,saveName);
 		if (!file.exists()) {
