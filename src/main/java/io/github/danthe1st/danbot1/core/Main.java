@@ -37,7 +37,7 @@ import org.reflections.util.ConfigurationBuilder;
  */
 public class Main {
 	private static String token=System.getProperty("token");
-	private static final Scanner scan=new Scanner(System.in);
+	private static final Scanner scan=new Scanner(System.in,"UTF-8");
 	private static String adminId="358291050957111296";
 	private static String[] args;
 	private static JDA jda=null;
@@ -79,7 +79,7 @@ public class Main {
 		if (gameBeforeLoaded==null) {
 			gameBeforeLoaded="booting up - please wait";
 		}
-		Main.args=args;
+		Main.args=args.clone();
 		for (String arg : args) {
 			try {
 				switch (arg.toLowerCase()) {
@@ -153,9 +153,6 @@ public class Main {
 			builder.setToken(token);	
 			builder.setAutoReconnect(true);
 			builder.setStatus(statusBeforeLoaded);
-			if (gameWhenLoaded==null) {
-				gameWhenLoaded="with you";
-			}
 			builder.setActivity(Activity.playing(gameBeforeLoaded));
 			
 			builder.setRequestTimeoutRetry(true);
@@ -222,7 +219,7 @@ public class Main {
     		BotCommand cmdAsBotCommand=(BotCommand)cmdAsAnnotation;
     		Command cmd=(Command)annotatedAsObject;
     		for (String alias : cmdAsBotCommand.aliases()) {
-				CommandHandler.commands.put(alias.toLowerCase(), cmd);
+				CommandHandler.addCommand(alias.toLowerCase(), cmd);
 			}
     	});
     	addAction(ref, BotListener.class,(cmdAsAnnotation,annotatedAsObject)->{
@@ -241,10 +238,6 @@ public class Main {
 		for (Class<?> cl : ref.getTypesAnnotatedWith(annotClass,true)) {
             try {
 				Object annotatedAsObject=cl.newInstance();
-				if (annotatedAsObject==null) {
-					System.err.println("no matching Constructor found for class"+cl.getName());
-					break;
-				}
 				Annotation cmdAsAnnotation = cl.getAnnotation(annotClass);
 				function.accept(cmdAsAnnotation, annotatedAsObject);
 			} catch (InstantiationException e) {
@@ -286,7 +279,9 @@ public class Main {
 				builder.addClassLoader(new URLClassLoader(urlArr));
 			}
 		}else {
-			pluginFolder.mkdir();
+			if(!pluginFolder.mkdir()) {
+				System.err.println("cannot create directory: "+pluginFolder.getAbsolutePath());
+			}
 		}
 	}
 	/**
@@ -294,7 +289,7 @@ public class Main {
 	 * @return main args
 	 */
 	public static String[] getArgs() {
-		return args;
+		return args.clone();
 	}
 	public static String getAdminId() {
 		return adminId;

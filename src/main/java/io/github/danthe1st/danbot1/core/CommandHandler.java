@@ -1,6 +1,8 @@
 package io.github.danthe1st.danbot1.core;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.admin.CmdBlacklist;
@@ -13,7 +15,13 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
  * @author Daniel Schmid
  */
 public class CommandHandler {
-	public static final HashMap<String, Command> commands=new HashMap<String, Command>();
+	private static final Map<String, Command> commands=new HashMap<String, Command>();
+	public static Map<String, Command> getCommands() {
+		return Collections.unmodifiableMap(commands);
+	}
+	public static void addCommand(String name,Command cmd) {
+		commands.put(name, cmd);
+	}
 	/**
 	 * loads Command and executes it
 	 * @param cmd the Command as {@link CommandContainer}

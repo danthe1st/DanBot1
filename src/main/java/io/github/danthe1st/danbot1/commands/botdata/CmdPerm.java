@@ -149,26 +149,27 @@ public class CmdPerm implements Command{
 				return;
 			}
 			int newRoleStart=2;
-			String oldRoleTmp=args[1];
-			String oldRole=oldRoleTmp;
+			StringBuilder oldRoleTmp=new StringBuilder(args[1]);
+			
+			String oldRole=oldRoleTmp.toString();
 			loop:for (int i = 1; i < args.length-1; i++) {
 				for (String[] perms : PermsCore.getPerms(event.getGuild()).values()) {
 					for (int j = 0; j < perms.length; j++) {
-						if (perms[j].equals(oldRoleTmp)) {
-							oldRole=oldRoleTmp;
+						if (perms[j].equals(oldRoleTmp.toString())) {
+							oldRole=oldRoleTmp.toString();
 							newRoleStart=i+1;
 							break loop;
 						}
 					}
 					
 				}
-				oldRoleTmp+=" "+args[i+1];
+				oldRoleTmp.append(" ").append(args[i+1]);
 			}
-			String newRole=args[newRoleStart];
+			StringBuilder newRole=new StringBuilder(args[newRoleStart]);
 			for (int i = newRoleStart+1; i < args.length; i++) {
-				newRole+=" "+args[i];
+				newRole.append(" ").append(args[i]);
 			}
-			PermsCore.chRole(event.getGuild(), oldRole, newRole);
+			PermsCore.chRole(event.getGuild(), oldRole, newRole.toString());
 			break;
 		}
 		case "reset":{

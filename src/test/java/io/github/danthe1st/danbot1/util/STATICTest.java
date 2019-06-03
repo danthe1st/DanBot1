@@ -78,7 +78,6 @@ public class STATICTest {
 			String msgContent="Hello, this is a Unit-Test error Message that should be deleted automatically by the System";
 			STATIC.errmsg(tc, msgContent);
 			Thread.sleep(STATIC.INFO_TIMEOUT*2);
-			tc.getHistory().retrievePast(100);
 			boolean hasMessage=false;
 			for (Message msg : tc.getHistory().retrievePast(100).complete()) {
 				if (msg.getAuthor().equals(jda.getSelfUser())) {

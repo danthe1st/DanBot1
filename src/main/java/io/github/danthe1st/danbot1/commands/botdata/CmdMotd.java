@@ -36,7 +36,7 @@ public class CmdMotd implements Command{
 				CmdMotd.motd.put(event.getGuild(), (String) STATIC.load(event.getGuild().getId()+"/motd.dat"));
 				motd=CmdMotd.motd.get(event.getGuild());
 			} catch (Exception e) {
-				
+				e.printStackTrace();
 			}
 			if (motd==null) {
 				motd=translate(event.getGuild(),stdMotd);
@@ -66,15 +66,16 @@ public class CmdMotd implements Command{
 			args[0]="";
 		}
 		default:
-			motd="";
+			StringBuilder motdBuilder=new StringBuilder();
 			boolean hasElementsBefore=false;
 			for (String string : args) {
 				if (hasElementsBefore) {
-					motd+=" ";
+					motdBuilder.append(" ");
 				}
-				motd+=string;
+				motdBuilder.append(string);
 				hasElementsBefore=true;
 			}
+			motd=motdBuilder.toString();
 			CmdMotd.motd.put(event.getGuild(), motd);
 			STATIC.save(event.getGuild().getId()+"/motd.dat", motd);
 			break;

@@ -18,10 +18,10 @@ public class CmdHelp implements Command{
 	@Override
 	public void execute(JDA jda, String[] args) {
 		StringBuilder sb=new StringBuilder();
-		for (String command : commands.keySet()) {
-			sb.append(command+":\n");
-			sb.append(commands.get(command).help()+"\n\n");
-		}
+		commands.forEach((alias,cmd)->{
+			sb.append(alias).append(":\n");
+			sb.append(cmd.help()).append("\n\n");
+		});
 		System.out.println(sb.toString());
 	}
 

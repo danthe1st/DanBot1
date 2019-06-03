@@ -26,11 +26,11 @@ public class CmdSay implements Command {
 		if(args.length<1) {
 			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
 		}
-		String msg="";
+		StringBuilder msg=new StringBuilder();
 		for (final String string : args) {
-			msg+=string+" ";
+			msg.append(string).append(" ");
 		}
-		STATIC.msg(event.getTextChannel(), msg);
+		STATIC.msg(event.getTextChannel(), msg.toString());
 	}
 	public String help() {
 		return "sayHelp";

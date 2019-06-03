@@ -94,7 +94,9 @@ public class AutoRoleListener extends ListenerAdapter{
 		Guild g=event.getGuild();
 		Member member=event.getMember();
 		try {
-			g.getController().addRolesToMember(member, roles.get(g.getId())).queue();
+			for (Role role : roles.get(g.getId())) {
+				g.addRoleToMember(member, role).queue();
+			}
 		} catch (Exception e) {
 			
 		}

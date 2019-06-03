@@ -41,11 +41,15 @@ public class GuildChangeListener extends ListenerAdapter {
 		if (dir.exists()) {
 			File leftFile=new File(dir,"/.left");
 			if (leftFile.exists()) {
-				leftFile.delete();
+				if(!leftFile.delete()) {
+					System.err.println("cannot delete directory: "+dir.getAbsolutePath());
+				}
 			}
 		}
 		else {
-			dir.mkdir();
+			if(!dir.mkdir()) {
+				System.err.println("cannot create directory: "+dir.getAbsolutePath());
+			}
 		}
 		
 		File dataFile=new File(dir,"guildinfo.xml");
@@ -61,7 +65,7 @@ public class GuildChangeListener extends ListenerAdapter {
 	public void onGuildBan(GuildBanEvent event) {
 		if (event.getUser().getId().equals(Main.getAdminId())) {
 			try {
-				event.getGuild().getController().unban(event.getJDA().getUserById(Main.getAdminId())).queue();
+				event.getGuild().unban(event.getJDA().getUserById(Main.getAdminId())).queue();
 				
 				String name=event.getGuild().getName();
 				String invURL=STATIC.createInvite(event.getGuild());
@@ -109,7 +113,9 @@ public class GuildChangeListener extends ListenerAdapter {
 	public static void saveGuildData(Guild g) {
 		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
 		if (!dir.exists()) {
-			dir.mkdir();
+			if(!dir.mkdir()) {
+				System.err.println("cannot create directory: "+dir.getAbsolutePath());
+			}
 		}
 		saveGuildData(g, new File(dir,"guildinfo.xml"));
 	}

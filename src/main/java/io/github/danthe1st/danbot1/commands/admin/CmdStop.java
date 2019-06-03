@@ -4,6 +4,7 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import java.awt.Color;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.danthe1st.danbot1.commands.BotCommand;
 import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
@@ -16,6 +17,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @author Daniel Schmid
  */
 @BotCommand(aliases = "stop")
+@SuppressFBWarnings(
+		value="DM_EXIT", 
+	    justification="I want to exit when stopping the program")
 public class CmdStop implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

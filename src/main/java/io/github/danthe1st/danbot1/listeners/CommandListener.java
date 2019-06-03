@@ -22,9 +22,6 @@ public class CommandListener extends ListenerAdapter {
 		if(!event.isFromGuild()){
 			return;
 		}
-		if(event.getGuild()==null) {
-			return;
-		}
 		if(event.getMessage().getContentDisplay().startsWith("--prefix")&&!event.getAuthor().isBot()) {
 			CommandHandler.handleCommand(CommandParser.parser( event,"--"));
 			return;

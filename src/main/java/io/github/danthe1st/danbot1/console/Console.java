@@ -2,6 +2,7 @@ package io.github.danthe1st.danbot1.console;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -106,9 +107,10 @@ public class Console implements Runnable{
 				args[i]=splitted[i+1];
 			}
 		}
-		for (String currentCmdName : commands.keySet()) {
+		for (Entry<String, Command> entry : commands.entrySet()) {
+			String currentCmdName=entry.getKey();
 			if (currentCmdName.equalsIgnoreCase(cmdName)) {
-				Command cmd=commands.get(currentCmdName);
+				Command cmd=entry.getValue();
 				try {
 					cmd.execute(jda, args);
 					return true;

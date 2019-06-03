@@ -95,7 +95,7 @@ public class AutoUnbanner {
 	 * @param user the ISnowflake ID of the user to be unbanned
 	 */
 	private void unban(Guild g,String user) {
-		g.getController().unban(user).queue();
+		g.unban(user).queue();
 		System.out.println("unbanned user with id ["+user+"] from guild "+g.getName());
 		User JDAUser=jda.getUserById(user);
 		String inv=STATIC.createInvite(g);

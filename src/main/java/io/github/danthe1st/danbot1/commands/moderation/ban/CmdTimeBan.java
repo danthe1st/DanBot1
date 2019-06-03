@@ -131,10 +131,11 @@ public class CmdTimeBan implements Command{
 		String reason=null;
 		int argCount=2;
 		if (args.length>argCount) {
-			reason="";
-			for (int i = argCount; i < args.length; i++) {
-				reason=reason+args[i];
+			StringBuilder reasonBuilder=new StringBuilder();
+			for (int i = 1; i < args.length; i++) {
+				reasonBuilder.append(args[i]);
 			}
+			reason=reasonBuilder.toString();
 		}
 		if (reason==null||reason.equals("")) {
 			DateFormat format=new SimpleDateFormat("dd.MM.YYYY,HH:mm:ss");
@@ -144,7 +145,7 @@ public class CmdTimeBan implements Command{
 		for (Member user : users) {
 			
 			try {
-				event.getGuild().getController().ban(user,0, reason).queue();
+				event.getGuild().ban(user,0, reason).queue();
 				AutoUnbanner.addUnBan(event.getGuild(), user.getUser(), time);
 			} catch (Exception e) {
 				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotBan")+user.getEffectiveName());

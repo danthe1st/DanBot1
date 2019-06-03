@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -138,9 +139,10 @@ public final class STATIC {
 	 * @return The escaped Text
 	 */
 	public static String escapeDiscordMarkup(String unescaped) {
-		for (String toEscape : markupEscapeMap.keySet()) {
-			unescaped=unescaped.replace(toEscape, markupEscapeMap.get(toEscape));
+		for (Entry<String, String> entry : markupEscapeMap.entrySet()) {
+			unescaped=unescaped.replace(entry.getKey(), entry.getValue());
 		}
+		
 		return unescaped;
 	}
 	/**
@@ -251,13 +253,18 @@ public final class STATIC {
 	 * @param guild the Guild(Discord-Server)
 	 */
 	private static void savePrefix(final Guild guild){
-		if (!new File(STATIC.getSettingsDir()+"/"+guild.getId()).exists()) {
-			new File(STATIC.getSettingsDir()+"/"+guild.getId()).mkdirs();
+		File dir=new File(STATIC.getSettingsDir()+"/"+guild.getId());
+		if (!dir.exists()) {
+			if(!dir.mkdirs()) {
+				System.err.println("cannot create directory: "+dir.getAbsolutePath());
+			}
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/prefix.dat";
 		if(!prefixes.containsKey(guild)) {
 			final File f=new File(saveFile);
-			f.delete();
+			if(!f.exists()&&!f.delete()) {
+				System.err.println("cannot delete file: "+f.getAbsolutePath());
+			}
 			return;
 		}
 		File file=new File(saveFile);
@@ -289,10 +296,13 @@ public final class STATIC {
 	 * @param g The Guild(Discord-Server)
 	 */
 	private static void loadPrefix(final Guild g) {
-		if (!new File(STATIC.getSettingsDir()+"/"+g.getId()).exists()) {
-			new File(STATIC.getSettingsDir()+"/"+g.getId()).mkdirs();
+		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
+		if (!dir.exists()) {
+			if(!dir.mkdirs()) {
+				System.err.println("cannot create directory: "+dir.getAbsolutePath());
+			}
 		}
-		final File file=new File(STATIC.getSettingsDir()+"/"+g.getId()+"/prefix.dat");
+		final File file=new File(dir,"/prefix.dat");
 		if (file.exists()) {
 			try {
 				final FileInputStream fis=new FileInputStream(file);
@@ -377,7 +387,7 @@ public final class STATIC {
 			return null;
 		}
 		String invite=getActiveInvite(g);
-		if (invite!=null) {
+		if (!invite.equals("")) {
 			return invite;
 		}
 		return createInvite(g,0);
@@ -468,7 +478,9 @@ public final class STATIC {
 	public static String getSettingsDir() {
 		File dir=new File(settingsDir);
 		if (!dir.exists()) {
-			dir.mkdirs();
+			if(!dir.mkdirs()) {
+				System.err.println("cannot create directory: "+dir.getAbsolutePath());
+			}
 		}
 		return settingsDir;
 	}
@@ -482,7 +494,9 @@ public final class STATIC {
 		}
 		File dir=new File(directory);
 		if (!dir.exists()) {
-			dir.mkdirs();
+			if(!dir.mkdirs()) {
+				System.err.println("cannot create directory: "+dir.getAbsolutePath());
+			}
 		}
 		settingsDir=directory;
 	}

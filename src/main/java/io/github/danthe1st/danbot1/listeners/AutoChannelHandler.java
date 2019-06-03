@@ -28,15 +28,15 @@ public class AutoChannelHandler extends ListenerAdapter{
 		final VoiceChannel vc=event.getChannelJoined();
 		final Guild g=event.getGuild();
 		if (autoChans.containsKey(vc)) {
-			final VoiceChannel nvc=(VoiceChannel)g.getController().createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
+			final VoiceChannel nvc=(VoiceChannel)g.createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
 					.setBitrate(vc.getBitrate())
 					.setUserlimit(vc.getUserLimit())
 					.complete();
 			if (vc.getParent()!=null) {
 				nvc.getManager().setParent(vc.getParent()).queue();
 			}
-			g.getController().modifyVoiceChannelPositions().selectPosition(nvc).moveUp(1).queue();
-			g.getController().moveVoiceMember(event.getMember(), nvc).queue();
+			g.modifyVoiceChannelPositions().selectPosition(nvc).moveUp(1).queue();
+			g.moveVoiceMember(event.getMember(), nvc).queue();
 			active.add(nvc);
 			
 		}
@@ -52,15 +52,15 @@ public class AutoChannelHandler extends ListenerAdapter{
 		
 		VoiceChannel vc=event.getChannelJoined();
 		if (autoChans.containsKey(vc)) {
-			final VoiceChannel nvc=(VoiceChannel)g.getController().createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
+			final VoiceChannel nvc=(VoiceChannel)g.createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
 					.setBitrate(vc.getBitrate())
 					.setUserlimit(vc.getUserLimit())
 					.complete();
 			if (vc.getParent()!=null) {
 				nvc.getManager().setParent(vc.getParent()).queue();
 			}
-			g.getController().modifyVoiceChannelPositions().selectPosition(nvc).moveUp(1).queue();
-			g.getController().moveVoiceMember(event.getMember(), nvc).queue();
+			g.modifyVoiceChannelPositions().selectPosition(nvc).moveUp(1).queue();
+			g.moveVoiceMember(event.getMember(), nvc).queue();
 			active.add(nvc);
 			
 		}

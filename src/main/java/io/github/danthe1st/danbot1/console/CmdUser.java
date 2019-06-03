@@ -59,7 +59,6 @@ public class CmdUser implements Command{
 				sb.append("----------------------------- \n\n\n");
 			}
 			sb.append(""+user.getName()+"\n\n");
-			List<Member> allMembers=new ArrayList<>();
 			
 			List<Guild> owner=new ArrayList<>();
 			List<Activity> activities=null;
@@ -67,7 +66,6 @@ public class CmdUser implements Command{
 			for (Guild guild : jda.getGuilds()) {
 				Member member=guild.getMember(user);
 				if (member != null) {
-					allMembers.add(member);
 					if (member.isOwner()) {
 						owner.add(guild);
 					}
