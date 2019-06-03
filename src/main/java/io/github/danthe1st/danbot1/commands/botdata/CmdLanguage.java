@@ -37,6 +37,7 @@ public class CmdLanguage implements Command {
 			}
 			Locale locale=new Locale(localeArgs[0],localeArgs[1],localeArgs[2]);
 			LanguageController.setLocale(event.getGuild(), locale);
+			break;
 		case "get":
 			STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"LangPackIs")+LanguageController.getResourceBundle(event.getGuild()).getLocale());
 			break;

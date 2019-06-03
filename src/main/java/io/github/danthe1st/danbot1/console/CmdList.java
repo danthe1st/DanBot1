@@ -30,8 +30,8 @@ public class CmdList implements Command{
 				} else{
 					
 				}
-			} catch (Exception e) {
-				
+			} catch (NumberFormatException ignore) {
+				//ignore
 			}
 			if (!vchan) {
 				vchan=(arg.equalsIgnoreCase("*")||arg.startsWith("v"));

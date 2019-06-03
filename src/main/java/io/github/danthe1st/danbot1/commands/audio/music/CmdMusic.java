@@ -242,7 +242,7 @@ public class CmdMusic implements Command,AudioHolder{
 						.addField(translate(guild,"trackInfoField.author"), info.author, false)
 						.build()
 						).queue();
-				
+				break;
 		case "queue":
 			if (isIdle(guild)) {
 				return;

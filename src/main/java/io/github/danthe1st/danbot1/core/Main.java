@@ -5,6 +5,7 @@ import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -37,7 +38,7 @@ import org.reflections.util.ConfigurationBuilder;
  */
 public class Main {
 	private static String token=System.getProperty("token");
-	private static final Scanner scan=new Scanner(System.in,"UTF-8");
+	private static final Scanner scan=new Scanner(System.in, StandardCharsets.UTF_8.name());
 	private static String adminId="358291050957111296";
 	private static String[] args;
 	private static JDA jda=null;
