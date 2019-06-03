@@ -1,14 +1,11 @@
 package io.github.danthe1st.danbot1.console;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 /**
  * Console Command to get information about an user
@@ -62,7 +59,6 @@ public class CmdUser implements Command{
 			
 			List<Guild> owner=new ArrayList<>();
 			List<Activity> activities=null;
-			Map<Guild, List<Role>> roles=new HashMap<>();
 			for (Guild guild : jda.getGuilds()) {
 				Member member=guild.getMember(user);
 				if (member != null) {
@@ -72,11 +68,6 @@ public class CmdUser implements Command{
 					if (activities==null||activities.isEmpty()) {
 						activities=member.getActivities();
 					}
-					List<Role> rolesOnGuild=new ArrayList<>();
-					for (Role role : member.getRoles()) {
-						rolesOnGuild.add(role);
-					}
-					roles.put(guild, rolesOnGuild);
 				}
 				
 			}
