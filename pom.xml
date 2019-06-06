@@ -272,8 +272,8 @@
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-site-plugin</artifactId>
 		        <version>3.3</version>
-		        <configuration>
-		          <reportPlugins>
+		        <configuration>	
+		          <!--  <reportPlugins>
 		            <plugin>
 		              <groupId>org.apache.maven.plugins</groupId>
 		              <artifactId>maven-javadoc-plugin</artifactId>
@@ -282,7 +282,7 @@
 						<doclint>none</doclint>
 		              </configuration>
 		            </plugin>
-		          </reportPlugins>
+		          </reportPlugins>-->
 		        </configuration>
 		      </plugin>
 		      <plugin>
@@ -358,6 +358,18 @@
 	        </build>
 	    </profile>
     </profiles>
+    <reporting>
+    	<plugins>
+    		<plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <configuration>
+				<javadocVersion>1.8.0</javadocVersion>
+				<doclint>none</doclint>
+              </configuration>
+            </plugin>
+    	</plugins>
+    </reporting>
 	<distributionManagement>
         <snapshotRepository>
 			<id>ossrh</id>
