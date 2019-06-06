@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
+import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 /**
  * Interface for Commands<br>
@@ -35,17 +36,24 @@ public interface Command {
 	 * @param event The {@link MessageReceivedEvent} of the incoming {@link Message}
 	 */
 	public default void executed(boolean success, MessageReceivedEvent event) {
-		String s="["+event.getGuild().getName()+"] Command \""+event.getMessage().getContentDisplay()+"\" was";
+		String msg=event.getMessage().getContentDisplay();
+		String author=event.getAuthor().getName();
+		String channel=event.getTextChannel().getName();
+		String s="["+event.getGuild().getName()+"] Command \""+msg+"\" was";
+		String logForGuild;
 		if (success) {
-			s+=" successfully";
+			logForGuild=translate(event.getGuild(),"cmdLogSuccessful");
+		}else {
+			logForGuild=translate(event.getGuild(),"cmdLogFail");
 		}
-		s+=" executed by \""+event.getAuthor().getName()+"\" in channel \""+event.getTextChannel().getName()+"\".";
+		logForGuild=String.format(logForGuild,msg,author,channel);
+		s+=" executed by \""+author+"\" in channel \""+channel+"\".";
 		System.out.println(s);
 		if (!event.getGuild().getTextChannelsByName(STATIC.getCmdLogger(event.getGuild()), true).isEmpty()) {
 			try {
 				event.getGuild().getTextChannelsByName(STATIC.getCmdLogger(event.getGuild()), true).get(0).sendMessage(new EmbedBuilder()
 						.setColor(Color.GRAY)
-						.setDescription(s)
+						.setDescription(logForGuild)
 						.build()).queue();
 			} catch (InsufficientPermissionException e) {
 			}
