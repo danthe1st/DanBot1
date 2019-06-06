@@ -159,8 +159,10 @@ public class Main {
 			builder.setRequestTimeoutRetry(true);
 			
 			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-		    configurationBuilder.addUrls(ClasspathHelper.forClassLoader());
+			
+		    configurationBuilder.addUrls(ClasspathHelper.forPackage("io.github.danthe1st.danbot1"));
 		    loadPlugins(configurationBuilder);
+		   
 		    Reflections ref = new Reflections(configurationBuilder);
 		    addCommandsAndListeners(ref,builder);
 			try {
