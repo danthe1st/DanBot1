@@ -47,7 +47,7 @@ public final class STATIC {
 	private static final String PREFIX="--";
 	
 	public static final String VERSION="v3.1 - Living";
-	private static String settingsDir="./SERVER_SETTINGS";
+	private static String settingsDir="./DANBOT1_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;
 	private static final String STD_CMD_LOGGER_NAME="cmdLog";
