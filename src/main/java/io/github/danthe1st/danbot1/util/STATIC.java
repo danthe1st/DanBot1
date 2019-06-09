@@ -46,7 +46,7 @@ public final class STATIC {
 	private static HashMap<Guild, String> prefixes=new HashMap<>();
 	private static final String PREFIX="--";
 	
-	public static final String VERSION="v4.0 - Alpha";
+	public static final String VERSION="v4.0 - Living";
 	private static String settingsDir="./DANBOT1_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;
