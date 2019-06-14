@@ -44,7 +44,6 @@ public class CmdMusic implements Command{
 	private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS=new HashMap<>();
 	private static final Map<Guild, AudioHolder> holders=new HashMap<>();
 	private static Map<Guild, PlayerSendHandler> sendHandlers=new HashMap<>();
-	private int numTracksToLoad=0;
 	private static final int MAX_NUM_TRACKS=100;
 	
 	public CmdMusic() {
@@ -107,7 +106,7 @@ public class CmdMusic implements Command{
 	 * @param identifier the identifier-String
 	 * @param msg The {@link Message} with the Command to load the Music
 	 */
-	private void loadTrack(final String identifier, final Message msg) {
+	private void loadTrack(final String identifier, final Message msg,final int numTracksToLoad) {
 		Member author=msg.getMember();
 		final Guild guild=author.getGuild();
 		getPlayer(guild);
@@ -193,7 +192,7 @@ public class CmdMusic implements Command{
 				STATIC.errmsg(event.getTextChannel(), translate(guild,"noQueryString"));
 				return;
 			}
-			numTracksToLoad=1;
+			int numTracksToLoad=1;
 			if (args.length>2) {
 				try {
 					numTracksToLoad=Integer.parseInt(args[1]);
@@ -204,7 +203,7 @@ public class CmdMusic implements Command{
 			if (!(input.startsWith("http://")||input.startsWith("https://"))) {
 				input="ytsearch: "+input;
 			}
-			loadTrack(input, event.getMessage());
+			loadTrack(input, event.getMessage(),numTracksToLoad);
 			break;
 		case "skip":
 		case "s":
