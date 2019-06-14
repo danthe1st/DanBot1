@@ -6,6 +6,7 @@ import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.commands.audio.AudioHolderController;
 import io.github.danthe1st.danbot1.core.PermsCore;
+import io.github.danthe1st.danbot1.util.LanguageController;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -14,19 +15,19 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class CmdRecord implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
-		return PermsCore.checkOwner(event);
+		return PermsCore.check(event, "record");
 	}
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), "not anough arguments");
+			STATIC.errmsg(event.getTextChannel(), "missingArgs");
 			return;
 		}
+		VoiceChannel vc=event.getGuild().getMember(event.getAuthor()).getVoiceState().getChannel();
 		switch (args[0].toLowerCase()) {
 		case "start":
-			VoiceChannel vc=event.getGuild().getMember(event.getAuthor()).getVoiceState().getChannel();
 			if (vc==null) {
-				STATIC.errmsg(event.getTextChannel(), "You must be in a Voice Channel to do this!");
+				STATIC.errmsg(event.getTextChannel(), LanguageController.translate(event.getGuild(), "mustBeInVC"));
 				return;
 			}
 			Recorder rec=Recorder.getInstance(event.getGuild());
@@ -35,7 +36,7 @@ public class CmdRecord implements Command{
 			event.getGuild().getAudioManager().setReceivingHandler(rec);
 			break;
 		case "stop":
-			Recorder.getInstance(event.getGuild()).onEverybodyLeave();
+			Recorder.getInstance(event.getGuild()).onEverybodyLeave(vc);
 			break;
 		default:
 			break;
@@ -43,15 +44,13 @@ public class CmdRecord implements Command{
 	}
 
 	@Override
-	public String help(String prefix) {
-		return "starts/stops recording in a Voice Channel\n"
-				+ "(see Permission *record* in Command perm get)\n"
-				+ "*Syntax*: "+prefix+"record start/stop";
+	public String help() {
+		return "recordHelp";
 	}
 
 	@Override
 	public CommandType getCommandType() {
-		return CommandType.ADMIN;
+		return CommandType.USER;
 	}
 	
 }

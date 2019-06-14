@@ -14,14 +14,11 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import com.sedmelluq.discord.lavaplayer.natives.vorbis.VorbisDecoder;
-
 import io.github.danthe1st.danbot1.commands.audio.AudioHolder;
 import io.github.danthe1st.danbot1.commands.audio.AudioHolderController;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.audio.AudioReceiveHandler;
 import net.dv8tion.jda.api.audio.CombinedAudio;
-import net.dv8tion.jda.api.audio.UserAudio;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
@@ -30,7 +27,7 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 	private Guild g;
 	private static Map<Guild, Recorder> recorders=new HashMap<>(); 
 	private static final File REC_DIR=new File(STATIC.getSettingsDir()+"/recordings");
-	private List<byte[]> rescievedBytes=new ArrayList<>();
+	private List<byte[]> rescievedBytes=new ArrayList<>(1200000);
 	private static final double VOLUME=1.0;
 	
 	static {
@@ -49,7 +46,6 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 	
 	private Recorder(Guild g) {
 		this.g=g;
-		nextFile();
 	}
 	public static Recorder getInstance(Guild g) {
 		
@@ -70,16 +66,6 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 			i++;
 		}while(file.exists());
 		return file;
-	}
-	public void nextFile() {
-		File file=getNextFile();
-		try {
-			file.createNewFile();
-			
-			//this.file=new VorbisFile(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	public static void removeInstance(Guild g) {
 		Recorder instance=recorders.get(g);
@@ -103,19 +89,15 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 		return true;
 	}
 	@Override
-	public boolean canReceiveUser() {
-		return false;
-	}
-	@Override
 	public void handleCombinedAudio(CombinedAudio combinedAudio) {
+		byte[] decodedData=combinedAudio.getAudioData(VOLUME);
 		try {
-			rescievedBytes.add(combinedAudio.getAudioData(VOLUME));
+			rescievedBytes.add(decodedData);
 		}catch (OutOfMemoryError e) {
+			System.err.println("[Recording] OutOfMemory");
 			onEverybodyLeave(g.getMember(g.getJDA().getSelfUser()).getVoiceState().getChannel());
 		}
 	}
-	@Override
-	public void handleUserAudio(UserAudio userAudio) {}
 	@Override
 	public void close(){
 		try {
@@ -124,20 +106,14 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 				size+=bs.length;
 			}
 			byte[] decodedData=new byte[size];
-			int i=0;
-			for (byte[] bs : rescievedBytes) {
-				for (int j = 0; j < bs.length; j++) {
-					decodedData[i]=bs[j];
-				}
-			}
-			getWavFile(getNextFile(), decodedData);
+			writeToWAV(getNextFile(), decodedData);
 		} catch (IOException|OutOfMemoryError e) {
-			e.printStackTrace();
+			System.err.println("[Recording] OutOfMemoryError");
 		}
 		
 	}
-	private void getWavFile(File outFile, byte[] decodedData) throws IOException {
-        AudioFormat format = new AudioFormat(8000, 16, 1, true, false);
+	private void writeToWAV(File outFile, byte[] decodedData) throws IOException {
+        AudioFormat format = OUTPUT_FORMAT; //new AudioFormat(8000, 16, 1, true, false);
         AudioSystem.write(new AudioInputStream(new ByteArrayInputStream(
                 decodedData), format, decodedData.length), AudioFileFormat.Type.WAVE, outFile);
 	}

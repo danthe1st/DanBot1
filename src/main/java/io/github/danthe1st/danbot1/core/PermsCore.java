@@ -58,6 +58,7 @@ public class PermsCore {
 		STD_PERMS.put("dice", new String[] {"*"});
 		STD_PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
 		STD_PERMS.put("changeLanguage", new String[] {"Owner", "Admin"});
+		STD_PERMS.put("record", new String[] {"*"});
 	}
 	/**
 	 * tests if the who executed the Command is permitted to execute it
