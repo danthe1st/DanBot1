@@ -43,6 +43,7 @@ public interface Command {
 		String logForGuild;
 		if (success) {
 			logForGuild=translate(event.getGuild(),"cmdLogSuccessful");
+			s+=" successfully";
 		}else {
 			logForGuild=translate(event.getGuild(),"cmdLogFail");
 		}
