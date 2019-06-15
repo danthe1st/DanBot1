@@ -92,7 +92,7 @@ public class PermsCore {
 		for (final Role r : event.getGuild().getMember(event.getAuthor()).getRoles()) {
 			if (getPerms(event.getGuild()).containsKey(permissionName)) {
 				for (final String string : strings) {
-					if (string.equalsIgnoreCase(r.getName())||string.equals("*")) {
+					if (string.equalsIgnoreCase(r.getId())||string.equals("*")) {
 						return true;
 					}
 				}
