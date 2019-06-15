@@ -348,7 +348,7 @@ public final class STATIC {
 	 */
 	public static String getServerData(Guild g){
 		String retString=g.getName()+" ["+g.getId()+"]";
-		return retString+"\t"+getActiveInvite(g);
+		return retString;
 	}
 	/**
 	 * gets an {@link Invite} in a Guild
