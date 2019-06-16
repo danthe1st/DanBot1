@@ -12,9 +12,9 @@ import net.dv8tion.jda.api.entities.Guild;
  * Class for Language Packages
  * @author Daniel Schmid
  */
-public class LanguageController {
+public class LanguageController {//TODO fix with Plugins
 	private static final String baseName="languages.DanBot1";
-	private static final ResourceBundle DEFAULT_BUNDLE=ResourceBundle.getBundle(baseName);
+	private static final ResourceBundle DEFAULT_BUNDLE=ResourceBundle.getBundle(baseName,Locale.getDefault(),LanguageController.class.getClassLoader());
 	private static Map<Guild, ResourceBundle> bundles=new HashMap<>();
 	static {
 		Locale.setDefault(Locale.ENGLISH);
