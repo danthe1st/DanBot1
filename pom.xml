@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.danthe1st</groupId>
     <artifactId>DanBot1</artifactId>
-    <version>4.0-alpha-1-SNAPSHOT</version>
+    <version>4.0-alpha-2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>DanBot1</name>
     <description>a small, pluginable Discord Bot</description>

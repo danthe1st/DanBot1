@@ -160,15 +160,15 @@ public class Main {
 			
 			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 			
-		    configurationBuilder.addUrls(ClasspathHelper.forPackage("io.github.danthe1st.danbot1"));
+		    configurationBuilder.addUrls(ClasspathHelper.forJavaClassPath());
 		    loadPlugins(configurationBuilder);
 		   
 		    Reflections ref = new Reflections(configurationBuilder);
 		    addCommandsAndListeners(ref,builder);
 			try {
 				jda=builder.build();
-				jda.awaitReady();
 				Console.runConsole(scan, jda);
+				jda.awaitReady();
 				((JDAImpl) jda).getGuildSetupController().clearCache();
 				jda.getPresence().setStatus(statusWhenLoaded);
 				jda.getPresence().setActivity(Activity.playing(gameWhenLoaded));
