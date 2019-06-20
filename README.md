@@ -6,7 +6,7 @@ Program your own Plugins:
 
 An example for creating Plugins for DanBot1 can be found [here](https://github.com/danthe1st/DanBot1ExamplePlugin)
 * Create a new Maven Project
-* Make sure that you are using Java 1.8
+* Make sure that you are using Java 9
 * add DanBot1 to the Dependencies (replace VERSION with [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1)):
 ```xml
 <dependencies>

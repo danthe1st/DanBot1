@@ -240,7 +240,7 @@ public class Main {
 	private static void addAction(Reflections ref,Class<? extends Annotation> annotClass, BiConsumer<Annotation, Object> function) {
 		for (Class<?> cl : ref.getTypesAnnotatedWith(annotClass,true)) {
             try {
-				Object annotatedAsObject=cl.newInstance();
+				Object annotatedAsObject=cl.getDeclaredConstructor().newInstance();
 				Annotation cmdAsAnnotation = cl.getAnnotation(annotClass);
 				function.accept(cmdAsAnnotation, annotatedAsObject);
 			} catch (InstantiationException e) {
