@@ -39,7 +39,7 @@ public class CmdLanguage implements Command {
 			LanguageController.setLocale(event.getGuild(), locale);
 			break;
 		case "get":
-			STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"LangPackIs")+LanguageController.getResourceBundle(event.getGuild()).getLocale());
+			STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"LangPackIs")+LanguageController.getLocale(event.getGuild()));
 			break;
 		default:
 			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"invalidArgs"));
