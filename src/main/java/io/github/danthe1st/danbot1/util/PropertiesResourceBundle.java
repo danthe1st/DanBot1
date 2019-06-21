@@ -1,18 +1,15 @@
 package io.github.danthe1st.danbot1.util;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Enumeration;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class MultiResourceBundle extends ResourceBundle {
+public class PropertiesResourceBundle extends ResourceBundle {
 
-    protected static final Control CONTROL = new MultiResourceBundleControl();
+    //protected static final Control CONTROL = new MultiResourceBundleControl();
     private Properties properties;
 
-    public MultiResourceBundle(String baseName,Locale locale,ClassLoader loader) {
+    /*public PropertiesResourceBundle(String baseName,Locale locale,ClassLoader loader) {
         //setParent(ResourceBundle.getBundle(baseName,locale,loader, CONTROL));
     	try {
 			setParent(CONTROL.newBundle(baseName, locale, "java.properties", loader, false));
@@ -20,9 +17,9 @@ public class MultiResourceBundle extends ResourceBundle {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
+    }*/
 
-    protected MultiResourceBundle(Properties properties) {
+    protected PropertiesResourceBundle(Properties properties) {
         this.properties = properties;
     }
 
@@ -37,7 +34,7 @@ public class MultiResourceBundle extends ResourceBundle {
         return properties != null ? (Enumeration<String>) properties.propertyNames() : parent.getKeys();
     }
 
-    protected static class MultiResourceBundleControl extends Control {
+    /*protected static class MultiResourceBundleControl extends Control {
         @Override
         public ResourceBundle newBundle(
             String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
@@ -81,6 +78,6 @@ public class MultiResourceBundle extends ResourceBundle {
             
             return properties;
         }
-    }
+    }*/
 
 }
