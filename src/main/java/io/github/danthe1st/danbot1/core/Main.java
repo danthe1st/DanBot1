@@ -18,6 +18,7 @@ import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.console.Console;
 import io.github.danthe1st.danbot1.listeners.BotListener;
 import io.github.danthe1st.danbot1.util.BotSecurityManager;
+import io.github.danthe1st.danbot1.util.LanguageController;
 import io.github.danthe1st.danbot1.util.STATIC;
 import io.github.danthe1st.danbot1.util.ScanCloser;
 import net.dv8tion.jda.api.AccountType;
@@ -279,7 +280,9 @@ public class Main {
 					urlArr[i]=urls.get(i);
 				}
 				builder.addUrls(urls);
-				builder.addClassLoader(new URLClassLoader(urlArr));
+				URLClassLoader loader=new URLClassLoader(urlArr);
+				builder.addClassLoader(loader);
+				LanguageController.setPluginLoader(loader);
 			}
 		}else {
 			if(!pluginFolder.mkdir()) {

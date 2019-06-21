@@ -238,6 +238,7 @@ public final class STATIC {
 		}
 		loadCmdLogger();
 		AutoUnbanner.loadUnBans(jda);
+		LanguageController.load(jda);
 	}
 	/**
 	 * sets the Bot prefix for a Guild
