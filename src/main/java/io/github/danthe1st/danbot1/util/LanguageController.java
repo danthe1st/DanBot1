@@ -54,10 +54,12 @@ public class LanguageController {
 		if (localePluginBundles.containsKey(locale)) {
 			return localePluginBundles.get(locale);
 		}
-		try {
-			return newBundle(BASE_NAME, locale, "java.properties", pluginLoader, false);
-		} catch (IllegalAccessException | InstantiationException | IOException e) {
-			e.printStackTrace();
+		if (pluginLoader!=null) {
+			try {
+				return newBundle(BASE_NAME, locale, "java.properties", pluginLoader, false);
+			} catch (IllegalAccessException | InstantiationException | IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -152,6 +154,9 @@ public class LanguageController {
     }
     private static Properties load(String baseName, ClassLoader loader) throws IOException {
         Properties properties = new Properties();
+        if (loader==null||baseName==null) {
+			return properties;
+		}
         Enumeration<URL> resources=loader.getResources(baseName.replace('.', '/')+".properties");
         while (resources.hasMoreElements()) {
 			URL url = (URL) resources.nextElement();
