@@ -176,7 +176,7 @@ public class LanguageController {
 		Map<String, Locale> locales=(Map<String, Locale>) STATIC.load("/languages.dat");
     	if (locales!=null) {
 			locales.forEach((k,v)->{
-				setLocale(jda.getGuildById(k), v);
+				LanguageController.locales.put(jda.getGuildById(k),v);
 			});
 		}
     }
