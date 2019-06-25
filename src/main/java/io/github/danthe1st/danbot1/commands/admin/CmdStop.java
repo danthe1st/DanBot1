@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to stop the Bot
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "stop")
+@BotCommand("stop")
 @SuppressFBWarnings(
 		value="DM_EXIT", 
 	    justification="I want to exit when stopping the program")

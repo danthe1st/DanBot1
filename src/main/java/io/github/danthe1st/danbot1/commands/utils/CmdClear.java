@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to delete the Chat-History (min 2, max 100 Messages)
  * @author Daniel Schmid 
  */
-@BotCommand(aliases = {"cls","clear"})
+@BotCommand({"cls","clear"})
 public class CmdClear implements Command {
 	/**
 	 * parses {@link String} to int

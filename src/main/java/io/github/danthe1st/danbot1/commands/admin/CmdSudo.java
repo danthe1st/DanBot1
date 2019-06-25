@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command for executing Commands as another user
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "sudo")
+@BotCommand("sudo")
 public class CmdSudo implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

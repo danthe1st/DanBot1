@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Clears history of private Messages (min 2, max 100 Messages)
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "clearpm")
+@BotCommand("clearpm")
 public class CmdClearPMs implements Command {
 	private int getInt(final String str) {
 		try {

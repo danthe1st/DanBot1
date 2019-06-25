@@ -16,5 +16,5 @@ public @interface BotCommand{
 	 * the aliases of the Command
 	 * @return aliases of the Command
 	 */
-	String[] aliases();
+	String[] value();
 }

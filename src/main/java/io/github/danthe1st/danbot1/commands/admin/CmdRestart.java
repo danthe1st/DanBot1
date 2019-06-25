@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to restart the Bot
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "restart")
+@BotCommand("restart")
 @SuppressFBWarnings(
 		value="DM_EXIT", 
 	    justification="I want to exit when restarting the program")

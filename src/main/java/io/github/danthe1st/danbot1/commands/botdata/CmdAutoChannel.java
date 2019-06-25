@@ -28,7 +28,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command for AutoChannels
  * @author Daniel Schmid
  */
-@BotCommand(aliases = {"autoc","autochannel"})
+@BotCommand({"autoc","autochannel"})
 public class CmdAutoChannel implements Command, Serializable {
 	private static final long serialVersionUID = 1L;
 	

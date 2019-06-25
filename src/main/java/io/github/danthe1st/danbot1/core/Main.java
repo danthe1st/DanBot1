@@ -222,7 +222,7 @@ public class Main {
 		addAction(ref, BotCommand.class,(cmdAsAnnotation,annotatedAsObject)->{
     		BotCommand cmdAsBotCommand=(BotCommand)cmdAsAnnotation;
     		Command cmd=(Command)annotatedAsObject;
-    		for (String alias : cmdAsBotCommand.aliases()) {
+    		for (String alias : cmdAsBotCommand.value()) {
 				CommandHandler.addCommand(alias.toLowerCase(), cmd);
 			}
     	});

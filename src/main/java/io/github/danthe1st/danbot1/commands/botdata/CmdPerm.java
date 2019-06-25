@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command forcguild-specified Bot-Permissions
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "perm")
+@BotCommand("perm")
 public class CmdPerm implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

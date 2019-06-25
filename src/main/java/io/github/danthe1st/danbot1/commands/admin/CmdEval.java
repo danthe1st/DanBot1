@@ -19,7 +19,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
  * Command to Evaluate Code
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "eval")
+@BotCommand("eval")
 public class CmdEval implements Command{
 	private ScriptEngine se;
 	private static final String LATEST_EXCEPTION_KEY_NAME="latestException";

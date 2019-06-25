@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * An autorole is a role which is given to a user when joining the Guild (Discord Server)
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "autorole")
+@BotCommand("autorole")
 public class CmdAutoRole implements Command {
 
 	@Override

@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Ping Command(echos "Pong!" and the current Bot ping)
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "ping")
+@BotCommand("ping")
 public class CmdPing implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

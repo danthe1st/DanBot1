@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to Roll a dice
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "dice")
+@BotCommand("dice")
 public class CmdDice implements Command{
 	private static Random rand=new Random();
 	@Override

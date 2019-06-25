@@ -12,7 +12,7 @@ import io.github.danthe1st.danbot1.util.LanguageController;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-@BotCommand(aliases = { "lang","chlang","changelanguage" })
+@BotCommand({ "lang","chlang","changelanguage" })
 public class CmdLanguage implements Command {
 
 	@Override
