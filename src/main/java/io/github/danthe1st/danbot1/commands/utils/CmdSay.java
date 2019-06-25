@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to echo a Message
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "say")
+@BotCommand("say")
 public class CmdSay implements Command {
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

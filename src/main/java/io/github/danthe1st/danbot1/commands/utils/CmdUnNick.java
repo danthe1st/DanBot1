@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
  * Command to unnick a {@link Member}
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "unnick")
+@BotCommand("unnick")
 public class CmdUnNick implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

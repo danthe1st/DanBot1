@@ -27,7 +27,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
  * Command to Evaluate Code
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "blacklist")
+@BotCommand("blacklist")
 public class CmdBlacklist implements Command{
 	private static List<String> blacklist=new ArrayList<>();
 	@Override

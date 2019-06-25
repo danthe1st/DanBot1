@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * reloads the Bot(without stopping it)
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "reload")
+@BotCommand("reload")
 public class CmdReload implements Command {
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

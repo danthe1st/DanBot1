@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to spam messages
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "spam")
+@BotCommand("spam")
 public class CmdSpam implements Command {
 	private static final int MAX_MSG_NUMBER_PER_SPAM=20;
 	@Override

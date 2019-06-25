@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to ban a {@link Member}
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "ban")
+@BotCommand("ban")
 public class CmdBan implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

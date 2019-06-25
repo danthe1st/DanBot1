@@ -19,7 +19,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to ban a {@link Member} until a specified time expires
  * @author Daniel Schmid
  */
-@BotCommand(aliases = {"tban","timeban"})
+@BotCommand({"tban","timeban"})
 public class CmdTimeBan implements Command{
 	/**
 	 * parses/calculates the System time

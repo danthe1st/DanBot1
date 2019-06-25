@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
  * Command to move {@link Member}s from their current {@link VoiceChannel} to the AFK-{@link VoiceChannel}
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "vkick")
+@BotCommand("vkick")
 public class CmdVoiceKick implements Command{
 
 	@Override

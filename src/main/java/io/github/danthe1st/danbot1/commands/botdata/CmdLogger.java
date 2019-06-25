@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to set the Logger-Channel
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "cmdlogger")
+@BotCommand("cmdlogger")
 public class CmdLogger implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

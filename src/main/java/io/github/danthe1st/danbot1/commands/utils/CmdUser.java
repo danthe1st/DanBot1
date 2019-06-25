@@ -19,7 +19,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to echo userinfo
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "user")
+@BotCommand("user")
 public class CmdUser implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

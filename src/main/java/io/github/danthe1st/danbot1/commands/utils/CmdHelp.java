@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * prints help for all Commands
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "help")
+@BotCommand("help")
 public class CmdHelp implements Command{
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {

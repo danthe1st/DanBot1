@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to change/show the Bot prefix
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "prefix")
+@BotCommand("prefix")
 public class CmdPrefix implements Command{
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

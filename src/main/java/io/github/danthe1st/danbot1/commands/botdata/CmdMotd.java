@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command for getting/setting a guild-specified Message of the day(standard: invite link for the Bot and the Support Server)
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "motd")
+@BotCommand("motd")
 public class CmdMotd implements Command{
 
 	private static Map<Guild, String> motd=new HashMap<Guild, String>();

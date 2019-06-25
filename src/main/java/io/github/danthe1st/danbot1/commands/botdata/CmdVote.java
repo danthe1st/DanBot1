@@ -32,7 +32,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command for Polls in a Guild
  * @author Daniel Schmid
  */
-@BotCommand(aliases = {"v","vote"})
+@BotCommand({"v","vote"})
 public class CmdVote implements Command,Serializable{
 	private static final long serialVersionUID = -1L;
 	private static HashMap<Guild, Poll> polls=new HashMap<>();

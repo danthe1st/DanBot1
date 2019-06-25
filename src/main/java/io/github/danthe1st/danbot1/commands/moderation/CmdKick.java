@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to kick a {@link Member}
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "kick")
+@BotCommand("kick")
 public class CmdKick implements Command{
 	
 	@Override

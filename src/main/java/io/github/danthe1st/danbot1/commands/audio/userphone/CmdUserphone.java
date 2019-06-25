@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * Command to open or close an userphone connection
  * @author Daniel Schmid
  */
-@BotCommand(aliases = {"userphone","vbridge"})
+@BotCommand({"userphone","vbridge"})
 public class CmdUserphone implements Command{
 
 	@Override

@@ -37,7 +37,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * The music Command
  * @author Daniel Schmid
  */
-@BotCommand(aliases = {"m","music"})
+@BotCommand({"m","music"})
 public class CmdMusic implements Command,AudioHolder{
 
 	private static final AudioPlayerManager MANAGER=new DefaultAudioPlayerManager();
