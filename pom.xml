@@ -19,16 +19,6 @@
 	      <name>GNU GPL Version 3.0</name>
 	      <url>http://www.gnu.org/licenses/gpl.html</url>
 	    </license>
-  		<license>
-	      <name>The Apache Software License, Version 2.0</name>
-	      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-	      <distribution>repo</distribution>
-	    </license>
-  		<license>
-			<name>MIT</name>
-			<url>http://opensource.org/licenses/MIT</url>
-			<distribution>repo</distribution>
-		</license>
   	</licenses>
     <repositories>
         <repository>
@@ -159,7 +149,7 @@
 				        <mainClass>io.github.danthe1st.danbot1.core.Main</mainClass>
 				      </manifest>
 				    </archive>
-				    <outputDirectory>./</outputDirectory>
+				    <outputDirectory>./docs/</outputDirectory>
 				    <finalName>DanBot1</finalName>
 				    <descriptorRefs>
 				    	<descriptorRef>jar-with-dependencies</descriptorRef>
