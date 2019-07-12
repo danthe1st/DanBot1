@@ -59,6 +59,9 @@ public class PermsCore {
 		STD_PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
 		STD_PERMS.put("changeLanguage", new String[] {"Owner", "Admin"});
 	}
+	private PermsCore() {
+		//private constructor to prevent instantiation
+	}
 	/**
 	 * tests if the who executed the Command is permitted to execute it
 	 * if forbidden an errormessage will be sent.
