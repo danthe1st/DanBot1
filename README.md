@@ -30,7 +30,7 @@ An example for creating Plugins for DanBot1 can be found [here](https://github.c
 * you can export the plugin as a normal JAR File or use a maven export(mvn package), but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
 
 used Libraries:
-* [unirest-java](https://github.com/Kong/unirest-java/)
+* [Apache Common Collections 4](https://github.com/apache/commons-collections)
 * [JDA](https://github.com/DV8FromTheWorld/JDA/)
 * [lavaplayer](https://github.com/sedmelluq/lavaplayer/)
 * [slf4j](https://github.com/qos-ch/slf4j/)
