@@ -30,12 +30,13 @@ An example for creating Plugins for DanBot1 can be found [here](https://github.c
 * you can export the plugin as a normal JAR File or use a maven export(mvn package), but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
 
 used Libraries:
-* [Apache Common Collections 4](https://github.com/apache/commons-collections)
-* [JDA](https://github.com/DV8FromTheWorld/JDA/)
-* [lavaplayer](https://github.com/sedmelluq/lavaplayer/)
-* [slf4j](https://github.com/qos-ch/slf4j/)
-* [reflections](https://github.com/ronmamo/reflections)
+* [JDA](https://github.com/DV8FromTheWorld/JDA/) (in order to interact with Discord)
+* [lavaplayer](https://github.com/sedmelluq/lavaplayer/) (for the music command)
+* [reflections](https://github.com/ronmamo/reflections) (for the Plugin mechanism)
+* [Apache Common Collections 4](https://github.com/apache/commons-collections) (because JDA uses it(Bags))
+* [slf4j](https://github.com/qos-ch/slf4j/) (because JDA logs using slf4j)
+
 
 Dev-Libraries(used for testing/used in development):
-* JUnit
-* Spotbugs
+* [JUnit](https://github.com/junit-team/junit5) (for Tests)
+* [Spotbugs](https://github.com/spotbugs/spotbugs) (in order to test for possible bugs)
