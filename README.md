@@ -1,5 +1,5 @@
 # DanBot1 [![Build Status](https://travis-ci.com/danthe1st/DanBot1.svg?branch=master)](https://travis-ci.com/danthe1st/DanBot1)
-a little Discord Chat Bot.<br>
+a little, pluginable Discord Chat Bot.<br>
 For a list of Commands and standard-permissions visit [https://danthe1st.github.io/DanBot1](https://danthe1st.github.io/DanBot1)
 
 Program your own Plugins:
