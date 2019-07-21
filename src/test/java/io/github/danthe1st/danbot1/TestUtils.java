@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+@Deprecated
 public class TestUtils {
 	private TestUtils() {}
 	public static Message getMessage(TextChannel tc,Function<Message, Boolean> s) {

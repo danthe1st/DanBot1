@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.net.URL;
 import java.util.Properties;
 
+@Deprecated
 public class TestConfig {
 	private static final Properties props=new Properties(System.getProperties());
 	static {
