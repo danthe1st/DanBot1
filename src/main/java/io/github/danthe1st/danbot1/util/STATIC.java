@@ -282,12 +282,8 @@ public final class STATIC {
 			e.printStackTrace();
 		}
 		final String prefix=prefixes.get(guild);
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(file);
-			final ObjectOutputStream oos=new ObjectOutputStream(fos);
+		try (final ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(file))){
 			oos.writeObject(prefix);
-			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -305,11 +301,8 @@ public final class STATIC {
 		}
 		final File file=new File(dir,"/prefix.dat");
 		if (file.exists()) {
-			try {
-				final FileInputStream fis=new FileInputStream(file);
-				final ObjectInputStream ois=new ObjectInputStream(fis);
+			try (final ObjectInputStream ois=new ObjectInputStream(new FileInputStream(file))){
 				prefixes.put(g, (String) ois.readObject());
-				ois.close();
 			} catch (IOException|ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -443,11 +436,8 @@ public final class STATIC {
 				e.printStackTrace();
 			}
 		}
-		try {
-			final FileOutputStream fos=new FileOutputStream(file);
-			final ObjectOutputStream oos=new ObjectOutputStream(fos);
+		try (final ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(file))){
 			oos.writeObject(toSave);
-			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -461,11 +451,8 @@ public final class STATIC {
 		Object o=null;
 		final File file=new File(STATIC.getSettingsDir()+"/"+filename);
 		if (file.exists()) {
-			try {
-				final FileInputStream fis=new FileInputStream(file);
-				final ObjectInputStream ois=new ObjectInputStream(fis);
+			try (final ObjectInputStream ois=new ObjectInputStream(new FileInputStream(file))){
 				o=ois.readObject();	
-				ois.close();
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}

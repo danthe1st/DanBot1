@@ -20,20 +20,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
-import io.github.danthe1st.danbot1.TestConfig;
-import io.github.danthe1st.danbot1.TestUtils;
+import io.github.danthe1st.danbot1.AbstractDanBot1Test;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 
 @MainTest.AnnotationForTestAddAction
-public class MainTest {
+public class MainTest  extends AbstractDanBot1Test{
 	private static JDA jda=null;
 	private static final Object MONITOR=new Object();
 	@BeforeAll
 	public static void load() {
 		synchronized (MONITOR) {
 			if (jda==null) {
-				File settingsDir=new File(TestConfig.getTestingSettingDir());
+				File settingsDir=new File(getTestingSettingDir());
 				if (settingsDir.exists()&&settingsDir.isDirectory()) {
 					try {
 						FileUtils.cleanDirectory(settingsDir);
@@ -48,11 +47,11 @@ public class MainTest {
 	private static void init(){
 		Main.main(new String[] {
 				"game=Unit_testing",
-				"token="+TestConfig.getToken(),
-				"admin="+TestConfig.getAdminID(),
+				"token="+getToken(),
+				"admin="+getAdminID(),
 				"status=idle",
 				"noevalsecurity",
-				"settings="+TestConfig.getTestingSettingDir()
+				"settings="+getTestingSettingDir()
 		});
 		jda=Main.getJda();
 	}
@@ -62,11 +61,11 @@ public class MainTest {
 			Main.getJda().shutdown();
 			Main.main(new String[] {
 					"game=Unit_testing",
-					"token="+TestConfig.getToken(),
-					"admin="+TestConfig.getSecondaryAdminID(),
+					"token="+getToken(),
+					"admin="+getSecondaryAdminID(),
 					"status=idle",
 					"noevalsecurity",
-					"settings="+TestConfig.getTestingSettingDir()
+					"settings="+getTestingSettingDir()
 			});
 			assertEquals("362282283048239104", Main.getAdminId());
 			assertEquals(OnlineStatus.IDLE, jda.getGuilds().get(0).getMember(jda.getSelfUser()).getOnlineStatus());
@@ -81,7 +80,7 @@ public class MainTest {
 			objects.add(obj.getClass());
 		};
 		Class<? extends Annotation> cl=AnnotationForTestAddAction.class;
-		TestUtils.invokeNotAccessibleMethod(Main.class, "addAction",new Class<?>[] {
+		invokeNotAccessibleMethod(Main.class, "addAction",new Class<?>[] {
 			Reflections.class,Class.class,BiConsumer.class
 		}, null, new Reflections("io.github.danthe1st.danbot1"),cl,toExec);
 		assertEquals(new ArrayList<Object>(Arrays.asList(getClass())),objects);
