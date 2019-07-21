@@ -178,10 +178,9 @@ public class CmdVote implements Command,Serializable{
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/vote.dat";
 		final Poll poll=polls.get(guild);
-		final FileOutputStream fos=new FileOutputStream(saveFile);
-		final ObjectOutputStream oos=new ObjectOutputStream(fos);
-		oos.writeObject(poll);
-		oos.close();
+		try(final ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(saveFile))){
+			oos.writeObject(poll);
+		}
 	}
 	/**
 	 * loads a Poll and returns it
@@ -195,11 +194,9 @@ public class CmdVote implements Command,Serializable{
 			return null;
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+g.getId()+"/vote.dat";
-		final FileInputStream fis=new FileInputStream(saveFile);
-		final ObjectInputStream ois=new ObjectInputStream(fis);
-		final Poll out=(Poll)ois.readObject();
-		ois.close();
-		return out;
+		try(final ObjectInputStream ois=new ObjectInputStream(new FileInputStream(saveFile))){
+			return (Poll)ois.readObject();
+		}
 	}
 	/**
 	 * loads all Polls

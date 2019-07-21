@@ -105,7 +105,6 @@ public class CmdBlacklist implements Command{
 	
 	/**
 	 * loads the blacklist data
-	 * @param jda the JDA instance
 	 */
 	public static void loadBlacklist() {
 		try {
