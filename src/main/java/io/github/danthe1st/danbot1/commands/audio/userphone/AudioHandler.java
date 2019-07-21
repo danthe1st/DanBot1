@@ -53,7 +53,7 @@ public class AudioHandler implements AudioReceiveHandler, AudioSendHandler, Audi
 
 	@Override
 	public void handleUserAudio(UserAudio userAudio) {
-
+		//this is not needed because canReceiveUser() returns false in any case
 	}
 	public void addAudio(byte[] data) {
 		buffer.offer(data);

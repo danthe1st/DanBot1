@@ -31,7 +31,7 @@ public class CmdSudo implements Command{
 		try {
 			user=event.getGuild().getMemberById(args[0]);
 		} catch (NumberFormatException e) {
-			
+			//ignore
 		}
 		if (user==null) {
 			user=event.getGuild().getMembersByName(args[0], true).get(0);

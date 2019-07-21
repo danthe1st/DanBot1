@@ -11,9 +11,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @author Daniel Schmid
  */
 public class CommandParser {
+	
+	private CommandParser(){
+		//prevent instantiation
+	}
 	/**
-	 * zerlegt den Command und f�hrt ihn zu einem <code>CommandContainer</code> zusammen.
-	 * method to parse the Command
+	 * parses the command to a <code>CommandContainer</code>
 	 * @param event the {@link MessageReceivedEvent} from the Message
 	 * @return the parsed Command
 	 */
@@ -22,8 +25,7 @@ public class CommandParser {
 		return parser(event, STATIC.getPrefix(event.getGuild()));
 	}
 	/**
-	 * zerlegt den Command und f�hrt ihn zu einem <code>CommandContainer</code> zusammen.
-	 * method to parse the Command
+	 * parses the command to a <code>CommandContainer</code>
 	 * @param event the {@link MessageReceivedEvent} from the Message
 	 * @param prefix the {@link Guild} prefix
 	 * @return the parsed Command
@@ -33,7 +35,7 @@ public class CommandParser {
 		final String beheaded=raw.replaceFirst(Pattern.quote(prefix), "");
 		final String[] splitBeheaded=beheaded.split(" ");
 		final String invoke=splitBeheaded[0];
-		final ArrayList<String> split=new ArrayList<String>();
+		final ArrayList<String> split=new ArrayList<>();
 		boolean inQuoute=false;
 		for (String s : splitBeheaded) {
 			if (inQuoute) {
@@ -42,20 +44,15 @@ public class CommandParser {
 					inQuoute=false;
 				}
 			}else {
-				
 				if (s.startsWith("\"")&&!s.endsWith("\"")) {
 					inQuoute=true;
 					s=s.substring(1);
 				}
 				split.add(s);
 			}
-			
 		}
 		final String[] args=new String[split.size()-1];
-		
 		split.subList(1, split.size()).toArray(args);
-		
-		
 		return new CommandContainer(invoke, args, event);
 	}
 	/**

@@ -17,13 +17,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
  */
 @BotListener
 public class AutoRoleListener extends ListenerAdapter{
+	private static final String ROLES_FILE="/roles.dat";
 	private static HashMap<String, List<Role>> roles=new HashMap<>();
-	public AutoRoleListener() {
-		if (roles==null) {
-			roles=new HashMap<>();
-		}
-		
-	}
 	/**
 	 * register a role as an autorole
 	 * @param role the role to be registered
@@ -51,14 +46,14 @@ public class AutoRoleListener extends ListenerAdapter{
 			roleIDs[num]=role.getId();
 			num++;
 		}
-		STATIC.save(g.getId()+"/roles.dat", roleIDs);
+		STATIC.save(g.getId()+ROLES_FILE, roleIDs);
 	}
 	/**
 	 * loads autoroles for a {@link Guild}
 	 * @param g the {@link Guild} where autoroles should be loaded
 	 */
 	public static void load(Guild g) {
-		String[] roleIDs=(String[]) STATIC.load(g.getId()+"/roles.dat");
+		String[] roleIDs=(String[]) STATIC.load(g.getId()+ROLES_FILE);
 		if (roleIDs==null) {
 			return;
 		}
@@ -78,7 +73,7 @@ public class AutoRoleListener extends ListenerAdapter{
 			return;
 		}
 		roles.remove(role);
-		STATIC.save(role.getGuild().getId()+"/roles.dat", AutoRoleListener.roles.get(role.getGuild().getId()).toArray());
+		STATIC.save(role.getGuild().getId()+ROLES_FILE, AutoRoleListener.roles.get(role.getGuild().getId()).toArray());
 	}
 	public static List<Role> getRoles(Guild g){
 		return Collections.unmodifiableList(roles.get(g.getId()));
@@ -98,7 +93,7 @@ public class AutoRoleListener extends ListenerAdapter{
 				g.addRoleToMember(member, role).queue();
 			}
 		} catch (Exception e) {
-			
+			//ignore
 		}
 	}
 }

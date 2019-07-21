@@ -62,7 +62,7 @@ public class CmdEval implements Command{
 				}, scriptBuilder.toString());
     		}
 			
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"evalUnknownError")+" ("+e.getClass().getName()+")\n"+e.getMessage());
 			se.put(LATEST_EXCEPTION_KEY_NAME, e);
 		}
