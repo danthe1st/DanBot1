@@ -32,7 +32,7 @@ public class CmdTimeBan implements Command{
 		int min=0;
 		
 		//days
-		int posEnde=time.indexOf(":");
+		int posEnde=time.indexOf(':');
 		if (posEnde==-1) {
 			posEnde=time.length();
 		}
@@ -42,25 +42,21 @@ public class CmdTimeBan implements Command{
 		try {
 			sH=time.substring(posAnfang,posEnde);
 		} catch (StringIndexOutOfBoundsException e) {
-			
-		}
-		catch (Exception e) {
-			
+			//ignore
 		}
 		//parse day-String
 		
 		try {
 			d=Integer.parseInt(sH);
 		} catch (NumberFormatException e) {
-		}
-		catch (Exception e) {
+			//ignore
 		}
 		
 		if (posEnde<time.length()) {
 			//hours
 			posAnfang=posEnde+1;
 			String substr=time.substring(posAnfang);
-			int colonIndex=substr.indexOf(":");
+			int colonIndex=substr.indexOf(':');
 			if (colonIndex==-1) {
 				posEnde=posAnfang+substr.length();
 			}
@@ -74,16 +70,14 @@ public class CmdTimeBan implements Command{
 			try {
 				sSec=time.substring(posAnfang,posEnde);
 			} catch (StringIndexOutOfBoundsException e) {
-			}
-			catch (Exception e) {
+				//ignore
 			}
 			//parse h-String
 			
 			try {
 				h=Integer.parseInt(sSec);
 			} catch (NumberFormatException e) {
-			}
-			catch (Exception e) {
+				//ignore
 			}
 			
 			//minutes
@@ -95,15 +89,13 @@ public class CmdTimeBan implements Command{
 				try {
 					sZSek=time.substring(posAnfang,posEnde);
 				} catch (StringIndexOutOfBoundsException e) {
-				}
-				catch (Exception e) {
+					//ignore
 				}
 				//parse min-String
 				try {
 					min=Integer.parseInt(sZSek);
 				} catch (NumberFormatException e) {
-				}
-				catch (Exception e) {
+					//ignore
 				}
 			}
 		}
@@ -138,7 +130,7 @@ public class CmdTimeBan implements Command{
 			reason=reasonBuilder.toString();
 		}
 		if (reason==null||reason.equals("")) {
-			DateFormat format=new SimpleDateFormat("dd.MM.YYYY,HH:mm:ss");
+			DateFormat format=new SimpleDateFormat("dd.MM.yyyy,HH:mm:ss");
 			
 			reason=String.format(translate(event.getGuild(),"timebanReason"),event.getAuthor().getName(),format.format(time));
 		}

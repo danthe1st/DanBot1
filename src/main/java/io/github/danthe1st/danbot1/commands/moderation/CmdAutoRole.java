@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  */
 @BotCommand("autorole")
 public class CmdAutoRole implements Command {
-
+	private static final String MISSING_ARGS_TRANSLATER="missingArgs";
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
 		return PermsCore.check(event, "autorole");
@@ -26,7 +26,7 @@ public class CmdAutoRole implements Command {
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATER));
 			return;
 		}
 		switch (args[0]) {
@@ -40,7 +40,7 @@ public class CmdAutoRole implements Command {
 		}
 		case "add":{
 			if (args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATER));
 			}
 			boolean empty=true;
 			for (Role role : STATIC.getRolesFromMsg(event.getMessage())) {
@@ -54,7 +54,7 @@ public class CmdAutoRole implements Command {
 		}
 		case "remove":{
 			if (args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATER));
 			}
 			
 			boolean empty=true;

@@ -44,7 +44,6 @@ public class AutoUnbanner {
 			unbans.forEach((k,v)->{
 				if (k.longValue()<System.currentTimeMillis()) {
 					for (String user : v.getUsers()) {
-						//v.guild(jda).getController().unban(user).queue();
 						unban(v.guild(jda), user);
 						toRemove.add(k);
 						
@@ -160,6 +159,7 @@ public class AutoUnbanner {
 				unbanner.reloadTimer();
 			}
 		} catch (JAXBException e) {
+			//ignore
 		}
 	}
 	/**

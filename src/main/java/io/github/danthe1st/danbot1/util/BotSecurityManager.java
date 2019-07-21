@@ -1,6 +1,5 @@
 package io.github.danthe1st.danbot1.util;
 
-import java.lang.reflect.ReflectPermission;
 import java.security.Permission;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,20 +49,17 @@ public class BotSecurityManager extends SecurityManager {
 	}
 	@Override
 	public void checkPermission(Permission perm) {
-		if (isCurrentThreadSensitive()) {
-			if (perm instanceof RuntimePermission) {
-				String name=perm.getName();
-				boolean allow=false;
-				for (String allowed : allowedRuntimePermissions) {
-					if (name.startsWith(allowed)) {
-						allow=true;
-						break;
-					}
+		if (isCurrentThreadSensitive()&&perm instanceof RuntimePermission) {
+			String name=perm.getName();
+			boolean allow=false;
+			for (String allowed : allowedRuntimePermissions) {
+				if (name.startsWith(allowed)) {
+					allow=true;
+					break;
 				}
-				if (!allow) {
-					throw new SecurityException("missing permission: "+perm.getName());
-				}
-			}else if (perm instanceof ReflectPermission&&perm.getName().equals("suppressAccessChecks")) {
+			}
+			if (!allow) {
+				throw new SecurityException("missing permission: "+perm.getName());
 			}
 		}
 	}

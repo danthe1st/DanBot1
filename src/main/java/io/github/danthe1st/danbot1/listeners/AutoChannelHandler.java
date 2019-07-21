@@ -105,7 +105,9 @@ public class AutoChannelHandler extends ListenerAdapter{
 					return true;
 				}
 			}
-		} catch (final Exception e) {	}
+		} catch (final Exception e) {
+			//ignore
+		}
 		
 		return false;
 	}

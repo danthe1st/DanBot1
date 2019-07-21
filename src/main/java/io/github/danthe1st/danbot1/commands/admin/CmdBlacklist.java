@@ -65,7 +65,7 @@ public class CmdBlacklist implements Command{
 					}
 				}
 			} catch (NumberFormatException e) {
-				
+				//ignore
 			}
 			
 		}
@@ -107,7 +107,7 @@ public class CmdBlacklist implements Command{
 	 * loads the blacklist data
 	 * @param jda the JDA instance
 	 */
-	public static void loadBlacklist(JDA jda) {
+	public static void loadBlacklist() {
 		try {
 			final File file=new File(STATIC.getSettingsDir()+"/blacklist.xml");
 			JAXBContext context=JAXBContext.newInstance(ListWrapper.class);
@@ -118,6 +118,7 @@ public class CmdBlacklist implements Command{
 			ListWrapper<String> data = (ListWrapper<String>) um.unmarshal(file);
 			blacklist=data.getData();
 		} catch (JAXBException e) {
+			//ignore
 		}
 	}
 	/**

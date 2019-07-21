@@ -11,6 +11,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 /**
  * Clears history of private Messages (min 2, max 100 Messages)
  * @author Daniel Schmid
@@ -33,16 +34,12 @@ public class CmdClearPMs implements Command {
 				try {
 					final MessageHistory history=new MessageHistory(event.getAuthor().openPrivateChannel().complete());
 					List<Message>msgs;
-					//event.getMessage().delete().queue();
 					
 					msgs=history.retrievePast(num).complete();
 					int numMsgs=0;
 					for (Message message : msgs) {
-						try {
-							message.delete().reason(translate(event.getGuild(),"ClearPMReason")).queue();
-							numMsgs++;
-						} catch (Exception e) {
-						}
+						message.delete().reason(translate(event.getGuild(),"ClearPMReason")).queue();
+						numMsgs++;
 					}
 					STATIC.msg(event.getTextChannel(), String.format(translate(event.getGuild(),"MsgsDeleted"),numMsgs), true);
 				}

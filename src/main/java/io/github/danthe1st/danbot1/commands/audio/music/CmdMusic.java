@@ -196,7 +196,9 @@ public class CmdMusic implements Command,AudioHolder{
 			if (args.length>2) {
 				try {
 					numTracksToLoad=Integer.parseInt(args[1]);
-				} catch (NumberFormatException e) {}
+				} catch (NumberFormatException e) {
+					//ignore
+				}
 			}
 			String input=Arrays.stream(args).skip(1).map(s->" "+s).collect(Collectors.joining()).substring(1);
 			

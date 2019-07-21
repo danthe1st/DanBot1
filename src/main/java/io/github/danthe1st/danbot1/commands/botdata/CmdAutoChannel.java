@@ -116,6 +116,7 @@ public class CmdAutoChannel implements Command, Serializable {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
+				//ignore
 			}
 		}
 		try {
@@ -126,7 +127,7 @@ public class CmdAutoChannel implements Command, Serializable {
 
 	        m.marshal(new MapWrapper<>(out), file);
 		} catch (JAXBException e) {
-			
+			//ignore
 		}
 	}
 	/**
@@ -149,9 +150,11 @@ public class CmdAutoChannel implements Command, Serializable {
 					try {
 						autoChannels.put(getVoiceChannel(vId, g), g);
 					} catch (Exception e) {
+						//ignore
 					}
 				});
 		} catch (JAXBException e) {
+			//ignore
 		}
 	}
 	@Override
