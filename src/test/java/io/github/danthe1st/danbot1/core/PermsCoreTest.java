@@ -11,9 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import io.github.danthe1st.danbot1.AbstractDanBot1Test;
+import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -156,5 +158,9 @@ public class PermsCoreTest extends AbstractDanBot1Test {
 			PermsCore.removePerm(g, k);
 			PermsCore.setPerm(g, k, v);
 		});
+	}
+	@AfterAll
+	public static void secureEverythingFinished() throws InterruptedException {
+		Thread.sleep(STATIC.INFO_TIMEOUT);
 	}
 }

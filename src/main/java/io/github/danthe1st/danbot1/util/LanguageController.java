@@ -21,15 +21,12 @@ import net.dv8tion.jda.api.entities.Guild;
  */
 public class LanguageController {
 	private static final String BASE_NAME="languages.DanBot1";
-	private static final ResourceBundle DEFAULT_BUNDLE;
-	//private static Map<Guild, ResourceBundle> bundles=new HashMap<>();
 	private static Map<Guild, Locale> locales=new HashMap<>();
 	private static Map<Locale, ResourceBundle> localePluginBundles=new HashMap<>();
 	private static ClassLoader pluginLoader=null;
 	private static ClassLoader coreLoader=LanguageController.class.getClassLoader();
 	static {
 		Locale.setDefault(Locale.ENGLISH);
-		DEFAULT_BUNDLE=ResourceBundle.getBundle(BASE_NAME,Locale.getDefault(),coreLoader);
 	}
 	private LanguageController() {
 		//do not allow
@@ -40,15 +37,7 @@ public class LanguageController {
 	}
 	private static ResourceBundle getGlobalResourceBundle(Guild g) {
 		Locale locale=getLocale(g);
-		ResourceBundle guildBundle=ResourceBundle.getBundle(BASE_NAME,locale);
-		if (guildBundle!=null) {
-			return guildBundle;
-		}
-		/*if (g!=null&&bundles.containsKey(g)) {
-			return bundles.get(g);
-		}*/else {
-			return DEFAULT_BUNDLE;
-		}
+		return ResourceBundle.getBundle(BASE_NAME,locale,coreLoader);
 	}
 	private static ResourceBundle getPluginResourceBundle(Locale locale) {
 		if (localePluginBundles.containsKey(locale)) {
@@ -57,7 +46,7 @@ public class LanguageController {
 		if (pluginLoader!=null) {
 			try {
 				return newBundle(BASE_NAME, locale, "java.properties", pluginLoader, false);
-			} catch (IllegalAccessException | InstantiationException | IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -72,39 +61,15 @@ public class LanguageController {
 		}
 		return bundles;
 	}
-	/*private static ResourceBundle getResourceBundle(Guild g,ClassLoader loader) {
-		//return ResourceBundle.getBundle(BASE_NAME,getLocale(g),loader);
-		//return new PropertiesResourceBundle(BASE_NAME, getLocale(g),loader);
-		try {
-			return newBundle(BASE_NAME, getLocale(g), "java.properties", loader, false);
-		} catch (IllegalAccessException | InstantiationException | IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	private static Set<ResourceBundle> getResourceBundles(Guild g,ClassLoader... loaders){
-		Set<ResourceBundle> bundles=new HashSet<>();
-		bundles.add(getGlobalResourceBundle(g));
-		for (ClassLoader loader : loaders) {
-			
-			ResourceBundle pluginBundle=getResourceBundle(g,loader);
-			if (pluginBundle!=null) {
-				bundles.add(pluginBundle);
-			}
-		}
-		return bundles;
-	}*/
 	public static Locale getLocale(Guild g) {
 		Locale locale=locales.get(g);
 		if (locale==null) {
 			locale=Locale.ENGLISH;
 		}
 		return locale;
-		//return getGlobalResourceBundle(g).getLocale();
 	}
 	public static void setLocale(Guild g,Locale locale) {
 		locales.put(g, locale);
-		//bundles.put(g, ResourceBundle.getBundle(BASE_NAME,locale));
 		saveToFile();
 	}
 	public static String translate(Guild g,String s) {
@@ -118,11 +83,9 @@ public class LanguageController {
 		return s;
 	}
 	
-	
-	
     private static ResourceBundle newBundle(
         String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
-            throws IllegalAccessException, InstantiationException, IOException
+            throws IOException
     {
         Properties properties = load(baseName, loader,locale);
         String include = properties.getProperty("include");
@@ -159,7 +122,7 @@ public class LanguageController {
 		}
         Enumeration<URL> resources=loader.getResources(baseName.replace('.', '/')+".properties");
         while (resources.hasMoreElements()) {
-			URL url = (URL) resources.nextElement();
+			URL url = resources.nextElement();
 			properties.load(url.openStream());
 		}
         return properties;

@@ -11,7 +11,6 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.exceptions.PermissionException;
 /**
  * Clears history of private Messages (min 2, max 100 Messages)
  * @author Daniel Schmid
