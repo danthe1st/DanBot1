@@ -127,7 +127,6 @@ public class CmdBlacklist implements Command{
 		File file=new File(STATIC.getSettingsDir()+"/blacklist.xml");
 		try {
 			if (!file.exists()) {
-				file.createNewFile();
 				Files.createFile(file.toPath());
 			}
 			JAXBContext context = JAXBContext
