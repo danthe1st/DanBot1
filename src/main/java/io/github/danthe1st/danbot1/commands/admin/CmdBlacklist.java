@@ -8,6 +8,7 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,22 +125,17 @@ public class CmdBlacklist implements Command{
 	 */
 	private static void saveBlacklist() {
 		File file=new File(STATIC.getSettingsDir()+"/blacklist.xml");
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				System.out.println("cannot create File blacklist.xml");
-				return;
-			}
-		}
 		try {
+			if (!file.exists()) {
+				file.createNewFile();
+				Files.createFile(file.toPath());
+			}
 			JAXBContext context = JAXBContext
 			        .newInstance(ListWrapper.class);
 			Marshaller m = context.createMarshaller();
 	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
 	        m.marshal(new ListWrapper<String>(blacklist), file);
-		} catch (JAXBException e) {
+		} catch (JAXBException|IOException e) {
 			e.printStackTrace();
 		}
 	}
