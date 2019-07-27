@@ -149,7 +149,7 @@
 				        <mainClass>io.github.danthe1st.danbot1.core.Main</mainClass>
 				      </manifest>
 				    </archive>
-				    <outputDirectory>./docs/</outputDirectory>
+				    <!--  <outputDirectory>./docs/</outputDirectory>-->
 				    <finalName>DanBot1</finalName>
 				    <descriptorRefs>
 				    	<descriptorRef>jar-with-dependencies</descriptorRef>
