@@ -25,3 +25,4 @@ jobs:
       script:
         - chmod +x ./saveJAR.sh
         - ./saveJAR.sh
+      if: branch = master
