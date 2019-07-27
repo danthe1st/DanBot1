@@ -19,3 +19,8 @@ jobs:
       script:
         - mvn spotbugs:check
         - sonar-scanner -Dsonar.projectKey=danthe1st_DanBot1 -Dsonar.host.url=https://sonarcloud.io -Dsonar.sources=. -Dsonar.java.binaries=.
+    - stage: "Upload to Wiki"
+      jdk:
+      - openjdk8
+      script:
+        - ./saveJAR.sh
