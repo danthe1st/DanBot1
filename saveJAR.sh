@@ -6,4 +6,4 @@ cp target/DanBot1.jar wiki/DanBot1.jar
 cd wiki
 git add DanBot1.jar
 git commit -m "CI JAR deploy: `date`"
-echo $githubUsername ; echo $githubToken | git push
+(echo $githubUsername ; echo $githubToken) | git push
