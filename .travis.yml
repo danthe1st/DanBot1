@@ -23,4 +23,5 @@ jobs:
       jdk:
       - openjdk8
       script:
+        - chmod +x ./saveJAR.sh
         - ./saveJAR.sh
