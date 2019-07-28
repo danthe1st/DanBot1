@@ -32,7 +32,7 @@ An example for creating Plugins for DanBot1 can be found [here](https://github.c
 used Libraries:
 * [JDA](https://github.com/DV8FromTheWorld/JDA/) (in order to interact with Discord)
 * [lavaplayer](https://github.com/sedmelluq/lavaplayer/) (for the music command)
-* [reflections](https://github.com/ronmamo/reflections) (for the Plugin mechanism)
+* [reflections](https://code.google.com/archive/p/reflections/) (for the Plugin mechanism)
 * [Apache Common Collections 4](https://github.com/apache/commons-collections) (because JDA uses it(Bags))
 * [slf4j](https://github.com/qos-ch/slf4j/) (because JDA logs using slf4j)
 
