@@ -18,6 +18,7 @@ public class CommandListener extends ListenerAdapter {
 	 * @see CommandParser
 	 * @see CommandHandler
 	 */
+	@Override
 	public void onMessageReceived(final MessageReceivedEvent event) {
 		if(!event.isFromGuild()){
 			return;

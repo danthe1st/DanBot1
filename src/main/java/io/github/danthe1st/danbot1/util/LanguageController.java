@@ -45,7 +45,7 @@ public class LanguageController {
 		}
 		if (pluginLoader!=null) {
 			try {
-				return newBundle(BASE_NAME, locale, "java.properties", pluginLoader, false);
+				return newBundle(BASE_NAME, locale, pluginLoader);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -84,7 +84,7 @@ public class LanguageController {
 	}
 	
     private static ResourceBundle newBundle(
-        String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
+        String baseName, Locale locale, ClassLoader loader)
             throws IOException
     {
         Properties properties = load(baseName, loader,locale);
@@ -129,18 +129,18 @@ public class LanguageController {
     }
     private static void saveToFile() {
     	Map<String, Locale> locales=new HashMap<>();
-    	LanguageController.locales.forEach((k,v)->{
-    		locales.put(k.getId(), v);
-    	});
+    	LanguageController.locales.forEach((k,v)->
+    		locales.put(k.getId(), v)
+    	);
     	STATIC.save("/languages.dat", locales);
     }
     public static void load(JDA jda) {
     	@SuppressWarnings("unchecked")
 		Map<String, Locale> locales=(Map<String, Locale>) STATIC.load("/languages.dat");
     	if (locales!=null) {
-			locales.forEach((k,v)->{
-				LanguageController.locales.put(jda.getGuildById(k),v);
-			});
+			locales.forEach((k,v)->
+				LanguageController.locales.put(jda.getGuildById(k),v)
+			);
 		}
     }
 }

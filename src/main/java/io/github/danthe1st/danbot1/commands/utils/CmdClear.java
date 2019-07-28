@@ -47,13 +47,11 @@ public class CmdClear implements Command {
 					
 					msgs=history.retrievePast(num).complete();
 					int numMsgs=msgs.size();
-					try {
-						event.getTextChannel().deleteMessages(msgs).queue();
-						STATIC.msg(event.getTextChannel(), String.format(translate(event.getGuild(),"MsgsDeleted"),numMsgs), true);
-					} catch (final IllegalArgumentException e) {
-						STATIC.errmsg(event.getTextChannel(),e.getLocalizedMessage());
-					} 
-				}
+					event.getTextChannel().deleteMessages(msgs).queue();
+					STATIC.msg(event.getTextChannel(), String.format(translate(event.getGuild(),"MsgsDeleted"),numMsgs), true);
+				}catch (final IllegalArgumentException e) {
+					STATIC.errmsg(event.getTextChannel(),e.getLocalizedMessage());
+				} 
 				catch (final Exception e) {
 					e.printStackTrace();
 				}

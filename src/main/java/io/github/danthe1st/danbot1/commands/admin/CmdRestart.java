@@ -46,7 +46,6 @@ public class CmdRestart implements Command{
 		
 		System.out.println("restarting manually");
 		Main.main(Main.getArgs());
-		return;
 	}
 	/**
 	 * looks for the Command({@link Runtime#exec(String)}) to restart the Bot
@@ -86,7 +85,9 @@ public class CmdRestart implements Command{
 		return "restartHelp";
 	}
 	@Override
-	public void executed(boolean success, MessageReceivedEvent event) {}
+	public void executed(boolean success, MessageReceivedEvent event) {
+		//already handled by action()
+	}
 	@Override
 	public CommandType getCommandType() {
 		return CommandType.ADMIN;

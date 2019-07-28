@@ -13,15 +13,17 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 public class UserphoneController{
 	private static Map<Guild,AudioHandler> handlers=new HashMap<>();
 	static {
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for (Guild g : handlers.keySet()) {
-					closeConnection(g);
-				}
+		Runtime.getRuntime().addShutdownHook(new Thread(()->{
+			for (Guild g : handlers.keySet()) {
+				closeConnection(g);
 			}
 		}));
 	}
+	
+	private UserphoneController() {
+		//no instantiation
+	}
+	
 	/**
 	 * opens an userphone connection in a Voice Channel
 	 * @param vc the {@link VoiceChannel} where the Connection should be opened

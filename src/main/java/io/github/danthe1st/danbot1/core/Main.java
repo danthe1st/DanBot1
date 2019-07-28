@@ -43,14 +43,12 @@ public class Main {
 	private static String adminId="358291050957111296";
 	private static String[] args;
 	private static JDA jda=null;
+	private static final String ANNOTATED_WITH=" is annotated with @";
 	static {
 		Runtime.getRuntime().addShutdownHook(new Thread(new ScanCloser(scan)));
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if (jda!=null) {
-					jda.shutdown();
-				}
+		Runtime.getRuntime().addShutdownHook(new Thread(()-> {
+			if (jda!=null) {
+				jda.shutdown();
 			}
 		}));
 	}
@@ -122,12 +120,9 @@ public class Main {
 					}
 					else if (arg.toLowerCase().startsWith("admin=")) {
 						String newAdminId=getStringArgValue(arg, null);
-						try {
-							if (!(newAdminId==null||newAdminId.equals(""))) {
-								Long.parseLong(adminId);
-								adminId=newAdminId;
-							}
-						} catch (Exception e) {
+						if (!(newAdminId==null||newAdminId.equals(""))) {
+							Long.parseLong(adminId);
+							adminId=newAdminId;
 						}
 					}
 					else if (arg.toLowerCase().startsWith("status=")) {
@@ -138,7 +133,8 @@ public class Main {
 					}
 					
 				}
-			} catch (IndexOutOfBoundsException e) {
+			} catch (Exception e) {
+				System.err.println("cannot parse/use argument: "+arg);
 			}
 		}
 		System.out.println("DanBot1 by Daniel Schmid");
@@ -193,7 +189,7 @@ public class Main {
 		try {
 			status = OnlineStatus.valueOf(statusStr.toUpperCase());
 		} catch (Exception e) {
-			
+			//ignore
 		}
 		if (status==null||status==OnlineStatus.UNKNOWN) {
 			status=OnlineStatus.fromKey(statusStr.toUpperCase());
@@ -206,8 +202,9 @@ public class Main {
 	private static String getStringArgValue(String argStr,String defaultArg) {
 		String newArg=null;
 		try {
-			newArg = argStr.substring(argStr.indexOf("=")+1);
-		} catch (Exception e) {
+			newArg = argStr.substring(argStr.indexOf('=')+1);
+		} catch (IndexOutOfBoundsException e) {
+			//ignore->see next if
 		}
 		if (newArg==null) {
 			newArg=defaultArg;
@@ -246,11 +243,11 @@ public class Main {
 				Annotation cmdAsAnnotation = cl.getAnnotation(annotClass);
 				function.accept(cmdAsAnnotation, annotatedAsObject);
 			} catch (InstantiationException e) {
-				System.err.println(cl.getName()+" is annotated with @"+annotClass.getName()+" but cannot be instanciated");
+				System.err.println(cl.getName()+ANNOTATED_WITH+annotClass.getName()+" but cannot be instanciated");
 			} catch (IllegalAccessException e) {
-				System.err.println(cl.getName()+" is annotated with @"+annotClass.getName()+" but the no-args constructor is not visible");
-			} catch (Throwable e) {
-				System.err.println(cl.getName()+" is annotated with @"+annotClass.getName()+" but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
+				System.err.println(cl.getName()+ANNOTATED_WITH+annotClass.getName()+" but the no-args constructor is not visible");
+			} catch (Exception e) {
+				System.err.println(cl.getName()+ANNOTATED_WITH+annotClass.getName()+" but there was an unknown Error: "+e.getClass().getName()+": "+e.getCause());
 			}
         }
     }

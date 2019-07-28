@@ -14,6 +14,7 @@ public class ReadyListener extends ListenerAdapter {
 	 * on login:<br>
 	 * prints all {@link Guild}s the Bot is in with {@link System#out}
 	 */
+	@Override
 	public void onReady(final ReadyEvent event) {
 		System.out.println("\nThis Bot is running on following servers: \n");
 		for (final Guild g : event.getJDA().getGuilds()) {

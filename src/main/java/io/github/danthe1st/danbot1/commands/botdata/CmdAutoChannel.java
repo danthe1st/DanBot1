@@ -5,6 +5,7 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class CmdAutoChannel implements Command, Serializable {
 	
 	private static HashMap<VoiceChannel, Guild> autoChannels=new HashMap<>();
 	
-	public static HashMap<VoiceChannel, Guild> getAutoChannels(){
+	public static Map<VoiceChannel, Guild> getAutoChannels(){
 		return autoChannels;
 	}
 	public static VoiceChannel getVoiceChannel(final String id,final Guild g) {
@@ -114,7 +115,7 @@ public class CmdAutoChannel implements Command, Serializable {
 		File file=new File(STATIC.getSettingsDir()+"/autochannels.xml");
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
 				//ignore
 			}

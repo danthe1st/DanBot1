@@ -25,6 +25,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  */
 @BotCommand("help")
 public class CmdHelp implements Command{
+	
+	private static final String COMMAND_TYPE_RESC_BUNDLE_PREFIX="cmdType_";
+	
 	@Override
 	public void action(String[] args, MessageReceivedEvent event) {
 		if (args.length==0) {
@@ -33,7 +36,7 @@ public class CmdHelp implements Command{
 		else {
 			for (CommandType type: CommandType.values()) {
 				if (args[0].replaceAll("[ _]", "").equalsIgnoreCase(type.name().replaceAll("[ _]", ""))||
-						args[0].replaceAll("[ _]", "").equalsIgnoreCase(translate(event.getGuild(), "cmdType_"+type.name()).replaceAll("[ _]", ""))) {
+						args[0].replaceAll("[ _]", "").equalsIgnoreCase(translate(event.getGuild(), COMMAND_TYPE_RESC_BUNDLE_PREFIX+type.name()).replaceAll("[ _]", ""))) {
 					sendHelpOfCommandType(event.getGuild(), event.getAuthor().openPrivateChannel().complete(), type);
 					return;
 				}
@@ -62,7 +65,7 @@ public class CmdHelp implements Command{
 		});
 		EmbedBuilder eb=new EmbedBuilder();
 		eb.setDescription(translate(g,"helpTitle"));
-		eb.appendDescription("`"+translate(g,"cmdType_"+type.name())+"`:\n").setColor(Color.GREEN);
+		eb.appendDescription("`"+translate(g,COMMAND_TYPE_RESC_BUNDLE_PREFIX+type.name())+"`:\n").setColor(Color.GREEN);
 		commands.forEach((name,command)->{
 			if (command.help()!=null) {
 				EmbedBuilder backUp=new EmbedBuilder(eb);
@@ -98,7 +101,7 @@ public class CmdHelp implements Command{
 		eb.setDescription(translate(g,"cmdListTitle"));
 		commandTypes.forEach((commandType,commands)->{
 			if (commandType!=null) {
-				eb.appendDescription("\n`"+translate(g,"cmdType_"+commandType.name())+"`:\n").setColor(Color.GREEN);
+				eb.appendDescription("\n`"+translate(g,COMMAND_TYPE_RESC_BUNDLE_PREFIX+commandType.name())+"`:\n").setColor(Color.GREEN);
 			}else {
 				eb.appendDescription("\n"+translate(g,"cmdWithoutType")).setColor(Color.GREEN);
 			}

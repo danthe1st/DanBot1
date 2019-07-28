@@ -52,7 +52,7 @@ public final class STATIC {
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
 	public static final int INFO_TIMEOUT=5000;
 	private static final String STD_CMD_LOGGER_NAME="cmdLog";
-	private static HashMap<String, String> cmdLoggerNames =new HashMap<String, String>();
+	private static HashMap<String, String> cmdLoggerNames =new HashMap<>();
 	private static final Map<String, String> markupEscapeMap=new HashMap<>();
 	
 	private static final String DIR_CREATION_FAILED="cannot create directory: ";
@@ -281,7 +281,7 @@ public final class STATIC {
 		File file=new File(saveFile);
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -443,7 +443,7 @@ public final class STATIC {
 		final File file=new File(STATIC.getSettingsDir()+"/"+filename);
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -23,7 +23,7 @@ public class MsgSpammer implements Runnable{
 	private Thread spammerThread;
 	
 	private MsgSpammer() {
-		spams=new HashMap<Guild, MsgSpammer.SpamWrapper>();
+		spams=new HashMap<>();
 		spammerThread=null;
 	}
 	/**
@@ -63,7 +63,7 @@ public class MsgSpammer implements Runnable{
 	 * @param msg the Message that should be spammed
 	 * @param commander the user that commanded the spam
 	 */
-	public synchronized static void addMsgSpam(int count,TextChannel channel,String msg,User commander) {
+	public static synchronized void addMsgSpam(int count,TextChannel channel,String msg,User commander) {
 		if (count==0) {
 			spammer.spams.remove(channel.getGuild());
 			return;

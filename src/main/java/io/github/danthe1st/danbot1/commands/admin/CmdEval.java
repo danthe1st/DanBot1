@@ -51,7 +51,7 @@ public class CmdEval implements Command{
         Object result=null;
         try {
         	if (System.getSecurityManager() instanceof BotSecurityManager) {
-        		result = ((BotSecurityManager)System.getSecurityManager()).execSecure((x)->{
+        		result = ((BotSecurityManager)System.getSecurityManager()).execSecure(x->{
 					try {
 						return se.eval(x);
 					} catch (ScriptException e) {

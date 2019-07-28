@@ -30,12 +30,9 @@ public class CmdRole implements Command{
 		if (args.length==1) {
 			List<Role> roles=STATIC.getRolesFromMsg(event.getMessage());
 			for (Role role : roles) {
-				if (!PermsCore.check(event, "role",false)) {
-					if (!PermsCore.check(event, "role."+role.getName())) {
-						return;
-					}
+				if (!(PermsCore.check(event, "role",false)||PermsCore.check(event, "role."+role.getName()))) {
+					return;
 				}
-				
 			}
 			Member member=event.getGuild().getMember(event.getAuthor());
 			for (Role role : roles) {

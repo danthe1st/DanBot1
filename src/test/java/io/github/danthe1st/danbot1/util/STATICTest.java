@@ -8,11 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
@@ -153,10 +157,10 @@ public class STATICTest extends AbstractDanBot1Test {
 		assertNotNull(STATIC.createInvite(g));
 	}
 	@Test
-	public void testSetGetSettingsDir() {
+	public void testSetGetSettingsDir() throws IOException {
 		assertTrue(new File(STATIC.getSettingsDir()).isDirectory());
 		assertEquals(getTestingSettingDir(), STATIC.getSettingsDir());
-		new File(STATIC.getSettingsDir()).delete();
+		FileUtils.deleteDirectory(new File(STATIC.getSettingsDir()));
 		assertTrue(new File(STATIC.getSettingsDir()).isDirectory());
 		String testFileName="__UnitTest__autodelete__";
 		STATIC.setSettingsDir(testFileName);
