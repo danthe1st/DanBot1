@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 @BotCommand("motd")
 public class CmdMotd implements Command{
 	private static final String MOTD_FILENAME="/motd.dat";
-	private static Map<Guild, String> motd=new HashMap<Guild, String>();
+	private static Map<Guild, String> motd=new HashMap<>();
 	private static final String STD_MOTD="stdMOTD";
 	@Override
 	public boolean allowExecute(String[] args, MessageReceivedEvent event) {

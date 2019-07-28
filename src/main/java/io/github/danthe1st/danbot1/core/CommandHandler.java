@@ -15,7 +15,12 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
  * @author Daniel Schmid
  */
 public class CommandHandler {
-	private static final Map<String, Command> commands=new HashMap<String, Command>();
+	private static final Map<String, Command> commands=new HashMap<>();
+	
+	private CommandHandler() {
+		//no instantiation
+	}
+	
 	public static Map<String, Command> getCommands() {
 		return Collections.unmodifiableMap(commands);
 	}

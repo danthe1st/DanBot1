@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class CmdVote implements Command,Serializable{
 	private static final long serialVersionUID = -1L;
 	private static HashMap<Guild, Poll> polls=new HashMap<>();
 	private static final String[] EMOTI= {":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":keycap_ten:"};
+	private static final String VOTE_FILENAME="/vote.dat";
 	/**
 	 * An internal class for a Poll<br>
 	 * <b>A Poll contains:</b><br>
@@ -169,14 +171,14 @@ public class CmdVote implements Command,Serializable{
 	 */
 	private void savePoll(final Guild guild) throws IOException {
 		if(!polls.containsKey(guild)) {
-			final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/vote.dat";
+			final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+VOTE_FILENAME;
 			final File f=new File(saveFile);
-			if(!f.delete()&&f.exists()) {
-				System.err.println("cannot delete file: "+f.getAbsolutePath());
+			if (f.exists()) {
+				Files.delete(f.toPath());
 			}
 			return;
 		}
-		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/vote.dat";
+		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+VOTE_FILENAME;
 		final Poll poll=polls.get(guild);
 		try(final ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(saveFile))){
 			oos.writeObject(poll);
@@ -193,7 +195,7 @@ public class CmdVote implements Command,Serializable{
 		if(polls.containsKey(g)) {
 			return null;
 		}
-		final String saveFile=STATIC.getSettingsDir()+"/"+g.getId()+"/vote.dat";
+		final String saveFile=STATIC.getSettingsDir()+"/"+g.getId()+VOTE_FILENAME;
 		try(final ObjectInputStream ois=new ObjectInputStream(new FileInputStream(saveFile))){
 			return (Poll)ois.readObject();
 		}
@@ -204,7 +206,7 @@ public class CmdVote implements Command,Serializable{
 	 */
 	public static void loadPolls(final JDA jda) {
 		jda.getGuilds().forEach(g->{
-			final File f=new File(STATIC.getSettingsDir()+"/"+g.getId()+"/vote.dat");
+			final File f=new File(STATIC.getSettingsDir()+"/"+g.getId()+VOTE_FILENAME);
 			if(f.exists()) {
 				try {
 					polls.put(g, getPoll(g));

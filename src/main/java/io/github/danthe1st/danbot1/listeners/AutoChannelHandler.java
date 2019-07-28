@@ -1,9 +1,10 @@
 package io.github.danthe1st.danbot1.listeners;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import io.github.danthe1st.danbot1.commands.botdata.CmdAutoChannel;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -24,11 +25,11 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	@Override
 	public void onGuildVoiceJoin(final GuildVoiceJoinEvent event) {
-		final HashMap<VoiceChannel, Guild> autoChans=io.github.danthe1st.danbot1.commands.botdata.CmdAutoChannel.getAutoChannels();
+		final Map<VoiceChannel, Guild> autoChans=CmdAutoChannel.getAutoChannels();
 		final VoiceChannel vc=event.getChannelJoined();
 		final Guild g=event.getGuild();
 		if (autoChans.containsKey(vc)) {
-			final VoiceChannel nvc=(VoiceChannel)g.createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
+			final VoiceChannel nvc=g.createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
 					.setBitrate(vc.getBitrate())
 					.setUserlimit(vc.getUserLimit())
 					.complete();
@@ -47,12 +48,12 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	@Override
 	public void onGuildVoiceMove(final GuildVoiceMoveEvent event) {
-		final HashMap<VoiceChannel, Guild> autoChans=io.github.danthe1st.danbot1.commands.botdata.CmdAutoChannel.getAutoChannels();
+		final Map<VoiceChannel, Guild> autoChans=CmdAutoChannel.getAutoChannels();
 		final Guild g=event.getGuild();
 		
 		VoiceChannel vc=event.getChannelJoined();
 		if (autoChans.containsKey(vc)) {
-			final VoiceChannel nvc=(VoiceChannel)g.createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
+			final VoiceChannel nvc=g.createVoiceChannel(vc.getName()+""+STATIC.AUTOCHANNEL_POSTFIX)
 					.setBitrate(vc.getBitrate())
 					.setUserlimit(vc.getUserLimit())
 					.complete();
@@ -65,7 +66,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 			
 		}
 		vc=event.getChannelLeft();
-		if((active.contains(vc)||isOldAutoChannel(event.getChannelLeft()))&&vc.getMembers().size()==0) {
+		if((active.contains(vc)||isOldAutoChannel(event.getChannelLeft()))&&vc.getMembers().isEmpty()) {
 			active.remove(vc);
 			vc.delete().queue();
 		}
@@ -76,7 +77,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 	@Override
 	public void onGuildVoiceLeave(final GuildVoiceLeaveEvent event) {
 		final VoiceChannel vc=event.getChannelLeft();
-		if((active.contains(vc)||isOldAutoChannel(vc))&&vc.getMembers().size()==0) {
+		if((active.contains(vc)||isOldAutoChannel(vc))&&vc.getMembers().isEmpty()) {
 			active.remove(vc);
 			vc.delete().queue();
 		}
@@ -86,7 +87,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	@Override
 	public void onVoiceChannelDelete(final VoiceChannelDeleteEvent event) {
-		final HashMap<VoiceChannel, Guild> autoChans=io.github.danthe1st.danbot1.commands.botdata.CmdAutoChannel.getAutoChannels();
+		final Map<VoiceChannel, Guild> autoChans=CmdAutoChannel.getAutoChannels();
 		if (autoChans.containsKey(event.getChannel())) {
 			io.github.danthe1st.danbot1.commands.botdata.CmdAutoChannel.unsetChan(event.getChannel());
 		}
@@ -98,7 +99,7 @@ public class AutoChannelHandler extends ListenerAdapter{
 	 */
 	private boolean isOldAutoChannel(final VoiceChannel vc) {
 		try {
-			final HashMap<VoiceChannel, Guild> channels=io.github.danthe1st.danbot1.commands.botdata.CmdAutoChannel.getAutoChannels();
+			final Map<VoiceChannel, Guild> channels=CmdAutoChannel.getAutoChannels();
 			final String name=vc.getName().substring(0, vc.getName().indexOf(STATIC.AUTOCHANNEL_POSTFIX));
 			for (final VoiceChannel voiceChannel : channels.keySet()) {
 				if(voiceChannel.getName().equals(name)) {

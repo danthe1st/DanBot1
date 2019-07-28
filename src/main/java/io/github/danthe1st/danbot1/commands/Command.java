@@ -57,6 +57,7 @@ public interface Command {
 						.setDescription(logForGuild)
 						.build()).queue();
 			} catch (InsufficientPermissionException e) {
+				//ignore
 			}
 		}
 		LoggerUtils.logCommand(event);

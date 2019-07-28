@@ -31,7 +31,7 @@ public class CmdVoiceKick implements Command{
 		try {
 			for (Member member : toKick) {
 				if (member.getVoiceState().inVoiceChannel()) {
-					event.getGuild().moveVoiceMember(member, event.getGuild().getAfkChannel()).queue();;
+					event.getGuild().moveVoiceMember(member, event.getGuild().getAfkChannel()).queue();
 				}
 				else {
 					STATIC.errmsg(event.getTextChannel(), member.getEffectiveName()+translate(event.getGuild(),"errUserNotInVC"));

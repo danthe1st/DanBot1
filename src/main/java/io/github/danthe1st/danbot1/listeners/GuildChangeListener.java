@@ -2,6 +2,8 @@ package io.github.danthe1st.danbot1.listeners;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -31,7 +33,9 @@ public class GuildChangeListener extends ListenerAdapter {
 		if (dir.exists()) {
 			File leftFile=new File(dir,"/.left");
 			if (leftFile.exists()) {
-				if(!leftFile.delete()) {
+				try {
+					Files.delete(leftFile.toPath());
+				} catch (IOException e) {
 					System.err.println("cannot delete directory: "+dir.getAbsolutePath());
 				}
 			}
@@ -55,8 +59,9 @@ public class GuildChangeListener extends ListenerAdapter {
 		File dir=new File(STATIC.getSettingsDir()+"/"+event.getGuild().getId());
 		if (dir.exists()) {
 			try {
-				new File(dir, ".left").createNewFile();
+				Files.createFile(new File(dir, ".left").toPath());
 			} catch (IOException e) {
+				//ignore
 			}
 		}
 	}
@@ -74,7 +79,9 @@ public class GuildChangeListener extends ListenerAdapter {
 	public static void saveGuildData(Guild g) {
 		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
 		if (!dir.exists()) {
-			if(!dir.mkdir()) {
+			try {
+				Files.createDirectory(dir.toPath());
+			} catch (IOException e) {
 				System.err.println("cannot create directory: "+dir.getAbsolutePath());
 			}
 		}
@@ -88,9 +95,9 @@ public class GuildChangeListener extends ListenerAdapter {
 	private static void saveGuildData(Guild g,File dataFile) {
 		if (!dataFile.exists()) {
 			try {
-				dataFile.createNewFile();
+				Files.createFile(dataFile.toPath());
 			} catch (IOException e) {
-				
+				//ignore
 			}
 		}
 		try {
@@ -100,7 +107,7 @@ public class GuildChangeListener extends ListenerAdapter {
 	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 	        m.marshal(new XMLGuildData(g), dataFile);
 		} catch (JAXBException e) {
-			
+			//ignore
 		}
 	}
 	/**

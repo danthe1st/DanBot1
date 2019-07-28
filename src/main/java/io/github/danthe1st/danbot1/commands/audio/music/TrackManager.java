@@ -26,12 +26,12 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
  * Core-Class for Music
  */
 public class TrackManager extends AudioEventAdapter{
-	private final AudioPlayer PLAYER;
+	private final AudioPlayer player;
 	private final Queue<AudioInfo> queue;
 	private final AudioHolder holder;
 	
 	public TrackManager(final AudioHolder holder, final AudioPlayer player) {
-		this.PLAYER=player;
+		this.player=player;
 		this.queue=new LinkedBlockingQueue<>();
 		this.holder=holder;
 	}
@@ -45,8 +45,8 @@ public class TrackManager extends AudioEventAdapter{
 		final AudioInfo info=new AudioInfo(track, author,channel);
 		queue.add(info);
 		
-		if (PLAYER.getPlayingTrack()==null) {
-			PLAYER.playTrack(track);
+		if (player.getPlayingTrack()==null) {
+			player.playTrack(track);
 		}
 	}
 	/**
@@ -110,12 +110,9 @@ public class TrackManager extends AudioEventAdapter{
 		
 		if (queue.isEmpty()) {
 			if (g.getAudioManager().isConnected()) {
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							g.getAudioManager().closeAudioConnection();
-						}
-					}
+					new Thread(()->
+						g.getAudioManager().closeAudioConnection()
+					
 				).start();
 			}
 		}
