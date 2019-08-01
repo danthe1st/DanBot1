@@ -50,7 +50,7 @@ public final class STATIC {
 	public static final String VERSION="v4.0 - Living";
 	private static String settingsDir="./DANBOT1_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
-	public static final int INFO_TIMEOUT=5000;
+	public static final long INFO_TIMEOUT=5000;
 	private static final String STD_CMD_LOGGER_NAME="cmdLog";
 	private static HashMap<String, String> cmdLoggerNames =new HashMap<>();
 	private static final Map<String, String> markupEscapeMap=new HashMap<>();
@@ -160,6 +160,9 @@ public final class STATIC {
 		roles.addAll(msg.getMentionedRoles());
 		
 		for (int i = 1; i < args.length; i++) {
+			if (args[i].equals("")) {
+				continue;
+			}
 			Role role=null;
 			try {
 				role=msg.getGuild().getRoleById(args[i]);
@@ -190,6 +193,9 @@ public final class STATIC {
 			members.add(msg.getGuild().getMember(user));
 		}
 		for (int i = 1; i < args.length; i++) {
+			if (args[i].equals("")) {
+				continue;
+			}
 			Member member=null;
 			try {
 				member=msg.getGuild().getMemberById(args[i]);

@@ -2,11 +2,13 @@ package io.github.danthe1st.danbot1.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.JDA;
@@ -19,52 +21,21 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
  * @author Daniel Schmid
  */
 public class PermsCore {
-	//					gId				Perm	Role
+	//						 gId	     Perm	 Role
 	private static final Map<String, Map<String, String[]>> perms=new HashMap<>();
 	private static final HashMap<String, String[]> STD_PERMS =new HashMap<>();
-	
-	private static final String DEFAULT_ROLE_ALL_PERMS="Owner";
-	private static final String DEFAULT_ROLE_ADMINISTRATIVE_PERMS="Admin";
-	private static final String DEFAULT_ROLE_CONTROL_PERMS_1="Moderator";
-	private static final String DEFAULT_ROLE_CONTROL_PERMS_2="Supporter";
 	private static final String DEFAULT_PERM_ALLOW_EVERYONE="*";
 	
 	static {
-		STD_PERMS.put("ping", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("motd", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("motd.change", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("say", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("clearChat", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS, DEFAULT_ROLE_CONTROL_PERMS_1, DEFAULT_ROLE_CONTROL_PERMS_2});
-		STD_PERMS.put("playMusic", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("userphone", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("vote", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("vote.create", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("vote.vote", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("vote.close", STD_PERMS.get("vote.create"));
-		STD_PERMS.put("vote.stats", STD_PERMS.get("vote.vote"));
-		STD_PERMS.put("prefix", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("prefix.set", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS});
-		STD_PERMS.put("prefix.show", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("autoChannel", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS});
-		STD_PERMS.put("stop", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS});
-		STD_PERMS.put("restart", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS});
-		STD_PERMS.put("perm", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("perm.get", STD_PERMS.get("perm"));
-		STD_PERMS.put("perm.change", new String[] {DEFAULT_ROLE_ALL_PERMS});
-		STD_PERMS.put("kick", new String[] {DEFAULT_ROLE_ALL_PERMS});
-		STD_PERMS.put("ban", new String[] {DEFAULT_ROLE_ALL_PERMS});
-		STD_PERMS.put("role", new String[] {DEFAULT_ROLE_ALL_PERMS});
-		STD_PERMS.put("spam", new String[] {DEFAULT_ROLE_ALL_PERMS});
-		STD_PERMS.put("logger", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("logger.show", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("logger.set", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS});
-		STD_PERMS.put("userinfo", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("autorole", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS});
-		STD_PERMS.put("unnick.others", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS, DEFAULT_ROLE_CONTROL_PERMS_1, DEFAULT_ROLE_CONTROL_PERMS_2});
-		STD_PERMS.put("unnick", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("dice", new String[] {DEFAULT_PERM_ALLOW_EVERYONE});
-		STD_PERMS.put("vkick", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS, DEFAULT_ROLE_CONTROL_PERMS_1, DEFAULT_ROLE_CONTROL_PERMS_2});
-		STD_PERMS.put("changeLanguage", new String[] {DEFAULT_ROLE_ALL_PERMS, DEFAULT_ROLE_ADMINISTRATIVE_PERMS});
+		try(InputStream permStream=PermsCore.class.getClassLoader().getResourceAsStream("standardPermissions.properties")){
+			Properties permProps=new Properties();
+			permProps.load(permStream);
+			permProps.forEach((k,v)->{
+				STD_PERMS.put((String)k, ((String)v).split(" "));
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	private PermsCore() {
 		//private constructor to prevent instantiation
