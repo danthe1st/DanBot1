@@ -60,7 +60,6 @@ public abstract class AbstractDanBot1Test {
 		return props.getProperty("SETTINGS_DIR");
 	}
 	
-	
 	//Utils
 	public static Message getMessage(TextChannel tc,Function<Message, Boolean> s) {
 		for (Message msg : tc.getHistory().retrievePast(100).complete()) {

@@ -29,8 +29,7 @@ public class LanguageController {
 		Locale.setDefault(Locale.ENGLISH);
 	}
 	private LanguageController() {
-		//do not allow
-		throw new InstantiationError();
+		//no instantiation
 	}
 	public static void setPluginLoader(ClassLoader pluginLoader) {
 		LanguageController.pluginLoader=pluginLoader;
