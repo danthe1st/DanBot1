@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * prints help for all Commands
@@ -29,7 +29,7 @@ public class CmdHelp implements Command{
 	private static final String COMMAND_TYPE_RESC_BUNDLE_PREFIX="cmdType_";
 	
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if (args.length==0) {
 			sendListOfCommands(event.getGuild(), event.getAuthor().openPrivateChannel().complete());
 		}

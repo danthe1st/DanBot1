@@ -1,6 +1,6 @@
 package io.github.danthe1st.danbot1.util;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.text.DateFormat;
@@ -39,9 +39,9 @@ public class LoggerUtils extends ListenerAdapter {
 	
 	/**
 	 * writes an executed Command in a Log file
-	 * @param event The {@link MessageReceivedEvent} of the Command
+	 * @param event The {@link GuildMessageReceivedEvent} of the Command
 	 */
-    public static void logCommand(MessageReceivedEvent event) {
+    public static void logCommand(GuildMessageReceivedEvent event) {
 		File path=new File(STATIC.getSettingsDir() +"/"+event.getGuild().getId());
 		if (!path.exists()) {
 			try {
@@ -50,7 +50,7 @@ public class LoggerUtils extends ListenerAdapter {
 				System.err.println("cannot create directory: "+path.getAbsolutePath());
 			}
 		}
-		String s=String.format( "%s '%s' executed by %s in Channel %s (in Guild %s)", getCurrentSystemTime(), event.getMessage().getContentDisplay(), event.getMessage().getAuthor().getName(), event.getTextChannel().getName(),event.getGuild().getName());
+		String s=String.format( "%s '%s' executed by %s in Channel %s (in Guild %s)", getCurrentSystemTime(), event.getMessage().getContentDisplay(), event.getMessage().getAuthor().getName(), event.getChannel().getName(),event.getGuild().getName());
 		//server-local Log-File
 		write(STATIC.getSettingsDir()+"/"+event.getGuild().getId()+"/" +LOGFILE_NAME, s);
 		//global Log-File

@@ -13,7 +13,7 @@ import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command to ban a {@link Member} until a specified time expires
@@ -103,20 +103,20 @@ public class CmdTimeBan implements Command{
 		return   System.currentTimeMillis()+1000L*60*(min+60*(h+24*d));
 	}
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "ban");
 	}
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		if(!PermsCore.check(event, "ban")) {
 			return;
 		}		
 		if (args.length<2) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		long time=getBanTime(args[0]);
 		if (time==-1) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errArgNoTime"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errArgNoTime"));
 		}
 		
 		List<Member> users= event.getGuild().getMembersByName(args[1], true);
@@ -140,7 +140,7 @@ public class CmdTimeBan implements Command{
 				event.getGuild().ban(user,0, reason).queue();
 				AutoUnbanner.addUnBan(event.getGuild(), user.getUser(), time);
 			} catch (Exception e) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotBan")+user.getEffectiveName());
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errCannotBan")+user.getEffectiveName());
 			}
 		}
 	}

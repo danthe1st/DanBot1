@@ -20,14 +20,14 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class PermsCoreTest extends AbstractDanBot1Test {
 	@Test
 	public void testCheckInvalidPermissionAndCheckOwner() {
 		JDA jda=Main.getJda();
 		TextChannel tc=jda.getTextChannelById(getChannel());
-		MessageReceivedEvent event=getSomeMsgRescEvent(jda, getMessage(tc, true));
+		GuildMessageReceivedEvent event=getSomeMsgRescEvent(jda, getMessage(tc, true));
 		assertTrue(PermsCore.checkOwner(event));
 		assertTrue(PermsCore.check(event,someInvalidPermission));
 		event=getSomeMsgRescEvent(jda, getMessage(tc, false));
@@ -35,8 +35,8 @@ public class PermsCoreTest extends AbstractDanBot1Test {
 		assertFalse(PermsCore.check(event,someInvalidPermission));
 	}
 	private final String someInvalidPermission="oaefisfdouhbfosfhaweioöfdifabdsifbssuaidfdasu";//some String(Users should not have the Permission explicitely)
-	private MessageReceivedEvent getSomeMsgRescEvent(JDA jda,Message msg) {
-		return new MessageReceivedEvent(jda, 0, msg);
+	private GuildMessageReceivedEvent getSomeMsgRescEvent(JDA jda,Message msg) {
+		return new GuildMessageReceivedEvent(jda, 0, msg);
 	}
 	private Message getMessage(TextChannel tc,boolean fromBotAdmin) {
 		for (Message msg : tc.getHistory().retrievePast(100).complete()) {

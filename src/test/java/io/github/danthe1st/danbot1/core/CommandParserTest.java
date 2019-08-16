@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import io.github.danthe1st.danbot1.AbstractDanBot1Test;
 import io.github.danthe1st.danbot1.commands.admin.SudoMessage;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CommandParserTest  extends AbstractDanBot1Test{
 	@Test
@@ -23,12 +23,12 @@ public class CommandParserTest  extends AbstractDanBot1Test{
 	}
 	public void testNormalCommand(String cmd, String[] expected) {
 		Member member=Main.getJda().getGuildById(getGuild()).getMemberById(Main.getAdminId());
-		CommandParser.CommandContainer container=CommandParser.parser(new MessageReceivedEvent(Main.getJda(), 0, new SudoMessage(getMessage(Main.getJda().getTextChannelById(getChannel()),member),cmd, cmd, cmd, member)));
+		CommandParser.CommandContainer container=CommandParser.parser(new GuildMessageReceivedEvent(Main.getJda(), 0, new SudoMessage(getMessage(Main.getJda().getTextChannelById(getChannel()),member),cmd, cmd, cmd, member)));
 		assertTrue(Arrays.equals(container.args, expected));
 	}
 	public void testNormalCommand(String cmd, String[] expected,String prefix) {
 		Member member=Main.getJda().getGuildById(getGuild()).getMemberById(Main.getAdminId());
-		CommandParser.CommandContainer container=CommandParser.parser(new MessageReceivedEvent(Main.getJda(), 0, new SudoMessage(getMessage(Main.getJda().getTextChannelById(getChannel()),member),cmd, cmd, cmd, member)));
+		CommandParser.CommandContainer container=CommandParser.parser(new GuildMessageReceivedEvent(Main.getJda(), 0, new SudoMessage(getMessage(Main.getJda().getTextChannelById(getChannel()),member),cmd, cmd, cmd, member)));
 		assertTrue(Arrays.equals(container.args, expected));
 	}
 }

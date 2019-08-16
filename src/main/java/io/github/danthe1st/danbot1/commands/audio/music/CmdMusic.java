@@ -32,7 +32,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * The music Command
  * @author Daniel Schmid
@@ -174,14 +174,14 @@ public class CmdMusic implements Command,AudioHolder{
 		return "\'["+getTimeStamp(length)+"]\'"+title+"\n";
 	}
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "playMusic");
 	}
 	@Override
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		Guild guild=event.getGuild();
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
+			STATIC.errmsg(event.getChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		switch (args[0].toLowerCase()) {
@@ -189,7 +189,7 @@ public class CmdMusic implements Command,AudioHolder{
 		case "p":
 			
 			if (args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), translate(guild,"noQueryString"));
+				STATIC.errmsg(event.getChannel(), translate(guild,"noQueryString"));
 				return;
 			}
 			numTracksToLoad=1;
@@ -238,7 +238,7 @@ public class CmdMusic implements Command,AudioHolder{
 			}
 				final AudioTrack track=getPlayer(guild).getPlayingTrack();
 				final AudioTrackInfo info=track.getInfo();
-				event.getTextChannel().sendMessage(
+				event.getChannel().sendMessage(
 						new EmbedBuilder().setDescription(translate(guild,"trackInfoTitle")).addField(translate(guild,"Title"),info.title, false)
 						.addField(translate(guild,"trackInfoField.duration"), "\'["+getTimeStamp(track.getPosition())+"/"+getTimeStamp(track.getDuration())+"]\'", false)
 						.addField(translate(guild,"trackInfoField.author"), info.author, false)
@@ -261,11 +261,11 @@ public class CmdMusic implements Command,AudioHolder{
 			}
 			final String out=trackSublist.stream().collect(Collectors.joining("\n"));
 			final int pageNumAll=tracks.size()>=20?tracks.size()/20:1;
-			STATIC.msg(event.getTextChannel(), translate(guild,"trackQueueInfoTitle")+
+			STATIC.msg(event.getChannel(), translate(guild,"trackQueueInfoTitle")+
 									"*["+getManager(guild).getQueue().size()+translate(guild,"tracksAndPage")+pageNum+" / "+pageNumAll+"]*"+out);
 			break;
 		default:
-			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
+			STATIC.errmsg(event.getChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			break;
 		}
 	}

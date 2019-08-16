@@ -24,7 +24,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Command for AutoChannels
  * @author Daniel Schmid
@@ -159,13 +159,13 @@ public class CmdAutoChannel implements Command, Serializable {
 		}
 	}
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "autoChannel");
 	}
 	@Override
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		final Guild g=event.getGuild();
-		final TextChannel tc=event.getTextChannel();
+		final TextChannel tc=event.getChannel();
 		if(args.length<1) {
 			STATIC.errmsg(tc, translate(event.getGuild(),help()).replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;

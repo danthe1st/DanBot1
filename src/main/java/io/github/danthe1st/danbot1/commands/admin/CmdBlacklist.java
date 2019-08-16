@@ -2,7 +2,7 @@ package io.github.danthe1st.danbot1.commands.admin;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
@@ -31,11 +31,11 @@ import io.github.danthe1st.danbot1.util.STATIC;
 public class CmdBlacklist implements Command{
 	private static List<String> blacklist=new ArrayList<>();
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);	
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		Guild g=event.getGuild();
         if (args.length==0) {
 			StringBuilder sb=new StringBuilder(translate(g, "UsersBlacklisted")+":\n");
@@ -48,7 +48,7 @@ public class CmdBlacklist implements Command{
 				}
 				sb.append("\n");
 			}
-			STATIC.msg(event.getTextChannel(), sb.toString());
+			STATIC.msg(event.getChannel(), sb.toString());
 			return;
 		}
         List<User> toAdd=new ArrayList<>();
@@ -79,7 +79,7 @@ public class CmdBlacklist implements Command{
 			blacklist.remove(user.getId());
 			rembuilder.append(user+"\n");
 		}
-        STATIC.msg(event.getTextChannel(), 
+        STATIC.msg(event.getChannel(), 
         		String.format(translate(g,"addedRemovedUsersFromBlacklist"),
         				toAdd.size(),toRemove.size(),addbuilder.toString(),rembuilder.toString()));
         saveBlacklist();

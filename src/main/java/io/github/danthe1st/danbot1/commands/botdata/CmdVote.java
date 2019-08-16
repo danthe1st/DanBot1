@@ -27,7 +27,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command for Polls in a Guild
@@ -89,12 +89,12 @@ public class CmdVote implements Command,Serializable{
 	/**
 	 * creates a new Poll(errormessage if there is a poll wich already exists
 	 * @param args Arguments-Arrey of the Command
-	 * @param event {@link MessageReceivedEvent} of the Command
+	 * @param event {@link GuildMessageReceivedEvent} of the Command
 	 */
-	private void craetePoll(final String[] args, final MessageReceivedEvent event) {
-		TextChannel channel=event.getTextChannel();
+	private void craetePoll(final String[] args, final GuildMessageReceivedEvent event) {
+		TextChannel channel=event.getChannel();
 		if (polls.containsKey(event.getGuild())) {
-			STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"errPollActive"));
+			STATIC.msg(event.getChannel(), translate(event.getGuild(),"errPollActive"));
 			return;
 		}
 		final String argsStr=String.join(" ", new ArrayList<>(Arrays.asList(args).subList(1, args.length)));
@@ -109,11 +109,11 @@ public class CmdVote implements Command,Serializable{
 	/**
 	 * votes for a Poll
 	 * @param args Arguments-Arrey of the Command
-	 * @param event {@link MessageReceivedEvent} of the Command
+	 * @param event {@link GuildMessageReceivedEvent} of the Command
 	 */
-	private void votePoll(final String[] args, final MessageReceivedEvent event) {
+	private void votePoll(final String[] args, final GuildMessageReceivedEvent event) {
 		if (!polls.containsKey(event.getGuild())) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errNoPoll"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errNoPoll"));
 			return;
 		}
 		final Poll poll=polls.get(event.getGuild());
@@ -124,11 +124,11 @@ public class CmdVote implements Command,Serializable{
 				throw new NumberFormatException("Number is out of range ");
 			}
 		} catch (final Exception e) {
-			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"errInvalidVoteNum"));
+			STATIC.errmsg(event.getChannel(),translate(event.getGuild(),"errInvalidVoteNum"));
 			return;
 		}
 		if (poll.votes.containsKey(event.getAuthor().getId())) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errDuplicateVoteDenied"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errDuplicateVoteDenied"));
 			return;
 		}
 		poll.votes.put(event.getAuthor().getId(), vote);
@@ -137,12 +137,12 @@ public class CmdVote implements Command,Serializable{
 	}
 	/**
 	 * sends a Message with the date of the current Poll(of the {@link Guild})
-	 * @param event The {@link MessageReceivedEvent} of the Command
+	 * @param event The {@link GuildMessageReceivedEvent} of the Command
 	 */
-	private void voteStats(final MessageReceivedEvent event) {
-		TextChannel channel=event.getTextChannel();
+	private void voteStats(final GuildMessageReceivedEvent event) {
+		TextChannel channel=event.getChannel();
 		if (!polls.containsKey(event.getGuild())) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errNoPollToShow"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errNoPollToShow"));
 			return;
 		}
 		channel.sendMessage(getParsedPoll(polls.get(event.getGuild()), event.getGuild()).build()).queue();
@@ -150,19 +150,19 @@ public class CmdVote implements Command,Serializable{
 	}
 	/**
 	 * ends the Running Poll
-	 * @param event The {@link MessageReceivedEvent} of the Command
+	 * @param event The {@link GuildMessageReceivedEvent} of the Command
 	 */
-	private void closeVote(final MessageReceivedEvent event) {
-		TextChannel channel=event.getTextChannel();
+	private void closeVote(final GuildMessageReceivedEvent event) {
+		TextChannel channel=event.getChannel();
 		if (!polls.containsKey(event.getGuild())) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errNoPollToClose"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errNoPollToClose"));
 			return;
 		}
 		final Poll poll=polls.get(event.getGuild());
 		
 		polls.remove(event.getGuild());
 		channel.sendMessage(getParsedPoll(poll, event.getGuild()).build()).queue();
-		STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"pollClosed")+ event.getAuthor().getAsMention()+".");
+		STATIC.msg(event.getChannel(), translate(event.getGuild(),"pollClosed")+ event.getAuthor().getAsMention()+".");
 	}
 	/**
 	 * saves a Poll
@@ -217,14 +217,14 @@ public class CmdVote implements Command,Serializable{
 		});
 	}
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "vote");
 	}
 	@Override
-	public synchronized void action(final String[] args, final MessageReceivedEvent event) {
-		TextChannel channel=event.getTextChannel();
+	public synchronized void action(final String[] args, final GuildMessageReceivedEvent event) {
+		TextChannel channel=event.getChannel();
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
+			STATIC.errmsg(event.getChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 		switch (args[0]) {

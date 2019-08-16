@@ -35,7 +35,7 @@ public class CommandHandler {
 		if(commands.containsKey(cmd.invoke.toLowerCase())) {
 			boolean blacklisted=CmdBlacklist.isBlacklisted(cmd.event.getAuthor().getId());
 			if (blacklisted) {
-				STATIC.errmsg(cmd.event.getTextChannel(), translate(cmd.event.getGuild(),"errBlacklisted"));
+				STATIC.errmsg(cmd.event.getChannel(), translate(cmd.event.getGuild(),"errBlacklisted"));
 			}
 			boolean save=(!blacklisted)&&commands.get(cmd.invoke.toLowerCase()).allowExecute(cmd.args, cmd.event);
 			
@@ -49,7 +49,7 @@ public class CommandHandler {
 			commands.get(cmd.invoke.toLowerCase()).executed(save, cmd.event);
 		}
 		else{
-			STATIC.errmsg(cmd.event.getTextChannel(), translate(cmd.event.getGuild(),"unknownCommand"));
+			STATIC.errmsg(cmd.event.getChannel(), translate(cmd.event.getGuild(),"unknownCommand"));
 		}
 	}
 }

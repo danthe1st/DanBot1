@@ -10,7 +10,7 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Clears history of private Messages (min 2, max 100 Messages)
  * @author Daniel Schmid
@@ -26,7 +26,7 @@ public class CmdClearPMs implements Command {
 		}
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if(args.length>0) {
 			int num=getInt(args[0]);
 			if(num>1&&num<=100) {
@@ -40,18 +40,18 @@ public class CmdClearPMs implements Command {
 						message.delete().reason(translate(event.getGuild(),"ClearPMReason")).queue();
 						numMsgs++;
 					}
-					STATIC.msg(event.getTextChannel(), String.format(translate(event.getGuild(),"MsgsDeleted"),numMsgs), true);
+					STATIC.msg(event.getChannel(), String.format(translate(event.getGuild(),"MsgsDeleted"),numMsgs), true);
 				}
 				catch (final Exception e) {
 					e.printStackTrace();
 				}
 			 }
 			 else {
-				STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"needIntInRange"),2,100));
+				STATIC.errmsg(event.getChannel(), String.format(translate(event.getGuild(),"needIntInRange"),2,100));
 			 }
 		}
 		else {
-			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getChannel(),translate(event.getGuild(),"missingArgs"));
 		}
 	}
 

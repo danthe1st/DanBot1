@@ -11,7 +11,7 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command for getting/setting a guild-specified Message of the day(standard: invite link for the Bot and the Support Server)
@@ -23,10 +23,10 @@ public class CmdMotd implements Command{
 	private static Map<Guild, String> motd=new HashMap<>();
 	private static final String STD_MOTD="stdMOTD";
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "motd");
 	}
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		if(!PermsCore.check(event, "motd")) {
 			return;
 		}	
@@ -46,7 +46,7 @@ public class CmdMotd implements Command{
 		
 		
 		if (args.length==0) {
-			STATIC.msg(event.getTextChannel(), "*"+motd+"*");
+			STATIC.msg(event.getChannel(), "*"+motd+"*");
 			return;
 		}
 		
@@ -60,7 +60,7 @@ public class CmdMotd implements Command{
 			break;
 		case "set":{
 			if (args.length==1) {
-				STATIC.errmsg(event.getTextChannel(), "not enough arguments");
+				STATIC.errmsg(event.getChannel(), "not enough arguments");
 				return;
 			}
 			args[0]="";

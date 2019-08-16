@@ -10,7 +10,7 @@ import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Command to Roll a dice
  * @author Daniel Schmid
@@ -19,11 +19,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class CmdDice implements Command{
 	private static Random rand=new Random();
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "dice");
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if(!PermsCore.check(event, "dice")) {
 			return;
 		}
@@ -32,11 +32,11 @@ public class CmdDice implements Command{
 			try {
 				numRolls=Integer.parseInt(args[0]);
 			} catch (NumberFormatException e) {
-				STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"errArgNoInt"),1));
+				STATIC.errmsg(event.getChannel(), String.format(translate(event.getGuild(),"errArgNoInt"),1));
 			}
 		}
 		
-		STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"runDice"),Color.GRAY, true);
+		STATIC.msg(event.getChannel(), translate(event.getGuild(),"runDice"),Color.GRAY, true);
 		int erg=0;
 		StringBuilder valuesBuilder=new StringBuilder("[");
 		for (int i = 0; i < numRolls; i++) {
@@ -52,7 +52,7 @@ public class CmdDice implements Command{
 		}
 		
 		
-		STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"diceResult")+erg+valuesBuilder);
+		STATIC.msg(event.getChannel(), translate(event.getGuild(),"diceResult")+erg+valuesBuilder);
 	}
 	@Override
 	public String help() {
