@@ -32,15 +32,15 @@ public class CmdTimeBan implements Command{
 		int min=0;
 		
 		//days
-		int posEnde=time.indexOf(':');
-		if (posEnde==-1) {
-			posEnde=time.length();
+		int posEnd=time.indexOf(':');
+		if (posEnd==-1) {
+			posEnd=time.length();
 		}
-		int posAnfang=0;
+		int posBegin=0;
 		//get day-String
 		String sH="";
 		try {
-			sH=time.substring(posAnfang,posEnde);
+			sH=time.substring(posBegin,posEnd);
 		} catch (StringIndexOutOfBoundsException e) {
 			//ignore
 		}
@@ -52,23 +52,23 @@ public class CmdTimeBan implements Command{
 			//ignore
 		}
 		
-		if (posEnde<time.length()) {
+		if (posEnd<time.length()) {
 			//hours
-			posAnfang=posEnde+1;
-			String substr=time.substring(posAnfang);
+			posBegin=posEnd+1;
+			String substr=time.substring(posBegin);
 			int colonIndex=substr.indexOf(':');
 			if (colonIndex==-1) {
-				posEnde=posAnfang+substr.length();
+				posEnd=posBegin+substr.length();
 			}
 			else {
-				posEnde+=colonIndex+1;
+				posEnd+=colonIndex+1;
 			}
 			
 			
 			//get h-String
 			String sSec="";
 			try {
-				sSec=time.substring(posAnfang,posEnde);
+				sSec=time.substring(posBegin,posEnd);
 			} catch (StringIndexOutOfBoundsException e) {
 				//ignore
 			}
@@ -81,13 +81,13 @@ public class CmdTimeBan implements Command{
 			}
 			
 			//minutes
-			if (posEnde<time.length()) {
-				posAnfang=posEnde+1;
-				posEnde=time.length();
+			if (posEnd<time.length()) {
+				posBegin=posEnd+1;
+				posEnd=time.length();
 				//get min-String
 				String sZSek="";
 				try {
-					sZSek=time.substring(posAnfang,posEnde);
+					sZSek=time.substring(posBegin,posEnd);
 				} catch (StringIndexOutOfBoundsException e) {
 					//ignore
 				}
