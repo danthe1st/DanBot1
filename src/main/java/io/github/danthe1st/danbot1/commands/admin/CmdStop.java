@@ -10,7 +10,7 @@ import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command to stop the Bot
@@ -22,12 +22,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 	    justification="I want to exit when stopping the program")
 public class CmdStop implements Command{
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);	
 	}
 	@Override
-	public void action(final String[] args, final MessageReceivedEvent event) {
-		STATIC.msg(event.getTextChannel(), String.format(translate(event.getGuild(),"stopped"),STATIC.VERSION),Color.ORANGE,false);
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
+		STATIC.msg(event.getChannel(), String.format(translate(event.getGuild(),"stopped"),STATIC.VERSION),Color.ORANGE,false);
 		event.getJDA().shutdown();
 		System.out.println("stopped by "+event.getAuthor());
 		System.exit(0);

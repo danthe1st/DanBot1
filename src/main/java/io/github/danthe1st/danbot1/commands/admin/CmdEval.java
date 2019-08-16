@@ -1,6 +1,6 @@
 package io.github.danthe1st.danbot1.commands.admin;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
@@ -34,11 +34,11 @@ public class CmdEval implements Command{
 		}
 	}
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);	
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
         se.put("event", event);
         se.put("jda", event.getJDA());
         se.put("guild", event.getGuild());
@@ -55,7 +55,7 @@ public class CmdEval implements Command{
 					try {
 						return se.eval(x);
 					} catch (ScriptException e) {
-						STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(), "evalNotWork")+"\n"+e.getMessage());
+						STATIC.errmsg(event.getChannel(), translate(event.getGuild(), "evalNotWork")+"\n"+e.getMessage());
 						se.put(LATEST_EXCEPTION_KEY_NAME, e);
 					}
 					return null;
@@ -63,11 +63,11 @@ public class CmdEval implements Command{
     		}
 			
 		} catch (Exception e) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"evalUnknownError")+" ("+e.getClass().getName()+")\n"+e.getMessage());
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"evalUnknownError")+" ("+e.getClass().getName()+")\n"+e.getMessage());
 			se.put(LATEST_EXCEPTION_KEY_NAME, e);
 		}
         if (result != null) {
-			STATIC.msg(event.getTextChannel(), result.toString());
+			STATIC.msg(event.getChannel(), result.toString());
 		}
 	}
 	@Override

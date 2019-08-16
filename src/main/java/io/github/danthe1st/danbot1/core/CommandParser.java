@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Class to parse a Command into a {@link CommandContainer}
  * @author Daniel Schmid
@@ -17,20 +17,20 @@ public class CommandParser {
 	}
 	/**
 	 * parses the command to a <code>CommandContainer</code>
-	 * @param event the {@link MessageReceivedEvent} from the Message
+	 * @param event the {@link GuildMessageReceivedEvent} from the Message
 	 * @return the parsed Command
 	 */
-	public static CommandContainer parser(final MessageReceivedEvent event) {
+	public static CommandContainer parser(final GuildMessageReceivedEvent event) {
 		
 		return parser(event, STATIC.getPrefix(event.getGuild()));
 	}
 	/**
 	 * parses the command to a <code>CommandContainer</code>
-	 * @param event the {@link MessageReceivedEvent} from the Message
+	 * @param event the {@link GuildMessageReceivedEvent} from the Message
 	 * @param prefix the {@link Guild} prefix
 	 * @return the parsed Command
 	 */
-	public static CommandContainer parser(final MessageReceivedEvent event, final String prefix) {
+	public static CommandContainer parser(final GuildMessageReceivedEvent event, final String prefix) {
 		final String raw=event.getMessage().getContentRaw();
 		final String beheaded=raw.replaceFirst(Pattern.quote(prefix), "");
 		final String[] splitBeheaded=beheaded.split(" ");
@@ -57,7 +57,7 @@ public class CommandParser {
 	}
 	/**
 	 * Container for parsed Commands
-	 * contains {@link MessageReceivedEvent} and splitted Message Content
+	 * contains {@link GuildMessageReceivedEvent} and splitted Message Content
 	 * @author Daniel Schmid
 	 *
 	 */
@@ -65,9 +65,9 @@ public class CommandParser {
 
         public final String invoke;
         public final String[] args;
-        public final MessageReceivedEvent event;
+        public final GuildMessageReceivedEvent event;
 
-        public CommandContainer(final String invoke, final String[] args, final MessageReceivedEvent e) {
+        public CommandContainer(final String invoke, final String[] args, final GuildMessageReceivedEvent e) {
             this.invoke = invoke;
             this.args = args;
             this.event = e;

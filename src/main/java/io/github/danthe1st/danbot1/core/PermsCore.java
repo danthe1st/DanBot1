@@ -14,7 +14,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 /**
  * Core Class for Permission System
@@ -44,23 +44,23 @@ public class PermsCore {
 	 * tests if the who executed the Command is permitted to execute it
 	 * if forbidden an errormessage will be sent.
 	 * 
-	 * @param event the {@link MessageReceivedEvent} of the Command-Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Command-Message
 	 * @param permissionName the name of the permission to test
 	 * @return true if access else false
 	 */
-	public static boolean check(final MessageReceivedEvent event, final String permissionName) {
+	public static boolean check(final GuildMessageReceivedEvent event, final String permissionName) {
 		return check(event, permissionName,true);
 	}
 	/**
 	 * tests if the who executed the Command is permitted to execute it
 	 * if forbidden and doErrMsg is true an errormessage will be sent.
 	 * 
-	 * @param event the {@link MessageReceivedEvent} of the Command-Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Command-Message
 	 * @param permissionName the name of the permission to test
 	 * @param doErrMsg should an error Message be sent if the user is not permitted?
 	 * @return true if access else false
 	 */
-	public static boolean check(final MessageReceivedEvent event, final String permissionName, boolean doErrMsg) {
+	public static boolean check(final GuildMessageReceivedEvent event, final String permissionName, boolean doErrMsg) {
 		if(event.getAuthor().getId().equals(Main.getAdminId())||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
 			return true;
 		}
@@ -80,7 +80,7 @@ public class PermsCore {
 			}
 		}
 		if (doErrMsg) {
-			STATIC.errmsg(event.getTextChannel(), event.getAuthor().getAsMention()+translate(event.getGuild(),"errMissingPermission")+permissionName);
+			STATIC.errmsg(event.getChannel(), event.getAuthor().getAsMention()+translate(event.getGuild(),"errMissingPermission")+permissionName);
 			
 		}
 		return false;
@@ -88,25 +88,25 @@ public class PermsCore {
 	/**
 	 * tests if the Author of a Message is the Developer of this Bot<br>
 	 * if not an errormessage will be sent.
-	 * @param event the {@link MessageReceivedEvent} of the Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Message
 	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
 	 */
-	public static boolean checkOwner(MessageReceivedEvent event) {
+	public static boolean checkOwner(GuildMessageReceivedEvent event) {
 		return checkOwner(event, true);
 	}
 	/**
 	 * tests if the Author of a Message is the Developer of this Bot<br>
 	 * if forbidden and doErrMsg is true an errormessage will be sent.
-	 * @param event the {@link MessageReceivedEvent} of the Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Message
 	 * @param doErrMsg should an Error-Message be sent?
 	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
 	 */
-	public static boolean checkOwner(MessageReceivedEvent event,boolean doErrMsg) {
+	public static boolean checkOwner(GuildMessageReceivedEvent event,boolean doErrMsg) {
 		if(event.getAuthor().getId().equals(Main.getAdminId())) {
 			return true;
 		}
 		if (doErrMsg) {
-			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"errNoBotAdmin"));
+			STATIC.errmsg(event.getChannel(),translate(event.getGuild(),"errNoBotAdmin"));
 		}
 		return false;
 	}
