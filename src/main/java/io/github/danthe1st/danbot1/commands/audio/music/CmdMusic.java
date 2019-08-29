@@ -38,10 +38,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @author Daniel Schmid
  */
 @BotCommand(aliases = {"m","music"})
-public class CmdMusic implements Command,AudioHolder{
+public class CmdMusic implements Command{
 
 	private static final AudioPlayerManager MANAGER=new DefaultAudioPlayerManager();
 	private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS=new HashMap<>();
+	private static final Map<Guild, AudioHolder> holders=new HashMap<>();
 	private static Map<Guild, PlayerSendHandler> sendHandlers=new HashMap<>();
 	private int numTracksToLoad=0;
 	private static final int MAX_NUM_TRACKS=100;
@@ -56,7 +57,7 @@ public class CmdMusic implements Command,AudioHolder{
 	 */
 	private AudioPlayer createPlayer(final Guild g) {
 		final AudioPlayer p=MANAGER.createPlayer();
-		final TrackManager m=new TrackManager(this,p);
+		final TrackManager m=new TrackManager(holders.get(g),p);
 		p.addListener(m);
 		PlayerSendHandler sendHandler=new PlayerSendHandler(p);
 		g.getAudioManager().setSendingHandler(sendHandler);
@@ -276,13 +277,10 @@ public class CmdMusic implements Command,AudioHolder{
 	public CommandType getCommandType() {
 		return CommandType.USER;
 	}
-	@Override
 	public void closeConnection(Guild g) {
 		g.getAudioManager().closeAudioConnection();
 	}
-	@Override
-	public void onEverybodyLeave(VoiceChannel vc) {
-		Guild g=vc.getGuild();
+	public void onEverybodyLeave(Guild g) {
 		closeConnection(g);
 		AudioHolderController.giveHolderFree(g);
 	}
