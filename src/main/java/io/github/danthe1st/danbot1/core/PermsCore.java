@@ -2,105 +2,85 @@ package io.github.danthe1st.danbot1.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 /**
  * Core Class for Permission System
  * @author Daniel Schmid
  */
 public class PermsCore {
-	//					gId				Perm	Role
+	//						 gId	     Perm	 Role
 	private static final Map<String, Map<String, String[]>> perms=new HashMap<>();
-	private static final HashMap<String, String[]> STD_PERMS =new HashMap<String, String[]>();
+	private static final HashMap<String, String[]> STD_PERMS =new HashMap<>();
+	private static final String DEFAULT_PERM_ALLOW_EVERYONE="*";
 	
 	static {
-		STD_PERMS.put("ping", new String[] {"*"});
-		STD_PERMS.put("motd", new String[] {"*"});
-		STD_PERMS.put("motd.change", new String[] {"*"});
-		STD_PERMS.put("say", new String[] {"*"});
-		STD_PERMS.put("clearChat", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
-		STD_PERMS.put("playMusic", new String[] {"*"});
-		STD_PERMS.put("userphone", new String[] {"*"});
-		STD_PERMS.put("vote", new String[] {"*"});
-		STD_PERMS.put("vote.create", new String[] {"*"});
-		STD_PERMS.put("vote.vote", new String[] {"*"});
-		STD_PERMS.put("vote.close", STD_PERMS.get("vote.create"));
-		STD_PERMS.put("vote.stats", STD_PERMS.get("vote.vote"));
-		STD_PERMS.put("prefix", new String[] {"*"});
-		STD_PERMS.put("prefix.set", new String[] {"Owner", "Admin"});
-		STD_PERMS.put("prefix.show", new String[] {"*"});
-		STD_PERMS.put("autoChannel", new String[] {"Owner", "Admin"});
-		STD_PERMS.put("stop", new String[] {"Owner", "Admin"});
-		STD_PERMS.put("restart", new String[] {"Owner", "Admin"});
-		STD_PERMS.put("perm", new String[] {"*"});
-		STD_PERMS.put("perm.get", STD_PERMS.get("perm"));
-		STD_PERMS.put("perm.change", new String[] {"Owner"});
-		STD_PERMS.put("kick", new String[] {"Owner"});
-		STD_PERMS.put("ban", new String[] {"Owner"});
-		STD_PERMS.put("role", new String[] {"Owner"});
-		STD_PERMS.put("spam", new String[] {"Owner"});
-		STD_PERMS.put("logger", new String[] {"*"});
-		STD_PERMS.put("logger.show", new String[] {"*"});
-		STD_PERMS.put("logger.set", new String[] {"Owner", "Admin"});
-		STD_PERMS.put("userinfo", new String[] {"*"});
-		STD_PERMS.put("autorole", new String[] {"Owner", "Admin"});
-		STD_PERMS.put("unnick.others", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
-		STD_PERMS.put("unnick", new String[] {"*"});
-		STD_PERMS.put("dice", new String[] {"*"});
-		STD_PERMS.put("vkick", new String[] {"Owner", "Admin", "Moderator", "Supporter"});
-		STD_PERMS.put("changeLanguage", new String[] {"Owner", "Admin"});
-		STD_PERMS.put("record", new String[] {"*"});
+		try(InputStream permStream=PermsCore.class.getClassLoader().getResourceAsStream("standardPermissions.properties")){
+			Properties permProps=new Properties();
+			permProps.load(permStream);
+			permProps.forEach((k,v)->{
+				STD_PERMS.put((String)k, ((String)v).split(" "));
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private PermsCore() {
+		//private constructor to prevent instantiation
 	}
 	/**
 	 * tests if the who executed the Command is permitted to execute it
 	 * if forbidden an errormessage will be sent.
 	 * 
-	 * @param event the {@link MessageReceivedEvent} of the Command-Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Command-Message
 	 * @param permissionName the name of the permission to test
 	 * @return true if access else false
 	 */
-	public static boolean check(final MessageReceivedEvent event, final String permissionName) {
+	public static boolean check(final GuildMessageReceivedEvent event, final String permissionName) {
 		return check(event, permissionName,true);
 	}
 	/**
 	 * tests if the who executed the Command is permitted to execute it
 	 * if forbidden and doErrMsg is true an errormessage will be sent.
 	 * 
-	 * @param event the {@link MessageReceivedEvent} of the Command-Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Command-Message
 	 * @param permissionName the name of the permission to test
 	 * @param doErrMsg should an error Message be sent if the user is not permitted?
 	 * @return true if access else false
 	 */
-	public static boolean check(final MessageReceivedEvent event, final String permissionName, boolean doErrMsg) {
+	public static boolean check(final GuildMessageReceivedEvent event, final String permissionName, boolean doErrMsg) {
 		if(event.getAuthor().getId().equals(Main.getAdminId())||event.getGuild().getOwner().getUser().equals(event.getAuthor())) {
 			return true;
 		}
 		final String[] strings=getPerm(event.getGuild(), permissionName);
 		for (final String string : strings) {
-			if (string.equals("*")) {
+			if (string.equals(DEFAULT_PERM_ALLOW_EVERYONE)) {
 				return true;
 			}
 		}
 		for (final Role r : event.getGuild().getMember(event.getAuthor()).getRoles()) {
 			if (getPerms(event.getGuild()).containsKey(permissionName)) {
 				for (final String string : strings) {
-					if (string.equalsIgnoreCase(r.getName())||string.equals("*")) {
+					if (string.equalsIgnoreCase(r.getId())||string.equals(DEFAULT_PERM_ALLOW_EVERYONE)) {
 						return true;
 					}
 				}
 			}
 		}
 		if (doErrMsg) {
-			STATIC.errmsg(event.getTextChannel(), event.getAuthor().getAsMention()+translate(event.getGuild(),"errMissingPermission")+permissionName);
+			STATIC.errmsg(event.getChannel(), event.getAuthor().getAsMention()+translate(event.getGuild(),"errMissingPermission")+permissionName);
 			
 		}
 		return false;
@@ -108,25 +88,25 @@ public class PermsCore {
 	/**
 	 * tests if the Author of a Message is the Developer of this Bot<br>
 	 * if not an errormessage will be sent.
-	 * @param event the {@link MessageReceivedEvent} of the Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Message
 	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
 	 */
-	public static boolean checkOwner(MessageReceivedEvent event) {
+	public static boolean checkOwner(GuildMessageReceivedEvent event) {
 		return checkOwner(event, true);
 	}
 	/**
 	 * tests if the Author of a Message is the Developer of this Bot<br>
 	 * if forbidden and doErrMsg is true an errormessage will be sent.
-	 * @param event the {@link MessageReceivedEvent} of the Message
+	 * @param event the {@link GuildMessageReceivedEvent} of the Message
 	 * @param doErrMsg should an Error-Message be sent?
 	 * @return <code>true</code> if the Author is the Developer, else <code>false</code>
 	 */
-	public static boolean checkOwner(MessageReceivedEvent event,boolean doErrMsg) {
+	public static boolean checkOwner(GuildMessageReceivedEvent event,boolean doErrMsg) {
 		if(event.getAuthor().getId().equals(Main.getAdminId())) {
 			return true;
 		}
 		if (doErrMsg) {
-			STATIC.errmsg(event.getTextChannel(),translate(event.getGuild(),"errNoBotAdmin"));
+			STATIC.errmsg(event.getChannel(),translate(event.getGuild(),"errNoBotAdmin"));
 		}
 		return false;
 	}
@@ -158,16 +138,18 @@ public class PermsCore {
 			if(perms.get(g.getId())!=null) {
 				return perms.get(g.getId());
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			//ignore
+		}
 		return getStdPermsAsIds(g);
 	}
 	public static void resetPerms(Guild g) {
 		Map<String, String[]> guildPerms=new HashMap<>();
 		
 		
-		STD_PERMS.forEach((permName,roles)->{
-			guildPerms.put(permName, getRoleIDsFromNames(roles, g));
-		});
+		STD_PERMS.forEach((permName,roles)->
+			guildPerms.put(permName, getRoleIDsFromNames(roles, g))
+		);
 		
 		perms.put(g.getId(), guildPerms);
 		savePerms(g);
@@ -209,7 +191,6 @@ public class PermsCore {
 		if (roleToChange==null) {
 			return;
 		}
-		//loadPerms(g);
 		Map<String, String[]> guildPerms = perms.get(g.getId());
 		if (guildPerms==null) {
 			resetPerms(g);
@@ -252,7 +233,6 @@ public class PermsCore {
 	public static void setPerm(Guild g, String permName, String[] perm) {
 		
 		try {
-			//loadPerms(g);
 			if(g!=null) {
 				
 				if (!perms.containsKey(g.getId())) {
@@ -268,12 +248,11 @@ public class PermsCore {
 					}
 				}
 				String[] permsNew=new String[num];
-				for (int i = 0,j=0; i < perm.length; i++) {
+				int j=0;
+				for (int i = 0; i < perm.length; i++) {
 					if (perm[i]!=null) {
 						permsNew[j]=perm[i];
-						//perm[i]=null;
 						j++;
-						continue;
 					}
 				}
 				perms.get(g.getId()).put(permName, permsNew);
@@ -281,7 +260,7 @@ public class PermsCore {
 			}
 		} catch (Exception e) {e.printStackTrace();}
 	}
-	private static final String saveName="perms.dat";
+	private static final String SAVE_NAME="perms.dat";
 	/**
 	 * saves the Permissions of a {@link Guild}
 	 * @param g The Guild(Discord-Server)
@@ -293,18 +272,21 @@ public class PermsCore {
 		}
 		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
 		if (!dir.exists()) {
-			if(!dir.mkdirs()) {
+			try {
+				Files.createDirectory(dir.toPath());
+			} catch (IOException e) {
 				System.err.println("cannot create directory: "+dir.getAbsolutePath());
 			}
 		}
-		File file=new File(dir,saveName);
+		File file=new File(dir,SAVE_NAME);
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
+				//ignore
 			}
 		}
-		STATIC.save(g.getId()+"/"+saveName, guildPerms);
+		STATIC.save(g.getId()+"/"+SAVE_NAME, guildPerms);
 	}
 	/**
 	 * Loads the Permissions of a {@link Guild}
@@ -316,11 +298,11 @@ public class PermsCore {
 		if (!dir.exists()) {
 			return;
 		}
-		final File file=new File(dir,saveName);
+		final File file=new File(dir,SAVE_NAME);
 		if (!file.exists()) {
 			return;
 		}
-		perms.put(g.getId(), (Map<String, String[]>) STATIC.load(g.getId()+"/"+saveName));
+		perms.put(g.getId(), (Map<String, String[]>) STATIC.load(g.getId()+"/"+SAVE_NAME));
 	}
 	/**
 	 * loads the Permissions of all {@link Guild}s
@@ -344,7 +326,7 @@ public class PermsCore {
 		if (name.equals("")) {
 			return null;
 		}
-		if (name.equals("*")) {
+		if (name.equals(DEFAULT_PERM_ALLOW_EVERYONE)) {
 			return name;
 		}
 		List<Role> roles=g.getRolesByName(name, true);
@@ -391,9 +373,9 @@ public class PermsCore {
 	 */
 	public static Map<String, String[]> getStdPermsAsIds(Guild g){
 		Map<String, String[]> perms=new HashMap<>();
-		STD_PERMS.forEach((permName,permData)->{
-			perms.put(permName, getRoleIDsFromNames(permData, g));
-		});
+		STD_PERMS.forEach((permName,permData)->
+			perms.put(permName, getRoleIDsFromNames(permData, g))
+		);
 		return perms;
 	}
 }

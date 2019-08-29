@@ -11,25 +11,25 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.Main;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command to restart the Bot
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "restart")
+@BotCommand("restart")
 @SuppressFBWarnings(
 		value="DM_EXIT", 
 	    justification="I want to exit when restarting the program")
 public class CmdRestart implements Command{
 	private static String[] startfiles=new String[] {"DanBot1.bat","DanBot1.sh"};
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);	
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
-		STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"restarting")+STATIC.VERSION, false);		
+	public void action(String[] args, GuildMessageReceivedEvent event) {
+		STATIC.msg(event.getChannel(), translate(event.getGuild(),"restarting")+STATIC.VERSION, false);		
 		Command.super.executed(true, event);
 		event.getJDA().shutdown();
 		String restartCommand=getRestartCommand();
@@ -46,7 +46,6 @@ public class CmdRestart implements Command{
 		
 		System.out.println("restarting manually");
 		Main.main(Main.getArgs());
-		return;
 	}
 	/**
 	 * looks for the Command({@link Runtime#exec(String)}) to restart the Bot
@@ -86,7 +85,9 @@ public class CmdRestart implements Command{
 		return "restartHelp";
 	}
 	@Override
-	public void executed(boolean success, MessageReceivedEvent event) {}
+	public void executed(boolean success, GuildMessageReceivedEvent event) {
+		//already handled by action()
+	}
 	@Override
 	public CommandType getCommandType() {
 		return CommandType.ADMIN;

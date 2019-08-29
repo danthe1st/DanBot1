@@ -1,7 +1,9 @@
 package io.github.danthe1st.danbot1.util;
 
-import java.lang.reflect.ReflectPermission;
+import java.io.FileDescriptor;
+import java.security.AllPermission;
 import java.security.Permission;
+import java.security.SecurityPermission;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -13,7 +15,7 @@ import java.util.function.Function;
  */
 public class BotSecurityManager extends SecurityManager {
 	private Set<Thread> sensitiveThreads=new HashSet<>();
-	private String[] allowedRuntimePermissions={"createClassLoader","accessClassInPackage.jdk.nashorn.internal.","accessDeclaredMembers","suppressAccessChecks"};
+	private String[] allowedRuntimePermissions={"createClassLoader","accessClassInPackage.jdk.nashorn.internal.","accessDeclaredMembers","suppressAccessChecks","modifyThread","exitVM."};
 	
 	/**
 	 * checks if the current Thread is a sensitive Thread
@@ -36,7 +38,7 @@ public class BotSecurityManager extends SecurityManager {
 	}
 	/**
 	 * executes code sensitively
-	 * @param toExec the Code(functio) to execute
+	 * @param toExec the Code(function) to execute
 	 * @param args the arguments of the Function to access
 	 * @return the return value of the Function
 	 */
@@ -50,8 +52,15 @@ public class BotSecurityManager extends SecurityManager {
 	}
 	@Override
 	public void checkPermission(Permission perm) {
+		//System.out.println(perm.getClass().getName()+perm.getName());
+		if(perm instanceof AllPermission) {
+			throw new SecurityException("not allowed to do everything");
+		}
 		if (isCurrentThreadSensitive()) {
-			if (perm instanceof RuntimePermission) {
+			if(perm instanceof SecurityPermission) {
+				throw new SecurityException("missing permission: "+perm.getName());
+			}
+			if(perm instanceof RuntimePermission) {
 				String name=perm.getName();
 				boolean allow=false;
 				for (String allowed : allowedRuntimePermissions) {
@@ -61,9 +70,8 @@ public class BotSecurityManager extends SecurityManager {
 					}
 				}
 				if (!allow) {
-					throw new SecurityException("missing permission: "+perm.getName());
+					throw new SecurityException("missing RuntimePermission: "+perm.getName());
 				}
-			}else if (perm instanceof ReflectPermission&&perm.getName().equals("suppressAccessChecks")) {
 			}
 		}
 	}
@@ -81,4 +89,11 @@ public class BotSecurityManager extends SecurityManager {
 			throw new SecurityException("File access restricted");
 		}
 	}
+	@Override
+	public void checkWrite(FileDescriptor desc) {
+		if (isCurrentThreadSensitive()) {
+			throw new SecurityException("File access restricted");
+		}
+	}
+	
 }

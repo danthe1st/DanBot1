@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,10 +50,12 @@ public final class STATIC {
 	public static final String VERSION="v4.0 - Living";
 	private static String settingsDir="./DANBOT1_SETTINGS";
 	public static final String AUTOCHANNEL_POSTFIX=" [Autochannel]";
-	public static final int INFO_TIMEOUT=5000;
+	public static final long INFO_TIMEOUT=5000;
 	private static final String STD_CMD_LOGGER_NAME="cmdLog";
-	private static HashMap<String, String> cmdLoggerNames =new HashMap<String, String>();
+	private static HashMap<String, String> cmdLoggerNames =new HashMap<>();
 	private static final Map<String, String> markupEscapeMap=new HashMap<>();
+	
+	private static final String DIR_CREATION_FAILED="cannot create directory: ";
 	/**
 	 * initialize permissions and markup escapes
 	 */
@@ -125,6 +128,7 @@ public final class STATIC {
 						try {
 							msg.delete().queue();
 						} catch (IllegalArgumentException e) {
+							//continue with execution
 						}
 					}
 				}, STATIC.INFO_TIMEOUT);
@@ -156,10 +160,15 @@ public final class STATIC {
 		roles.addAll(msg.getMentionedRoles());
 		
 		for (int i = 1; i < args.length; i++) {
+			if (args[i].equals("")) {
+				continue;
+			}
 			Role role=null;
 			try {
 				role=msg.getGuild().getRoleById(args[i]);
-			} catch (NumberFormatException e) {}
+			} catch (NumberFormatException e) {
+				//continue with execution
+			}
 			if (role==null) {
 				List<Role> rolesLocal=msg.getGuild().getRolesByName(args[i], true);
 				if (!rolesLocal.isEmpty()) {
@@ -184,10 +193,15 @@ public final class STATIC {
 			members.add(msg.getGuild().getMember(user));
 		}
 		for (int i = 1; i < args.length; i++) {
+			if (args[i].equals("")) {
+				continue;
+			}
 			Member member=null;
 			try {
 				member=msg.getGuild().getMemberById(args[i]);
-			} catch (NumberFormatException e) {}
+			} catch (NumberFormatException e) {
+				//continue with execution
+			}
 			if (member==null) {
 				List<Member> membersLocal=msg.getGuild().getMembersByEffectiveName(args[i], true);
 				if (membersLocal.isEmpty()) {
@@ -230,7 +244,7 @@ public final class STATIC {
 	public static void loadData(JDA jda) {
 		CmdAutoChannel.load(jda);
 		CmdVote.loadPolls(jda);
-		CmdBlacklist.loadBlacklist(jda);
+		CmdBlacklist.loadBlacklist();
 		for (Guild guild : jda.getGuilds()) {
 			loadPrefix(guild);
 			PermsCore.loadPerms(guild);
@@ -238,6 +252,7 @@ public final class STATIC {
 		}
 		loadCmdLogger();
 		AutoUnbanner.loadUnBans(jda);
+		LanguageController.load(jda);
 	}
 	/**
 	 * sets the Bot prefix for a Guild
@@ -254,39 +269,32 @@ public final class STATIC {
 	 */
 	private static void savePrefix(final Guild guild){
 		File dir=new File(STATIC.getSettingsDir()+"/"+guild.getId());
-		if (!dir.exists()) {
-			if(!dir.mkdirs()) {
-				System.err.println("cannot create directory: "+dir.getAbsolutePath());
-			}
+		if (!(dir.exists()||dir.mkdirs())) {
+			System.err.println(DIR_CREATION_FAILED+dir.getAbsolutePath());
 		}
 		final String saveFile=STATIC.getSettingsDir()+"/"+guild.getId()+"/prefix.dat";
 		if(!prefixes.containsKey(guild)) {
 			final File f=new File(saveFile);
-			if(!f.exists()&&!f.delete()) {
-				System.err.println("cannot delete file: "+f.getAbsolutePath());
+			if(!f.exists()) {
+				try {
+					Files.delete(f.toPath());
+				} catch (IOException e) {
+					System.err.println("cannot delete file: "+f.getAbsolutePath());
+				}
 			}
 			return;
 		}
 		File file=new File(saveFile);
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-			try {
-			file.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		final String prefix=prefixes.get(guild);
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(file);
-			final ObjectOutputStream oos=new ObjectOutputStream(fos);
+		try (final ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(file))){
 			oos.writeObject(prefix);
-			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -297,18 +305,13 @@ public final class STATIC {
 	 */
 	private static void loadPrefix(final Guild g) {
 		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
-		if (!dir.exists()) {
-			if(!dir.mkdirs()) {
-				System.err.println("cannot create directory: "+dir.getAbsolutePath());
-			}
+		if (!(dir.exists()||dir.mkdirs())) {
+			System.err.println(DIR_CREATION_FAILED+dir.getAbsolutePath());
 		}
 		final File file=new File(dir,"/prefix.dat");
 		if (file.exists()) {
-			try {
-				final FileInputStream fis=new FileInputStream(file);
-				final ObjectInputStream ois=new ObjectInputStream(fis);
+			try (final ObjectInputStream ois=new ObjectInputStream(new FileInputStream(file))){
 				prefixes.put(g, (String) ois.readObject());
-				ois.close();
 			} catch (IOException|ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -347,8 +350,7 @@ public final class STATIC {
 	 * @return data as a {@link String}
 	 */
 	public static String getServerData(Guild g){
-		String retString=g.getName()+" ["+g.getId()+"]";
-		return retString+"\t"+getActiveInvite(g);
+		return g.getName()+" ["+g.getId()+"]";
 	}
 	/**
 	 * gets an {@link Invite} in a Guild
@@ -357,22 +359,26 @@ public final class STATIC {
 	 */
 	public static String getActiveInvite(Guild g) {
 		try {		
-			for (Invite inv : g.retrieveInvites().complete()) {
-				return inv.getUrl();
+			List<Invite> invs=g.retrieveInvites().complete();
+			if (!invs.isEmpty()) {
+				return invs.get(0).getUrl();
 			}
 		} catch (InsufficientPermissionException e) {
 			try {
 				for (TextChannel channel : g.getTextChannels()) {
-					for (Invite inv : channel.retrieveInvites().complete()) {
-						return inv.getUrl();
+					List<Invite> invs = channel.retrieveInvites().complete();
+					if (!invs.isEmpty()) {
+						return invs.get(0).getUrl();
 					}
 				}
 				for (VoiceChannel channel : g.getVoiceChannels()) {
-					for (Invite inv : channel.retrieveInvites().complete()) {
-						return inv.getUrl();
+					List<Invite> invs = channel.retrieveInvites().complete();
+					if (!invs.isEmpty()) {
+						return invs.get(0).getUrl();
 					}
 				}
 			} catch (InsufficientPermissionException e2) {
+				//continue with execution
 			}
 		}
 		return "";
@@ -404,16 +410,22 @@ public final class STATIC {
 		}
 		try {
 			return g.getDefaultChannel().createInvite().setMaxAge(maxAge).complete().getUrl();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			//continue with execution
+		}
 		for (TextChannel channel : g.getTextChannels()) {
 			try {
 				return channel.createInvite().setMaxAge(maxAge).complete().getUrl();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				//continue with execution
+			}
 		}
 		for (VoiceChannel channel : g.getVoiceChannels()) {
 			try {
 				return channel.createInvite().setMaxAge(maxAge).complete().getUrl();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				//continue with execution
+			}
 		}
 		return "";
 	}
@@ -437,16 +449,13 @@ public final class STATIC {
 		final File file=new File(STATIC.getSettingsDir()+"/"+filename);
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		try {
-			final FileOutputStream fos=new FileOutputStream(file);
-			final ObjectOutputStream oos=new ObjectOutputStream(fos);
+		try (final ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(file))){
 			oos.writeObject(toSave);
-			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -460,11 +469,8 @@ public final class STATIC {
 		Object o=null;
 		final File file=new File(STATIC.getSettingsDir()+"/"+filename);
 		if (file.exists()) {
-			try {
-				final FileInputStream fis=new FileInputStream(file);
-				final ObjectInputStream ois=new ObjectInputStream(fis);
+			try (final ObjectInputStream ois=new ObjectInputStream(new FileInputStream(file))){
 				o=ois.readObject();	
-				ois.close();
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -477,10 +483,8 @@ public final class STATIC {
 	 */
 	public static String getSettingsDir() {
 		File dir=new File(settingsDir);
-		if (!dir.exists()) {
-			if(!dir.mkdirs()) {
-				System.err.println("cannot create directory: "+dir.getAbsolutePath());
-			}
+		if (!(dir.exists()||dir.mkdirs())) {
+			System.err.println(DIR_CREATION_FAILED+dir.getAbsolutePath());
 		}
 		return settingsDir;
 	}
@@ -493,10 +497,8 @@ public final class STATIC {
 			return;
 		}
 		File dir=new File(directory);
-		if (!dir.exists()) {
-			if(!dir.mkdirs()) {
-				System.err.println("cannot create directory: "+dir.getAbsolutePath());
-			}
+		if (!(dir.exists()||dir.mkdirs())) {
+			System.err.println(DIR_CREATION_FAILED+dir.getAbsolutePath());
 		}
 		settingsDir=directory;
 	}

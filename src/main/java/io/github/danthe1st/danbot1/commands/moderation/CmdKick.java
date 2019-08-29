@@ -11,22 +11,22 @@ import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command to kick a {@link Member}
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "kick")
+@BotCommand("kick")
 public class CmdKick implements Command{
 	
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "kick");
 	}
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 			List<Member> users= event.getGuild().getMembersByName(args[0], true);
@@ -42,7 +42,7 @@ public class CmdKick implements Command{
 				try {
 					event.getGuild().kick(user, reason).queue();
 				} catch (Exception e) {
-					STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errCannotKick")+user.getNickname());
+					STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errCannotKick")+user.getNickname());
 				}
 				
 		}

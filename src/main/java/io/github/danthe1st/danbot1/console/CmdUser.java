@@ -41,6 +41,7 @@ public class CmdUser implements Command{
 						users.add(jda.getUserById(uname));
 					}
 				} catch (NumberFormatException e) {
+					//ignore
 				}
 			}
 		}

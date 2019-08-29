@@ -9,25 +9,25 @@ import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.LanguageController;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-@BotCommand(aliases = "record")
+@BotCommand("record")
 public class CmdRecord implements Command{
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "record");
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), "missingArgs");
+			STATIC.errmsg(event.getChannel(), "missingArgs");
 			return;
 		}
 		VoiceChannel vc=event.getGuild().getMember(event.getAuthor()).getVoiceState().getChannel();
 		switch (args[0].toLowerCase()) {
 		case "start":
 			if (vc==null) {
-				STATIC.errmsg(event.getTextChannel(), LanguageController.translate(event.getGuild(), "mustBeInVC"));
+				STATIC.errmsg(event.getChannel(), LanguageController.translate(event.getGuild(), "mustBeInVC"));
 				return;
 			}
 			Recorder rec=Recorder.getInstance(event.getGuild());

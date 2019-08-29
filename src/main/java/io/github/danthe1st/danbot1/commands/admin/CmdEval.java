@@ -1,6 +1,6 @@
 package io.github.danthe1st.danbot1.commands.admin;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
@@ -19,7 +19,7 @@ import io.github.danthe1st.danbot1.util.STATIC;
  * Command to Evaluate Code
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "eval")
+@BotCommand("eval")
 public class CmdEval implements Command{
 	private ScriptEngine se;
 	private static final String LATEST_EXCEPTION_KEY_NAME="latestException";
@@ -34,11 +34,11 @@ public class CmdEval implements Command{
 		}
 	}
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);	
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
         se.put("event", event);
         se.put("jda", event.getJDA());
         se.put("guild", event.getGuild());
@@ -51,23 +51,23 @@ public class CmdEval implements Command{
         Object result=null;
         try {
         	if (System.getSecurityManager() instanceof BotSecurityManager) {
-        		result = ((BotSecurityManager)System.getSecurityManager()).execSecure((x)->{
+        		result = ((BotSecurityManager)System.getSecurityManager()).execSecure(x->{
 					try {
 						return se.eval(x);
 					} catch (ScriptException e) {
-						STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(), "evalNotWork")+"\n"+e.getMessage());
+						STATIC.errmsg(event.getChannel(), translate(event.getGuild(), "evalNotWork")+"\n"+e.getMessage());
 						se.put(LATEST_EXCEPTION_KEY_NAME, e);
 					}
 					return null;
 				}, scriptBuilder.toString());
     		}
 			
-		} catch (Throwable e) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"evalUnknownError")+" ("+e.getClass().getName()+")\n"+e.getMessage());
+		} catch (Exception e) {
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"evalUnknownError")+" ("+e.getClass().getName()+")\n"+e.getMessage());
 			se.put(LATEST_EXCEPTION_KEY_NAME, e);
 		}
         if (result != null) {
-			STATIC.msg(event.getTextChannel(), result.toString());
+			STATIC.msg(event.getChannel(), result.toString());
 		}
 	}
 	@Override

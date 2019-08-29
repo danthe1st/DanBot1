@@ -15,21 +15,23 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Command forcguild-specified Bot-Permissions
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "perm")
+@BotCommand("perm")
 public class CmdPerm implements Command{
+	private static final String MISSING_ARGS_TRANSLATOR="missingArgs";
+	private static final String CHPERM_PERMISSION="missingArgs";
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "perm");
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if(args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATOR));
 			return;
 		}
 		switch (args[0].toLowerCase()) {
@@ -58,11 +60,11 @@ public class CmdPerm implements Command{
 			break;
 		}
 		case "set":{
-			if(!PermsCore.check(event, "perm.change")) {
+			if(!PermsCore.check(event, CHPERM_PERMISSION)) {
 				return;
 			}
 			if (args.length<3) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATOR));
 				return;
 			}
 			List<String> roles=new ArrayList<>();
@@ -80,15 +82,15 @@ public class CmdPerm implements Command{
 			break;
 		}
 		case "add":{
-			if(!PermsCore.check(event, "perm.change")) {
+			if(!PermsCore.check(event, CHPERM_PERMISSION)) {
 				return;
 			}
 			if (args.length<3) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATOR));
 				return;
 			}
 			if (PermsCore.getPerm(event.getGuild(), args[1])==null) {
-				STATIC.errmsg(event.getTextChannel(), String.format(translate(event.getGuild(),"permNotFound"),args[1]));
+				STATIC.errmsg(event.getChannel(), String.format(translate(event.getGuild(),"permNotFound"),args[1]));
 				return;
 			}
 			String[] groups = new String[args.length-2+PermsCore.getPerm(event.getGuild(), args[1]).length];
@@ -104,21 +106,19 @@ public class CmdPerm implements Command{
 		}
 		case "remove":
 		case "rem":{
-			if(!PermsCore.check(event, "perm.change")) {
+			if(!PermsCore.check(event, CHPERM_PERMISSION)) {
 				return;
 			}
-			if (args.length==2) {
-				if (PermsCore.getPerms(event.getGuild()).containsKey(args[1])) {
-					if (PermsCore.removePerm(event.getGuild(), args[1])) {
-						STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"permDeleted")+args[1]);
-						return;
-					}
-					STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"permDeleteFailed")+args[1]);
+			if (args.length==2&&PermsCore.getPerms(event.getGuild()).containsKey(args[1])) {
+				if (PermsCore.removePerm(event.getGuild(), args[1])) {
+					STATIC.msg(event.getChannel(), translate(event.getGuild(),"permDeleted")+args[1]);
 					return;
 				}
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"permDeleteFailed")+args[1]);
+				return;
 			}
 			if (args.length<3) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATOR));
 				return;
 			}
 			String[] groups = new String[PermsCore.getPerm(event.getGuild(), args[1]).length];
@@ -140,11 +140,11 @@ public class CmdPerm implements Command{
 		}
 		case "chrole":
 		case "changerole":{
-			if(!PermsCore.check(event, "perm.change")) {
+			if(!PermsCore.check(event, CHPERM_PERMISSION)) {
 				return;
 			}
 			if (args.length<3) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),MISSING_ARGS_TRANSLATOR));
 				
 				return;
 			}
@@ -152,13 +152,15 @@ public class CmdPerm implements Command{
 			StringBuilder oldRoleTmp=new StringBuilder(args[1]);
 			
 			String oldRole=oldRoleTmp.toString();
-			loop:for (int i = 1; i < args.length-1; i++) {
+			boolean loop=true;
+			for (int i = 1; loop&&i < args.length-1; i++) {
 				for (String[] perms : PermsCore.getPerms(event.getGuild()).values()) {
 					for (int j = 0; j < perms.length; j++) {
 						if (perms[j].equals(oldRoleTmp.toString())) {
 							oldRole=oldRoleTmp.toString();
 							newRoleStart=i+1;
-							break loop;
+							loop=false;
+							break;
 						}
 					}
 					
@@ -173,21 +175,21 @@ public class CmdPerm implements Command{
 			break;
 		}
 		case "reset":{
-			if(!PermsCore.check(event, "perm.change")) {
+			if(!PermsCore.check(event, CHPERM_PERMISSION)) {
 				return;
 			}
 			PermsCore.resetPerms(event.getGuild());
 			break;
 		}
 		case "reload":{
-			if(!PermsCore.check(event, "perm.change")) {
+			if(!PermsCore.check(event, CHPERM_PERMISSION)) {
 				return;
 			}
 			PermsCore.reloadPerms(event.getGuild());
 			break;
 		}
 		default:
-			STATIC.errmsg(event.getTextChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
+			STATIC.errmsg(event.getChannel(), help().replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;
 		}
 	}

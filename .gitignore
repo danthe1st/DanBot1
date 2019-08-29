@@ -167,7 +167,7 @@ modules.xml
 .mtj.tmp/
 
 # Package Files #
-# *.jar
+*.jar
 *.war
 *.nar
 *.ear
@@ -225,6 +225,7 @@ DANBOT1_SETTINGS/
 
 #other things
 /DanBot1/
+!docs/*.jar
 #javadoc
 javadoc.xml
 

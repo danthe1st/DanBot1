@@ -9,29 +9,29 @@ import io.github.danthe1st.danbot1.core.CommandParser;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command for executing Commands as another user
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "sudo")
+@BotCommand("sudo")
 public class CmdSudo implements Command{
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if (args.length<2) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		Member user=null;
 		try {
 			user=event.getGuild().getMemberById(args[0]);
 		} catch (NumberFormatException e) {
-			
+			//ignore
 		}
 		if (user==null) {
 			user=event.getGuild().getMembersByName(args[0], true).get(0);
@@ -40,7 +40,7 @@ public class CmdSudo implements Command{
 			user=event.getGuild().getMembersByNickname(args[0], true).get(0);
 		}
 		if (user==null) {
-			STATIC.errmsg(event.getTextChannel(), "Invalid user");
+			STATIC.errmsg(event.getChannel(), "Invalid user");
 		}
 		
 		
@@ -50,7 +50,7 @@ public class CmdSudo implements Command{
 		String stripped=event.getMessage().getContentRaw().replaceAll(toReplace, STATIC.getPrefix(event.getGuild()));
 		SudoMessage msg=new SudoMessage(event.getMessage(),raw, display, stripped,user);
 			
-		MessageReceivedEvent sudoEvent=new MessageReceivedEvent(event.getJDA(), event.getResponseNumber(), msg);
+		GuildMessageReceivedEvent sudoEvent=new GuildMessageReceivedEvent(event.getJDA(), event.getResponseNumber(), msg);
 		CommandHandler.handleCommand(CommandParser.parser(sudoEvent, STATIC.getPrefix(event.getGuild())));
 	}
 

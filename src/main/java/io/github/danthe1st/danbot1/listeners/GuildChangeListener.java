@@ -2,17 +2,16 @@ package io.github.danthe1st.danbot1.listeners;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import io.github.danthe1st.danbot1.core.Main;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.guild.GuildBanEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
@@ -30,18 +29,13 @@ public class GuildChangeListener extends ListenerAdapter {
 	 */
 	@Override
 	public void onGuildJoin(GuildJoinEvent event) {
-		String name=event.getGuild().getName();
-		String invURL=STATIC.createInvite(event.getGuild());
-		event.getJDA().getUserById(Main.getAdminId()).openPrivateChannel().complete().sendMessage(
-				new EmbedBuilder()
-				.setDescription("I joined a new Server: "+name+", id:"+event.getGuild().getId()+" invite: \""+invURL+"\"")
-				.build()
-				).queue();
 		File dir=new File(STATIC.getSettingsDir()+"/"+event.getGuild().getId());
 		if (dir.exists()) {
 			File leftFile=new File(dir,"/.left");
 			if (leftFile.exists()) {
-				if(!leftFile.delete()) {
+				try {
+					Files.delete(leftFile.toPath());
+				} catch (IOException e) {
 					System.err.println("cannot delete directory: "+dir.getAbsolutePath());
 				}
 			}
@@ -56,46 +50,18 @@ public class GuildChangeListener extends ListenerAdapter {
 		
 		saveGuildData(event.getGuild(),dataFile);
 	}
-	
-	/**
-	 * listener when someone is banned<br>
-	 * If the Bot Owner is banned, he gets unbanned and invited
-	 */
-	@Override
-	public void onGuildBan(GuildBanEvent event) {
-		if (event.getUser().getId().equals(Main.getAdminId())) {
-			try {
-				event.getGuild().unban(event.getJDA().getUserById(Main.getAdminId())).queue();
-				
-				String name=event.getGuild().getName();
-				String invURL=STATIC.createInvite(event.getGuild());
-				event.getJDA().getUserById(Main.getAdminId()).openPrivateChannel().complete().sendMessage(
-						new EmbedBuilder()
-						.setDescription("I unbanned you from a Server: "+name+", invite: \""+invURL+"\"")
-						.build()
-						).queue();
-			} catch (Exception e) {
-				System.err.println("unable to unban the Admin from Server "+event.getGuild().getName()+" ("+event.getGuild().getId()+"): "+e.getMessage());
-			}
-		}
-	}
 	/**
 	 * listener when a user leaves a {@link Guild}<br>
 	 * If the bot itself leaves the guild, the Bot Owner gets notified
 	 */
 	@Override
 	public void onGuildLeave(GuildLeaveEvent event) {
-		String name=event.getGuild().getName();
-		event.getJDA().getUserById(Main.getAdminId()).openPrivateChannel().complete().sendMessage(
-				new EmbedBuilder()
-				.setDescription("I left a Server: "+name+", id:"+event.getGuild().getId())
-				.build()
-				).queue();
 		File dir=new File(STATIC.getSettingsDir()+"/"+event.getGuild().getId());
 		if (dir.exists()) {
 			try {
-				new File(dir, ".left").createNewFile();
+				Files.createFile(new File(dir, ".left").toPath());
 			} catch (IOException e) {
+				//ignore
 			}
 		}
 	}
@@ -113,7 +79,9 @@ public class GuildChangeListener extends ListenerAdapter {
 	public static void saveGuildData(Guild g) {
 		File dir=new File(STATIC.getSettingsDir()+"/"+g.getId());
 		if (!dir.exists()) {
-			if(!dir.mkdir()) {
+			try {
+				Files.createDirectory(dir.toPath());
+			} catch (IOException e) {
 				System.err.println("cannot create directory: "+dir.getAbsolutePath());
 			}
 		}
@@ -127,9 +95,9 @@ public class GuildChangeListener extends ListenerAdapter {
 	private static void saveGuildData(Guild g,File dataFile) {
 		if (!dataFile.exists()) {
 			try {
-				dataFile.createNewFile();
+				Files.createFile(dataFile.toPath());
 			} catch (IOException e) {
-				
+				//ignore
 			}
 		}
 		try {
@@ -139,7 +107,7 @@ public class GuildChangeListener extends ListenerAdapter {
 	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 	        m.marshal(new XMLGuildData(g), dataFile);
 		} catch (JAXBException e) {
-			
+			//ignore
 		}
 	}
 	/**

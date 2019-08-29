@@ -13,26 +13,26 @@ import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Command to echo userinfo
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "user")
+@BotCommand("user")
 public class CmdUser implements Command{
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "userinfo");
 	}
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		if(args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		Set<Member> users=STATIC.getMembersFromMsg(event.getMessage());
 		if (users.isEmpty()) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"noUserFound"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"noUserFound"));
 				return;
 		}
 		EmbedBuilder emB=new EmbedBuilder().setColor(Color.gray);

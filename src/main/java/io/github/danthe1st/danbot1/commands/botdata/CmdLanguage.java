@@ -10,25 +10,25 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.LanguageController;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-@BotCommand(aliases = { "lang","chlang","changelanguage" })
+@BotCommand({ "lang","chlang","changelanguage" })
 public class CmdLanguage implements Command {
 
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "changeLanguage");
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if (args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"missingArgs"));
 			return;
 		}
 		switch (args[0]) {
 		case "set":
 			if (args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"missingArgs"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"missingArgs"));
 				return;
 			}
 			String[] localeArgs={"","",""};
@@ -39,10 +39,10 @@ public class CmdLanguage implements Command {
 			LanguageController.setLocale(event.getGuild(), locale);
 			break;
 		case "get":
-			STATIC.msg(event.getTextChannel(), translate(event.getGuild(),"LangPackIs")+LanguageController.getResourceBundle(event.getGuild()).getLocale());
+			STATIC.msg(event.getChannel(), translate(event.getGuild(),"LangPackIs")+LanguageController.getLocale(event.getGuild()));
 			break;
 		default:
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"invalidArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"invalidArgs"));
 			break;
 		}
 	}

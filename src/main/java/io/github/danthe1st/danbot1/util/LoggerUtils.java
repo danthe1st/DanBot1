@@ -1,6 +1,6 @@
 package io.github.danthe1st.danbot1.util;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.text.DateFormat;
@@ -12,12 +12,13 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * utilities for Logging
  */
 public class LoggerUtils extends ListenerAdapter {	 
-	private final static String logfileName = "cmdlog.txt";
+	private static final String LOGFILE_NAME = "cmdlog.txt";
 	/**
 	 * gets current time in format [dd.MM.yyyy - HH:mm:ss]
 	 * @return current time in format [dd.MM.yyyy - HH:mm:ss]
@@ -38,20 +39,22 @@ public class LoggerUtils extends ListenerAdapter {
 	
 	/**
 	 * writes an executed Command in a Log file
-	 * @param event The {@link MessageReceivedEvent} of the Command
+	 * @param event The {@link GuildMessageReceivedEvent} of the Command
 	 */
-    public static void logCommand(MessageReceivedEvent event) {
+    public static void logCommand(GuildMessageReceivedEvent event) {
 		File path=new File(STATIC.getSettingsDir() +"/"+event.getGuild().getId());
 		if (!path.exists()) {
-			if(!path.mkdirs()) {
+			try {
+				Files.createFile(path.toPath());
+			} catch (IOException e) {
 				System.err.println("cannot create directory: "+path.getAbsolutePath());
 			}
 		}
-		String s=String.format( "%s '%s' executed by %s in Channel %s (in Guild %s)", getCurrentSystemTime(), event.getMessage().getContentDisplay(), event.getMessage().getAuthor().getName(), event.getTextChannel().getName(),event.getGuild().getName());
+		String s=String.format( "%s '%s' executed by %s in Channel %s (in Guild %s)", getCurrentSystemTime(), event.getMessage().getContentDisplay(), event.getMessage().getAuthor().getName(), event.getChannel().getName(),event.getGuild().getName());
 		//server-local Log-File
-		write(STATIC.getSettingsDir()+"/"+event.getGuild().getId()+"/" +logfileName, s);
+		write(STATIC.getSettingsDir()+"/"+event.getGuild().getId()+"/" +LOGFILE_NAME, s);
 		//global Log-File
-		write(STATIC.getSettingsDir()+"/"+logfileName, s);
+		write(STATIC.getSettingsDir()+"/"+LOGFILE_NAME, s);
     }
     /**
      * writes text in a File<br>
@@ -66,9 +69,7 @@ public class LoggerUtils extends ListenerAdapter {
     	try {
 			File file=new File(filepath);
 			if (!file.exists()) {
-				if(!file.createNewFile()) {
-					throw new IOException("cannot create File: "+file.getAbsolutePath());
-				}
+				Files.createFile(file.toPath());
 			}
             try(BufferedWriter bw = new BufferedWriter(new FileWriterWithEncoding(file,java.nio.charset.StandardCharsets.UTF_8,true))){
             	for (String string : text) {

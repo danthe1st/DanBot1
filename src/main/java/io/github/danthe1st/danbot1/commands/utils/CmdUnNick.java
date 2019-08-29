@@ -11,26 +11,26 @@ import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 
 /**
  * Command to unnick a {@link Member}
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "unnick")
+@BotCommand("unnick")
 public class CmdUnNick implements Command{
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return !((args.length==0&&!PermsCore.check(event, "unnick",false))||(!PermsCore.check(event, "unnick.others")));
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		if (args.length==0) {
 			try {
 				event.getGuild().modifyNickname(event.getGuild().getMember(event.getAuthor()), null).queue();
 			} catch (InsufficientPermissionException e) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
 			}
 			
 			return;
@@ -50,7 +50,7 @@ public class CmdUnNick implements Command{
 			try {
 				event.getGuild().modifyNickname(member, null).queue();
 			} catch (InsufficientPermissionException e) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"errInsufficientDiscordPermissions"));
 			}
 		}
 	}

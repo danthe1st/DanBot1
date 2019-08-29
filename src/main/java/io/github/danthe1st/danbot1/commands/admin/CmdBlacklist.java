@@ -1,14 +1,14 @@
 package io.github.danthe1st.danbot1.commands.admin;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +27,15 @@ import io.github.danthe1st.danbot1.util.STATIC;
  * Command to Evaluate Code
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "blacklist")
+@BotCommand("blacklist")
 public class CmdBlacklist implements Command{
 	private static List<String> blacklist=new ArrayList<>();
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.checkOwner(event);	
 	}
 	@Override
-	public void action(String[] args, MessageReceivedEvent event) {
+	public void action(String[] args, GuildMessageReceivedEvent event) {
 		Guild g=event.getGuild();
         if (args.length==0) {
 			StringBuilder sb=new StringBuilder(translate(g, "UsersBlacklisted")+":\n");
@@ -48,7 +48,7 @@ public class CmdBlacklist implements Command{
 				}
 				sb.append("\n");
 			}
-			STATIC.msg(event.getTextChannel(), sb.toString());
+			STATIC.msg(event.getChannel(), sb.toString());
 			return;
 		}
         List<User> toAdd=new ArrayList<>();
@@ -65,7 +65,7 @@ public class CmdBlacklist implements Command{
 					}
 				}
 			} catch (NumberFormatException e) {
-				
+				//ignore
 			}
 			
 		}
@@ -79,7 +79,7 @@ public class CmdBlacklist implements Command{
 			blacklist.remove(user.getId());
 			rembuilder.append(user+"\n");
 		}
-        STATIC.msg(event.getTextChannel(), 
+        STATIC.msg(event.getChannel(), 
         		String.format(translate(g,"addedRemovedUsersFromBlacklist"),
         				toAdd.size(),toRemove.size(),addbuilder.toString(),rembuilder.toString()));
         saveBlacklist();
@@ -105,9 +105,8 @@ public class CmdBlacklist implements Command{
 	
 	/**
 	 * loads the blacklist data
-	 * @param jda the JDA instance
 	 */
-	public static void loadBlacklist(JDA jda) {
+	public static void loadBlacklist() {
 		try {
 			final File file=new File(STATIC.getSettingsDir()+"/blacklist.xml");
 			JAXBContext context=JAXBContext.newInstance(ListWrapper.class);
@@ -118,6 +117,7 @@ public class CmdBlacklist implements Command{
 			ListWrapper<String> data = (ListWrapper<String>) um.unmarshal(file);
 			blacklist=data.getData();
 		} catch (JAXBException e) {
+			//ignore
 		}
 	}
 	/**
@@ -125,22 +125,16 @@ public class CmdBlacklist implements Command{
 	 */
 	private static void saveBlacklist() {
 		File file=new File(STATIC.getSettingsDir()+"/blacklist.xml");
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				System.out.println("cannot create File blacklist.xml");
-				return;
-			}
-		}
 		try {
+			if (!file.exists()) {
+				Files.createFile(file.toPath());
+			}
 			JAXBContext context = JAXBContext
 			        .newInstance(ListWrapper.class);
 			Marshaller m = context.createMarshaller();
 	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
 	        m.marshal(new ListWrapper<String>(blacklist), file);
-		} catch (JAXBException e) {
+		} catch (JAXBException|IOException e) {
 			e.printStackTrace();
 		}
 	}

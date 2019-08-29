@@ -4,6 +4,7 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
@@ -44,7 +45,6 @@ public class AutoUnbanner {
 			unbans.forEach((k,v)->{
 				if (k.longValue()<System.currentTimeMillis()) {
 					for (String user : v.getUsers()) {
-						//v.guild(jda).getController().unban(user).queue();
 						unban(v.guild(jda), user);
 						toRemove.add(k);
 						
@@ -97,14 +97,14 @@ public class AutoUnbanner {
 	private void unban(Guild g,String user) {
 		g.unban(user).queue();
 		System.out.println("unbanned user with id ["+user+"] from guild "+g.getName());
-		User JDAUser=jda.getUserById(user);
+		User jdaUser=jda.getUserById(user);
 		String inv=STATIC.createInvite(g);
-		if (JDAUser!=null) {
+		if (jdaUser!=null) {
 			String msg=String.format(translate(g,"tbanEnd"),g.getName());
 			if (inv!=null) {
 				msg+=translate(g,"invite")+inv;
 			}
-			JDAUser.openPrivateChannel().complete().sendMessage(msg).queue();
+			jdaUser.openPrivateChannel().complete().sendMessage(msg).queue();
 		}
 	}
 	/**
@@ -160,6 +160,7 @@ public class AutoUnbanner {
 				unbanner.reloadTimer();
 			}
 		} catch (JAXBException e) {
+			//ignore
 		}
 	}
 	/**
@@ -169,7 +170,7 @@ public class AutoUnbanner {
 		File file=new File(STATIC.getSettingsDir()+"/unbans.xml");
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
 				System.out.println("cannot create File unbans.xml");
 				return;

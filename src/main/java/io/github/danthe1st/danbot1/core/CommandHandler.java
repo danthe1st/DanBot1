@@ -15,7 +15,12 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
  * @author Daniel Schmid
  */
 public class CommandHandler {
-	private static final Map<String, Command> commands=new HashMap<String, Command>();
+	private static final Map<String, Command> commands=new HashMap<>();
+	
+	private CommandHandler() {
+		//no instantiation
+	}
+	
 	public static Map<String, Command> getCommands() {
 		return Collections.unmodifiableMap(commands);
 	}
@@ -30,21 +35,21 @@ public class CommandHandler {
 		if(commands.containsKey(cmd.invoke.toLowerCase())) {
 			boolean blacklisted=CmdBlacklist.isBlacklisted(cmd.event.getAuthor().getId());
 			if (blacklisted) {
-				STATIC.errmsg(cmd.event.getTextChannel(), translate(cmd.event.getGuild(),"errBlacklisted"));
+				STATIC.errmsg(cmd.event.getChannel(), translate(cmd.event.getGuild(),"errBlacklisted"));
 			}
 			boolean save=(!blacklisted)&&commands.get(cmd.invoke.toLowerCase()).allowExecute(cmd.args, cmd.event);
 			
 			if(save) {
 				try {
 					commands.get(cmd.invoke.toLowerCase()).action(cmd.args, cmd.event);
-				} catch (Exception e) {e.printStackTrace();
+				} catch (Exception e) {
 					save=false;
 				}
 			}
 			commands.get(cmd.invoke.toLowerCase()).executed(save, cmd.event);
 		}
 		else{
-			STATIC.errmsg(cmd.event.getTextChannel(), translate(cmd.event.getGuild(),"unknownCommand"));
+			STATIC.errmsg(cmd.event.getChannel(), translate(cmd.event.getGuild(),"unknownCommand"));
 		}
 	}
 }

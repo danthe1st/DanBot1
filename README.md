@@ -1,10 +1,12 @@
 # DanBot1 [![Build Status](https://travis-ci.com/danthe1st/DanBot1.svg?branch=master)](https://travis-ci.com/danthe1st/DanBot1)
-a little Discord Chat Bot.<br>
+a little, pluginable Discord Chat Bot.<br>
 For a list of Commands and standard-permissions visit [https://danthe1st.github.io/DanBot1](https://danthe1st.github.io/DanBot1)
 
 Program your own Plugins:
+
+An example for creating Plugins for DanBot1 can be found [here](https://github.com/danthe1st/DanBot1ExamplePlugin)
 * Create a new Maven Project
-* Make sure that you are using Java 1.8
+* Make sure that you are using at least Java 8
 * add DanBot1 to the Dependencies (replace VERSION with [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.danthe1st/DanBot1)):
 ```xml
 <dependencies>
@@ -16,6 +18,7 @@ Program your own Plugins:
 	</dependency>
 </dependencies>
 ```
+* if you use *IntelliJ*, make sure to tick `Include dependencies with "Provided" scope` in your run configuration. ![include provided dependencies](https://github.com/danthe1st/DanBot1/raw/master/.github/resc/IntelliJtickIncludeProvidedDependencies.png "TODO")
 * Commands for the Bot have to be annotated with `@io.github.danthe1st.danbot1.commands.BotCommand`
 * Commands should have a no-args-Constructor
 * the field *aliases* in `@BotCommand` mean the Command aliases (should be at least one)
@@ -26,13 +29,4 @@ Program your own Plugins:
 * You can run the Bot by executing io.github.danthe1st.danbot1.core.Main.main(String[] args);
 * you can export the plugin as a normal JAR File or use a maven export(mvn package), but the Commands and Listeners should be accessible and should hava a no-args-Constructor.
 
-used Libraries:
-* [unirest-java](https://github.com/Kong/unirest-java/)
-* [JDA](https://github.com/DV8FromTheWorld/JDA/)
-* [lavaplayer](https://github.com/sedmelluq/lavaplayer/)
-* [slf4j](https://github.com/qos-ch/slf4j/)
-* [reflections](https://github.com/ronmamo/reflections)
 
-Dev-Libraries(used for testing/used in development):
-* JUnit
-* Spotbugs

@@ -1,6 +1,36 @@
 language: java
-jdk:
- - openjdk8
-script:
-  - mvn test -B
-  - mvn spotbugs:check
+jobs:
+  include:
+    - stage: Test - Java-8
+      name: Java 8
+      jdk:
+      - openjdk8
+      script:
+        - mvn test -B
+    - stage: Test - Java-12
+      name: Java 12
+      jdk:
+      - openjdk12
+      script:
+        - mvn test -B
+    - stage: code analysis
+      name: spotbugs
+      jdk:
+      - openjdk8
+      script:
+        - mvn spotbugs:check
+    - name: SonarLint
+      jdk:
+      - openjdk8
+      addons:
+        sonarcloud:
+          organization: "danthe1st"
+      script:
+        - sonar-scanner -Dsonar.projectKey=danthe1st_DanBot1 -Dsonar.host.url=https://sonarcloud.io -Dsonar.sources=src/ -Dsonar.java.binaries=target/ -Dsonar.java.libraries=target/
+    - stage: "Upload to Wiki"
+      jdk:
+      - openjdk8
+      script:
+        - chmod +x ./saveJAR.sh
+        - ./saveJAR.sh
+      if: branch = master

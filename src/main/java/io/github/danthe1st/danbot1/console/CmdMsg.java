@@ -24,9 +24,10 @@ public class CmdMsg implements Command{
 				try {
 					int rgb=Integer.parseInt(args[i]);
 					color=new Color(rgb);
+					exec=true;
 					continue;
 				} catch (Exception e) {
-					
+					//ignore
 				}
 			}
 			

@@ -5,7 +5,7 @@ import io.github.danthe1st.danbot1.core.CommandParser;
 import io.github.danthe1st.danbot1.util.STATIC;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 /**
  * Listener for Commands
@@ -18,10 +18,8 @@ public class CommandListener extends ListenerAdapter {
 	 * @see CommandParser
 	 * @see CommandHandler
 	 */
-	public void onMessageReceived(final MessageReceivedEvent event) {
-		if(!event.isFromGuild()){
-			return;
-		}
+	@Override
+	public void onGuildMessageReceived(final GuildMessageReceivedEvent event) {
 		if(event.getMessage().getContentDisplay().startsWith("--prefix")&&!event.getAuthor().isBot()) {
 			CommandHandler.handleCommand(CommandParser.parser( event,"--"));
 			return;

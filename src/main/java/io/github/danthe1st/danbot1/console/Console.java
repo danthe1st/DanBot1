@@ -80,15 +80,13 @@ public class Console implements Runnable{
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				String msg;
-				try {
-					msg=scan.nextLine();
-				} catch (NoSuchElementException|IllegalStateException e) {
-					return;
-				}
+				msg=scan.nextLine();
 				if(!parse(msg)) {
 					eval(msg);
 				}
-			} catch (Exception e) {
+			}catch (NoSuchElementException|IllegalStateException e) {
+				return;
+			}catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -118,7 +116,6 @@ public class Console implements Runnable{
 					return false;
 				}
 			}
-			continue;
 		}
 		return false;
 	}

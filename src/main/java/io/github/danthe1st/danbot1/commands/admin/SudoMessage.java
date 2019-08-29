@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.Formatter;
 import java.util.List;
 
+import org.apache.commons.collections4.Bag;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -277,5 +279,25 @@ public class SudoMessage implements Message{
 	@Override
 	public MessageActivity getActivity() {
 		return oldMsg.getActivity();
+	}
+
+	@Override
+	public Bag<User> getMentionedUsersBag() {
+		return oldMsg.getMentionedUsersBag();
+	}
+
+	@Override
+	public Bag<TextChannel> getMentionedChannelsBag() {
+		return oldMsg.getMentionedChannelsBag();
+	}
+
+	@Override
+	public Bag<Role> getMentionedRolesBag() {
+		return oldMsg.getMentionedRolesBag();
+	}
+
+	@Override
+	public Bag<Emote> getEmotesBag() {
+		return oldMsg.getEmotesBag();
 	}
 }

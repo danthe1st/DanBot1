@@ -5,6 +5,7 @@ import static io.github.danthe1st.danbot1.util.LanguageController.translate;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,18 +24,18 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Command for AutoChannels
  * @author Daniel Schmid
  */
-@BotCommand(aliases = {"autoc","autochannel"})
+@BotCommand({"autoc","autochannel"})
 public class CmdAutoChannel implements Command, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static HashMap<VoiceChannel, Guild> autoChannels=new HashMap<>();
 	
-	public static HashMap<VoiceChannel, Guild> getAutoChannels(){
+	public static Map<VoiceChannel, Guild> getAutoChannels(){
 		return autoChannels;
 	}
 	public static VoiceChannel getVoiceChannel(final String id,final Guild g) {
@@ -114,8 +115,9 @@ public class CmdAutoChannel implements Command, Serializable {
 		File file=new File(STATIC.getSettingsDir()+"/autochannels.xml");
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				Files.createFile(file.toPath());
 			} catch (IOException e) {
+				//ignore
 			}
 		}
 		try {
@@ -126,7 +128,7 @@ public class CmdAutoChannel implements Command, Serializable {
 
 	        m.marshal(new MapWrapper<>(out), file);
 		} catch (JAXBException e) {
-			
+			//ignore
 		}
 	}
 	/**
@@ -149,19 +151,21 @@ public class CmdAutoChannel implements Command, Serializable {
 					try {
 						autoChannels.put(getVoiceChannel(vId, g), g);
 					} catch (Exception e) {
+						//ignore
 					}
 				});
 		} catch (JAXBException e) {
+			//ignore
 		}
 	}
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "autoChannel");
 	}
 	@Override
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		final Guild g=event.getGuild();
-		final TextChannel tc=event.getTextChannel();
+		final TextChannel tc=event.getChannel();
 		if(args.length<1) {
 			STATIC.errmsg(tc, translate(event.getGuild(),help()).replace("--",STATIC.getPrefixEscaped(event.getGuild())));
 			return;

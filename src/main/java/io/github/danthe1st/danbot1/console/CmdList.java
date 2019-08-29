@@ -27,8 +27,6 @@ public class CmdList implements Command{
 					}
 					guilds.add(jda.getGuildById(tmpguildId));
 					continue;
-				} else{
-					
 				}
 			} catch (NumberFormatException ignore) {
 				//ignore

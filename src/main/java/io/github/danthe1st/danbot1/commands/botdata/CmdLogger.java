@@ -7,21 +7,21 @@ import io.github.danthe1st.danbot1.commands.Command;
 import io.github.danthe1st.danbot1.commands.CommandType;
 import io.github.danthe1st.danbot1.core.PermsCore;
 import io.github.danthe1st.danbot1.util.STATIC;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Command to set the Logger-Channel
  * @author Daniel Schmid
  */
-@BotCommand(aliases = "cmdlogger")
+@BotCommand("cmdlogger")
 public class CmdLogger implements Command{
 	@Override
-	public boolean allowExecute(String[] args, MessageReceivedEvent event) {
+	public boolean allowExecute(String[] args, GuildMessageReceivedEvent event) {
 		return PermsCore.check(event, "logger");
 	}
 	@Override
-	public void action(final String[] args, final MessageReceivedEvent event) {
+	public void action(final String[] args, final GuildMessageReceivedEvent event) {
 		if(args.length<1) {
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(), "missingArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(), "missingArgs"));
 			return;
 		}
 		switch (args[0]) {
@@ -29,7 +29,7 @@ public class CmdLogger implements Command{
 			if(!PermsCore.check(event, "logger.show")) {
 				return;
 			}
-			STATIC.msg(event.getTextChannel(), translate(event.getGuild(), "showCmdLogChan")+STATIC.getCmdLogger(event.getGuild()));
+			STATIC.msg(event.getChannel(), translate(event.getGuild(), "showCmdLogChan")+STATIC.getCmdLogger(event.getGuild()));
 			
 			break;
 		case "set":
@@ -37,13 +37,13 @@ public class CmdLogger implements Command{
 				return;
 			}
 			if(args.length<2) {
-				STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(), "missingArgs"));
+				STATIC.errmsg(event.getChannel(), translate(event.getGuild(), "missingArgs"));
 				return;
 			}
 			STATIC.setCmdLogger(event.getGuild(), args[1]);
 			break;
 		default:
-			STATIC.errmsg(event.getTextChannel(), translate(event.getGuild(),"invalidArgs"));
+			STATIC.errmsg(event.getChannel(), translate(event.getGuild(),"invalidArgs"));
 			break;
 		}
 	}
