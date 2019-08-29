@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,11 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 	
 	static {
 		if (!REC_DIR.exists()) {
-			REC_DIR.mkdirs();
+			try {
+				Files.createDirectories(REC_DIR.toPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			@Override
@@ -88,6 +93,7 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 	public boolean canReceiveCombined() {
 		return true;
 	}
+	
 	@Override
 	public void handleCombinedAudio(CombinedAudio combinedAudio) {
 		byte[] decodedData=combinedAudio.getAudioData(VOLUME);
