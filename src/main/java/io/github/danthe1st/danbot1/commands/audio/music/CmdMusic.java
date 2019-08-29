@@ -31,19 +31,18 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * The music Command
  * @author Daniel Schmid
  */
 @BotCommand({"m","music"})
-public class CmdMusic implements Command,AudioHolder{
+public class CmdMusic implements Command{
 
 	private static final AudioPlayerManager MANAGER=new DefaultAudioPlayerManager();
 	private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS=new HashMap<>();
+	private static final Map<Guild, AudioHolder> holders=new HashMap<>();
 	private static Map<Guild, PlayerSendHandler> sendHandlers=new HashMap<>();
-	private int numTracksToLoad=0;
 	private static final int MAX_NUM_TRACKS=100;
 	
 	public CmdMusic() {
@@ -56,7 +55,7 @@ public class CmdMusic implements Command,AudioHolder{
 	 */
 	private AudioPlayer createPlayer(final Guild g) {
 		final AudioPlayer p=MANAGER.createPlayer();
-		final TrackManager m=new TrackManager(this,p);
+		final TrackManager m=new TrackManager(holders.get(g),p);
 		p.addListener(m);
 		PlayerSendHandler sendHandler=new PlayerSendHandler(p);
 		g.getAudioManager().setSendingHandler(sendHandler);
@@ -106,7 +105,7 @@ public class CmdMusic implements Command,AudioHolder{
 	 * @param identifier the identifier-String
 	 * @param msg The {@link Message} with the Command to load the Music
 	 */
-	private void loadTrack(final String identifier, final Message msg) {
+	private void loadTrack(final String identifier, final Message msg,final int numTracksToLoad) {
 		Member author=msg.getMember();
 		final Guild guild=author.getGuild();
 		getPlayer(guild);
@@ -192,7 +191,7 @@ public class CmdMusic implements Command,AudioHolder{
 				STATIC.errmsg(event.getChannel(), translate(guild,"noQueryString"));
 				return;
 			}
-			numTracksToLoad=1;
+			int numTracksToLoad=1;
 			if (args.length>2) {
 				try {
 					numTracksToLoad=Integer.parseInt(args[1]);
@@ -205,7 +204,7 @@ public class CmdMusic implements Command,AudioHolder{
 			if (!(input.startsWith("http://")||input.startsWith("https://"))) {
 				input="ytsearch: "+input;
 			}
-			loadTrack(input, event.getMessage());
+			loadTrack(input, event.getMessage(),numTracksToLoad);
 			break;
 		case "skip":
 		case "s":
@@ -278,13 +277,10 @@ public class CmdMusic implements Command,AudioHolder{
 	public CommandType getCommandType() {
 		return CommandType.USER;
 	}
-	@Override
 	public void closeConnection(Guild g) {
 		g.getAudioManager().closeAudioConnection();
 	}
-	@Override
-	public void onEverybodyLeave(VoiceChannel vc) {
-		Guild g=vc.getGuild();
+	public void onEverybodyLeave(Guild g) {
 		closeConnection(g);
 		AudioHolderController.giveHolderFree(g);
 	}
