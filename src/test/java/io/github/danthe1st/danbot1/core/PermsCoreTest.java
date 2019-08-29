@@ -29,12 +29,12 @@ public class PermsCoreTest extends AbstractDanBot1Test {
 		TextChannel tc=jda.getTextChannelById(getChannel());
 		GuildMessageReceivedEvent event=getSomeMsgRescEvent(jda, getMessage(tc, true));
 		assertTrue(PermsCore.checkOwner(event));
-		assertTrue(PermsCore.check(event,someInvalidPermission));
+		assertTrue(PermsCore.check(event,SOME_INVALID_PERM));
 		event=getSomeMsgRescEvent(jda, getMessage(tc, false));
 		assertFalse(PermsCore.checkOwner(event));
-		assertFalse(PermsCore.check(event,someInvalidPermission));
+		assertFalse(PermsCore.check(event,SOME_INVALID_PERM));
 	}
-	private final String someInvalidPermission="oaefisfdouhbfosfhaweioöfdifabdsifbssuaidfdasu";//some String(Users should not have the Permission explicitely)
+	private final static String SOME_INVALID_PERM="oaefisfdouhbfosfhaweioöfdifabdsifbssuaidfdasu";//some String(Users should not have the Permission explicitly)
 	private GuildMessageReceivedEvent getSomeMsgRescEvent(JDA jda,Message msg) {
 		return new GuildMessageReceivedEvent(jda, 0, msg);
 	}
@@ -62,7 +62,7 @@ public class PermsCoreTest extends AbstractDanBot1Test {
 	}
 	@Test
 	public void checkValidPermission() {
-		checkPermission(someInvalidPermission);
+		checkPermission(SOME_INVALID_PERM);
 	}
 	@Test
 	public void checkEmptyPermission() {
@@ -71,7 +71,7 @@ public class PermsCoreTest extends AbstractDanBot1Test {
 	}
 	@Test
 	public void testGetSetRemovePerm() {
-		testGetSetRemovePerm(someInvalidPermission);
+		testGetSetRemovePerm(SOME_INVALID_PERM);
 		testGetSetRemovePerm("");
 	}
 	private void testGetSetRemovePerm(String permName) {

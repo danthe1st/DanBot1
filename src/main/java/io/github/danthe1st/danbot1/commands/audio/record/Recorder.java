@@ -104,6 +104,7 @@ public class Recorder implements AudioHolder,AudioReceiveHandler,Closeable{
 			onEverybodyLeave(g.getMember(g.getJDA().getSelfUser()).getVoiceState().getChannel());
 		}
 	}
+	
 	@Override
 	public void close(){
 		try {
