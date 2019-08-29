@@ -1,13 +1,14 @@
 language: java
 jobs:
   include:
-    - stage: test
+    - stage: Test - Java-8
       name: Java 8
       jdk:
       - openjdk8
       script:
         - mvn test -B
-    - name: Java 12
+    - stage: Test - Java-12
+      name: Java 12
       jdk:
       - openjdk12
       script:
