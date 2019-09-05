@@ -3,8 +3,10 @@ package io.github.danthe1st.danbot1;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.function.Function;
@@ -28,7 +30,7 @@ public abstract class AbstractDanBot1Test {
 		URL guildSpecURL = AbstractDanBot1Test.class.getClassLoader().getResource("GuildSpecific.properties");
 		try(BufferedInputStream in=new BufferedInputStream(new FileInputStream(new File(guildSpecURL.toURI())))){
 			props.load(in);
-		} catch (Exception e) {
+		} catch (IOException | URISyntaxException e) {
 			
 		}
 		System.getenv().forEach((k,v)->{

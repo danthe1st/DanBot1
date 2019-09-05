@@ -147,9 +147,9 @@
 		          <pushChanges>true</pushChanges>
 		        </configuration>
 	      	</plugin>
-			  <plugin><!-- assembly (real JAR) -->
-		      	<artifactId>maven-assembly-plugin</artifactId>
-				  <configuration>
+		  	<plugin><!-- assembly (real JAR) -->
+	      		<artifactId>maven-assembly-plugin</artifactId>
+			  		<configuration>
 				    <archive>
 				      <manifest>
 				        <mainClass>io.github.danthe1st.danbot1.core.Main</mainClass>
