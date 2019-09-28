@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 /**
  * An interface for Objects that hold an Audio Handler for a {@link Guild}
  * @author Daniel Schmid
- *
  */
 public interface AudioHolder {
 	/**

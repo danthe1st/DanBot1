@@ -8,6 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Properties;
 import java.util.function.Function;
 
@@ -79,7 +81,12 @@ public abstract class AbstractDanBot1Test {
 	}
 	public static Object invokeNotAccessibleMethod(Class<?> targetClass,String targetMethodName,Class<?>[] paramTypes, Object instanceOfClass, Object... params) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		Method method = targetClass.getDeclaredMethod(targetMethodName, paramTypes);
-		method.setAccessible(true);
+		AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            public Void run() {
+            	method.setAccessible(true);
+            	return null;
+            }
+        });
 		return method.invoke(instanceOfClass, params);
 	}
 }

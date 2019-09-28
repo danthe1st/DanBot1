@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.User;
  */
 @XmlRootElement
 @XmlSeeAlso(value=String[].class)
-public class Unban{
+public final class Unban{
 	private String guild;
 	private String[] user;
 	public Unban(Guild guild,User... user) {
