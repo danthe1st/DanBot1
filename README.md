@@ -18,7 +18,7 @@ An example for creating Plugins for DanBot1 can be found [here](https://github.c
 	</dependency>
 </dependencies>
 ```
-* if you use *IntelliJ*, make sure to tick `Include dependencies with "Provided" scope` in your run configuration. ![include provided dependencies](https://github.com/danthe1st/DanBot1/raw/master/.github/resc/IntelliJtickIncludeProvidedDependencies.png "TODO")
+* if you use *IntelliJ*, make sure to tick `Include dependencies with "Provided" scope` in your run configuration. ![include provided dependencies](./.github/resc/IntelliJtickIncludeProvidedDependencies.png "TODO")
 * Commands for the Bot have to be annotated with `@io.github.danthe1st.danbot1.commands.BotCommand`
 * Commands should have a no-args-Constructor
 * the field *aliases* in `@BotCommand` mean the Command aliases (should be at least one)
